@@ -1,0 +1,48 @@
+inherit_from: .rubocop_todo.yml
+
+# 日本語でのコメントを許可
+Style/AsciiComments:
+  Enabled: false
+
+# 複数行での「lambda」で「->」による省略記法を許可
+Style/Lambda:
+  Enabled: false
+
+# モジュール名::クラス名の定義を許可
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+# メソッド名のprefixに「set_」「get_」を許可
+Style/AccessorMethodName:
+  Enabled: false
+
+# クラスにコメントを残さない
+Style/Documentation:
+  Enabled: false
+
+# 「and」「or」の使用を許可
+Style/AndOr:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Metrics/BlockLength:
+  Max: 200
+
+Metrics/AbcSize:
+  Enabled: true
+  Max: 25
+
+Metrics/MethodLength:
+  Max: 17
+
+AllCops:
+  Exclude:
+    - db/schema.rb
+    - config/unicorn.rb
+    - config/unicorn_staging.rb
+    - tmp/**/*
+    - bin/*
+    - db/migrate/*
+    - vendor/**/*
