@@ -30,6 +30,7 @@ const App = () => {
         <Switch>
           <Route exact path="/" component={About} />
           <Route exact path="/Login" component={Login} />
+          <Route exact path="/Login" component={Login} />
         </Switch>
       </BrowserRouter>
     </AppContext.Provider>

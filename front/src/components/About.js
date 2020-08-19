@@ -17,7 +17,7 @@ const About = () => {
   useEffect(() => {
     const f = async () => {
       const response = await axios.get(`${ROOT_URL}/user`);
-      dispatch({ type: READ_USER, data: response.data });
+      dispatch({ type: READ_USERS, data: response.data });
     };
     f();
   });
