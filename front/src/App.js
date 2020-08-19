@@ -4,13 +4,24 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import AppContext from "./contexts/AppContext";
 
-import SignIn from "./components/SignIn";
+import Login from "./components/Login";
 import About from "./components/About";
 
 const App = () => {
   const initialState = {
     users: [],
+    login: {
+      isLoading: false,
+      isLoginView: true,
+      error: "",
+      credentialsSign: {
+        name: "",
+        email: "",
+        password: "",
+      },
+    },
   };
+
   const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
@@ -18,7 +29,7 @@ const App = () => {
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={About} />
-          <Route exact path="/signin" component={SignIn} />
+          <Route exact path="/Login" component={Login} />
         </Switch>
       </BrowserRouter>
     </AppContext.Provider>

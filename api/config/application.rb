@@ -38,7 +38,8 @@ module Api
         origins 'http://localhost:3000'
         resource '*',
         :headers => :any,
-        :methods => [:get, :post, :patch, :delete, :options]
+        :methods => [:get, :post, :patch, :delete, :options],
+        :expose => ['access-token', 'uid', 'client']
       end
     end
   end
