@@ -4,6 +4,5 @@ Rails.application.routes.draw do
   }
 
   resources :user, only: %i[index show]
-
+  resources :microposts,          only: %i[create destroy]
 end
-
