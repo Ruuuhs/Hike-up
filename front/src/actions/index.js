@@ -2,6 +2,9 @@ export const CREATE_USER = "CREATE_USER";
 export const READ_USER = "READ_USE";
 export const READ_USERS = "READ_USES";
 
+//POST
+export const READ_POSTS = "READ_POSTS";
+
 //Login or signup
 export const START_FETCH = "START_FETCH";
 export const FETCH_SUCCESS = "FETCH_SUCCESS";
