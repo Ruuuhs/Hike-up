@@ -3,6 +3,6 @@ Rails.application.routes.draw do
     registrations: 'auth/registrations'
   }
 
-  resources :user, only: %i[index show]
-  resources :microposts,          only: %i[create destroy]
+  resources :user,  only: %i[index show]
+  resources :post,  only: %i[index show create destroy]
 end
