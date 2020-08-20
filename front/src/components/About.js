@@ -3,13 +3,7 @@ import axios from "axios";
 
 import AppContext from "../contexts/AppContext";
 
-import {
-  CREATE_USER,
-  READ_USERS,
-  READ_USER,
-  ROOT_URL,
-  TOKEN_KEY,
-} from "../actions";
+import { READ_USERS, READ_USER, ROOT_URL, TOKEN_KEY } from "../actions";
 
 const About = () => {
   const { state, dispatch } = useContext(AppContext);
