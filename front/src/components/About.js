@@ -49,16 +49,60 @@ const About = () => {
     window.location.href = "/login";
   };
 
-  const getToken = () => {
+  const getPosts = async (event) => {
+    event.preventDefault();
+    const res = await axios.get(`${ROOT_URL}/post`, {
+      headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+    });
+    console.log(res);
+  };
+
+  const getPost = async (event) => {
+    event.preventDefault();
+    const res = await axios.get(`${ROOT_URL}/post/10`, {
+      headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+    });
+    console.log(res);
+  };
+
+  const createPost = async (event) => {
+    event.preventDefault();
+    const res = await axios.post(
+      `${ROOT_URL}/post`,
+      { content: "test from About" },
+      {
+        headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+      }
+    );
+    console.log(res);
+  };
+
+  const deletePost = async (event) => {
+    event.preventDefault();
+    const res = await axios.delete(`${ROOT_URL}/post/187`, {
+      headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+    });
+    console.log(res);
+  };
+
+  const showToken = () => {
     const token = localStorage.getItem(TOKEN_KEY);
     console.log(token);
   };
 
   return (
     <>
-      <button onClick={login}>login</button>
-      <button onClick={logout}>logout</button>
-      <button onClick={getToken}>getToken</button>
+      <div>
+        <button onClick={login}>login</button>
+        <button onClick={logout}>logout</button>
+      </div>
+      <div>
+        <button onClick={getPosts}>getPosts</button>
+        <button onClick={getPost}>getPost</button>
+        <button onClick={createPost}>createPost</button>
+        <button onClick={deletePost}>deletePost</button>
+      </div>
+      <button onClick={showToken}>showToken</button>
       <button onClick={() => console.log(state)}>console</button>
     </>
   );

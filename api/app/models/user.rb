@@ -6,9 +6,8 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-        #  ,:trackable
+  #  ,:trackable
   include DeviseTokenAuth::Concerns::User
 
   has_many :posts, dependent: :destroy
-
 end

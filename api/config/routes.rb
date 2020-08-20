@@ -3,7 +3,6 @@ Rails.application.routes.draw do
     registrations: 'auth/registrations'
   }
 
-  resources :user, only: %i[index show]
-
+  resources :user,  only: %i[index show]
+  resources :post,  only: %i[index show create destroy]
 end
-
