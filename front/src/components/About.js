@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import axios from "axios";
 
 import AppContext from "../contexts/AppContext";
 
-import { READ_USERS, READ_USER, ROOT_URL, TOKEN_KEY } from "../actions";
+import { READ_USERS, ROOT_URL, TOKEN_KEY } from "../actions";
 
 const About = () => {
   const { state, dispatch } = useContext(AppContext);
