@@ -11,6 +11,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
 import Navbar from "./Navbar";
+import Post from "./Post";
 import Toolbar from "@material-ui/core/Toolbar";
 
 import AppContext from "../contexts/AppContext";
@@ -20,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
-    marginLeft: 280,
+    marginLeft: 269,
   },
   table: {
     minWidth: 650,
@@ -30,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
 const All = () => {
   const { state, dispatch } = useContext(AppContext);
   const classes = useStyles();
-  console.log("test");
 
   useEffect(() => {
     const f = async () => {
@@ -45,28 +45,9 @@ const All = () => {
       <Navbar />
       <Toolbar />
       <div className={classes.content}>
-        <TableContainer component={Paper}>
-          <Table className={classes.table} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>POST_ID</TableCell>
-                <TableCell align="right">Content</TableCell>
-                <TableCell align="right">user_id</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {state.posts.map((post) => (
-                <TableRow key={post.id}>
-                  <TableCell component="th" scope="row">
-                    {post.id}
-                  </TableCell>
-                  <TableCell align="right">{post.content}</TableCell>
-                  <TableCell align="right">{post.user_id}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        {state.posts.map((post) => (
+          <Post key={post.id} post={post} />
+        ))}
       </div>
     </>
   );
