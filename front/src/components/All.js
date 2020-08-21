@@ -10,29 +10,27 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
+import Navbar from "./Navbar";
+import Toolbar from "@material-ui/core/Toolbar";
+
 import AppContext from "../contexts/AppContext";
 import { READ_USERS, READ_POSTS, ROOT_URL, TOKEN_KEY } from "../actions";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    marginLeft: 280,
+  },
   table: {
     minWidth: 650,
   },
-});
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
+}));
 
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
-
-const About = () => {
+const All = () => {
   const { state, dispatch } = useContext(AppContext);
   const classes = useStyles();
+  console.log("test");
 
   useEffect(() => {
     const f = async () => {
@@ -40,51 +38,38 @@ const About = () => {
       dispatch({ type: READ_POSTS, data: res.data });
     };
     f();
-  });
-
-  const logout = async (event) => {
-    localStorage.removeItem(TOKEN_KEY);
-    window.location.href = "/login";
-  };
-
-  const getPosts = async (event) => {
-    event.preventDefault();
-    const res = await axios.get(`${ROOT_URL}/post`);
-    console.log(res);
-  };
+  }, []);
 
   return (
     <>
-      <div>
-        <button onClick={logout}>logout</button>
-        <button onClick={getPosts}>getPosts</button>
-        <button onClick={() => console.log(state)}>console</button>
-      </div>
-
-      <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>POST_ID</TableCell>
-              <TableCell align="right">Content</TableCell>
-              <TableCell align="right">user_id</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {state.posts.map((post) => (
-              <TableRow key={post.id}>
-                <TableCell component="th" scope="row">
-                  {post.id}
-                </TableCell>
-                <TableCell align="right">{post.content}</TableCell>
-                <TableCell align="right">{post.user_id}</TableCell>
+      <Navbar />
+      <Toolbar />
+      <div className={classes.content}>
+        <TableContainer component={Paper}>
+          <Table className={classes.table} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>POST_ID</TableCell>
+                <TableCell align="right">Content</TableCell>
+                <TableCell align="right">user_id</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {state.posts.map((post) => (
+                <TableRow key={post.id}>
+                  <TableCell component="th" scope="row">
+                    {post.id}
+                  </TableCell>
+                  <TableCell align="right">{post.content}</TableCell>
+                  <TableCell align="right">{post.user_id}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
     </>
   );
 };
 
-export default About;
+export default All;

@@ -1,0 +1,9 @@
+.logout {
+  background-color: transparent;
+  color: black;
+  margin-top: 7px;
+  font-size: 25px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
