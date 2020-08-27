@@ -15,7 +15,7 @@ class PostController < ApplicationController
   def create
     post = current_user.posts.build(post_params)
     # @post.image.attach(params[:post][:image])
-    if @post.save
+    if post.save
       render json: post
     else
       render
@@ -24,11 +24,11 @@ class PostController < ApplicationController
 
   # DELETE /post/:id
   def destroy
-    @post = Post.find_by(id: params[:id])
-    if @post.destroy
+    post = Post.find_by(id: params[:id])
+    if post.destroy
     head :no_content, status: :ok
     else
-      render json: @post.errors, status: :unprocessable_entity
+      render json: post.errors, status: :unprocessable_entity
     end
   end
 
@@ -39,7 +39,7 @@ class PostController < ApplicationController
   end
 
   def correct_user
-    @post = current_user.posts.find_by(id: params[:id])
-    render json: { status: 'SUCCESS', message: 'Not correct User' } if @post.nil?
+    post = current_user.posts.find_by(id: params[:id])
+    render json: { status: 'SUCCESS', message: 'Not correct User' } if post.nil?
   end
 end
