@@ -16,9 +16,9 @@ import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import TurnedInIcon from "@material-ui/icons/TurnedIn";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import TelegramIcon from "@material-ui/icons/Telegram";
-import AddIcon from "@material-ui/icons/Add";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
+import TweetBtn from "./Tweet_btn";
 import { Link } from "react-router-dom";
 import { TOKEN_KEY } from "../actions";
 
@@ -124,12 +124,7 @@ export default function Navbar() {
               </ListItemIcon>
               <ListItemText primary="ダイレクトメッセージ" />
             </ListItem>
-            <ListItem button key="投稿">
-              <ListItemIcon>
-                <AddIcon />
-              </ListItemIcon>
-              <ListItemText primary="投稿" />
-            </ListItem>
+            <TweetBtn />
           </List>
         </div>
       </Drawer>

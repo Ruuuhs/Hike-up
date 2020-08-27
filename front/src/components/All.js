@@ -32,7 +32,7 @@ const All = () => {
       dispatch({ type: READ_POSTS, data: res.data });
     };
     f();
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
