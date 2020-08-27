@@ -1,21 +1,14 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import axios from "axios";
 
 import { makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
 
 import Navbar from "./Navbar";
 import Post from "./Post";
 import Toolbar from "@material-ui/core/Toolbar";
 
 import AppContext from "../contexts/AppContext";
-import { READ_USERS, READ_POSTS, ROOT_URL, TOKEN_KEY } from "../actions";
+import { READ_POSTS, ROOT_URL } from "../actions";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -35,6 +28,7 @@ const All = () => {
   useEffect(() => {
     const f = async () => {
       const res = await axios.get(`${ROOT_URL}/post`);
+      console.log(res);
       dispatch({ type: READ_POSTS, data: res.data });
     };
     f();
