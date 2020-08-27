@@ -5,7 +5,7 @@ User.create!(name: 'Example User',
              image: 'test.png')
 
 # # 追加のユーザーをまとめて生成する
-51.times do |n|
+21.times do |n|
   name  = Faker::Name.name
   email = "example-#{n + 1}@example.com"
   password = 'foobar'
@@ -15,8 +15,8 @@ User.create!(name: 'Example User',
 end
 
 # ユーザーの一部を対象にマイクロポストを生成する
-users = User.order(:created_at).take(6)
-31.times do
+users = User.order(:created_at).take(3)
+21.times do
   content = Faker::Lorem.sentence(word_count: 5)
   users.each { |user| user.posts.create!(content: content) }
 end

@@ -3,20 +3,20 @@ class PostController < ApplicationController
   before_action :authenticate_user!, only: %i[create destroy]
 
   def index
-    @posts = Post.all.order(created_at: :desc)
-    render json: @posts
+    posts = Post.all.order(created_at: :desc).to_json(include: [:user])
+    render json: posts
   end
 
   def show
-    @post = Post.find_by(id: params[:id])
-    render json: @post
+    post = Post.find_by(id: params[:id]).to_json(include: [:user])
+    render json: post
   end
 
   def create
-    @post = current_user.posts.build(post_params)
+    post = current_user.posts.build(post_params)
     # @post.image.attach(params[:post][:image])
     if @post.save
-      render json: @post
+      render json: post
     else
       render
     end
