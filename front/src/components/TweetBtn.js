@@ -11,6 +11,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 
 import AddIcon from "@material-ui/icons/Add";
 
+import TweetImage from "./TweetImage";
 import axios from "axios";
 import { ROOT_URL, TOKEN_KEY } from "../actions";
 
@@ -35,10 +36,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Tweet_btn() {
+export default function TweetBtn() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [context, setContext] = useState("");
+  const [image, setImage] = useState("");
 
   const handleOpen = () => {
     setOpen(true);
@@ -51,10 +53,9 @@ export default function Tweet_btn() {
 
   const createPost = async (event) => {
     event.preventDefault();
-    console.log(context);
     const res = await axios.post(
       `${ROOT_URL}/post`,
-      { content: context },
+      { content: context, image: image },
       {
         headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
       }
@@ -91,6 +92,7 @@ export default function Tweet_btn() {
             />
           </DialogContent>
           <DialogActions>
+            <TweetImage setImage={setImage} />
             <Button onClick={handleClose} color="primary">
               キャンセル
             </Button>

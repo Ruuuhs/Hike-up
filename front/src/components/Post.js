@@ -72,7 +72,8 @@ const Post = ({ post }) => {
       {post.image ? (
         <CardMedia className={classes.media} image={post.image} />
       ) : (
-        <CircularProgress />
+        <CardMedia className={classes.media} image={Background} />
+        // <CircularProgress />
       )}
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
