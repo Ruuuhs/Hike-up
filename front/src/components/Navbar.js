@@ -158,7 +158,11 @@ export default function Navbar() {
 
             <ListItem button key="user" component={Link} to={"/"}>
               <ListItemAvatar>
-                <Avatar aria-label="recipe">R</Avatar>
+                {state.currentUser.image ? (
+                  <Avatar aria-label="recipe" src={state.currentUser.image} />
+                ) : (
+                  <Avatar aria-label="recipe" src="/images/defaultUser.png" />
+                )}
               </ListItemAvatar>
               <ListItemText primary={state.currentUser.name} />
             </ListItem>
