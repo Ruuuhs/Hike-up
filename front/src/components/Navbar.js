@@ -21,7 +21,7 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import TelegramIcon from "@material-ui/icons/Telegram";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
-import TweetBtn from "./Tweet_btn";
+import TweetBtn from "./TweetBtn";
 import { Link } from "react-router-dom";
 
 import AppContext from "../contexts/AppContext";

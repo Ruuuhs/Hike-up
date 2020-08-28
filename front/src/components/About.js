@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import axios from "axios";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -8,7 +8,7 @@ import AppContext from "../contexts/AppContext";
 import Navbar from "./Navbar";
 import Toolbar from "@material-ui/core/Toolbar";
 
-import { READ_USERS, ROOT_URL, TOKEN_KEY } from "../actions";
+import { ROOT_URL, TOKEN_KEY } from "../actions";
 
 const useStyles = makeStyles((theme) => ({
   content: {
