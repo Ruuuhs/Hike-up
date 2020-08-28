@@ -3,6 +3,8 @@ Rails.application.routes.draw do
     registrations: 'auth/registrations'
   }
 
+  get '/current', to: 'user#current'
+
   resources :user,  only: %i[index show]
   resources :post,  only: %i[index show create destroy]
 end

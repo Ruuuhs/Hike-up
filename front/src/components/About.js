@@ -1,20 +1,26 @@
 import React, { useEffect, useContext } from "react";
 import axios from "axios";
 
+import { makeStyles } from "@material-ui/core/styles";
+
 import AppContext from "../contexts/AppContext";
+
+import Navbar from "./Navbar";
+import Toolbar from "@material-ui/core/Toolbar";
 
 import { READ_USERS, ROOT_URL, TOKEN_KEY } from "../actions";
 
+const useStyles = makeStyles((theme) => ({
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    marginLeft: 269,
+  },
+}));
+
 const About = () => {
   const { state, dispatch } = useContext(AppContext);
-
-  useEffect(() => {
-    const f = async () => {
-      const response = await axios.get(`${ROOT_URL}/user`);
-      dispatch({ type: READ_USERS, data: response.data });
-    };
-    f();
-  });
+  const classes = useStyles();
 
   const login = async (event) => {
     event.preventDefault();
@@ -40,7 +46,6 @@ const About = () => {
 
   const logout = async (event) => {
     localStorage.removeItem(TOKEN_KEY);
-    window.location.href = "/login";
   };
 
   const getPosts = async (event) => {
@@ -79,6 +84,17 @@ const About = () => {
     console.log(res);
   };
 
+  const currentUser = async (event) => {
+    event.preventDefault();
+    const res = await axios.get(`${ROOT_URL}/current`, {
+      headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+    });
+    console.log(res.data);
+    if (res.data === null) {
+      window.location.href = "/login";
+    }
+  };
+
   const showToken = () => {
     const token = localStorage.getItem(TOKEN_KEY);
     console.log(token);
@@ -86,18 +102,23 @@ const About = () => {
 
   return (
     <>
-      <div>
-        <button onClick={login}>login</button>
-        <button onClick={logout}>logout</button>
+      <Navbar />
+      <Toolbar />
+      <div className={classes.content}>
+        <div>
+          <button onClick={login}>login</button>
+          <button onClick={logout}>logout</button>
+        </div>
+        <div>
+          <button onClick={getPosts}>getPosts</button>
+          <button onClick={getPost}>getPost</button>
+          <button onClick={createPost}>createPost</button>
+          <button onClick={deletePost}>deletePost</button>
+        </div>
+        <button onClick={currentUser}>currentUser</button>
+        <button onClick={showToken}>showToken</button>
+        <button onClick={() => console.log(state)}>console</button>
       </div>
-      <div>
-        <button onClick={getPosts}>getPosts</button>
-        <button onClick={getPost}>getPost</button>
-        <button onClick={createPost}>createPost</button>
-        <button onClick={deletePost}>deletePost</button>
-      </div>
-      <button onClick={showToken}>showToken</button>
-      <button onClick={() => console.log(state)}>console</button>
     </>
   );
 };

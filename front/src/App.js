@@ -34,6 +34,7 @@ const NotFound = () => {
 const App = () => {
   const initialState = {
     users: [],
+    currentUser: [],
     posts: [],
     login: {
       isLoading: false,

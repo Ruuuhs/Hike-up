@@ -28,7 +28,6 @@ const All = () => {
   useEffect(() => {
     const f = async () => {
       const res = await axios.get(`${ROOT_URL}/post`);
-      console.log(res);
       dispatch({ type: READ_POSTS, data: res.data });
     };
     f();

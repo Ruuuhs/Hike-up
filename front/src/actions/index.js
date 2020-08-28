@@ -1,6 +1,7 @@
 export const CREATE_USER = "CREATE_USER";
 export const READ_USER = "READ_USE";
 export const READ_USERS = "READ_USES";
+export const CURRENT_USER = "CURRENT_USE";
 
 //POST
 export const READ_POSTS = "READ_POSTS";

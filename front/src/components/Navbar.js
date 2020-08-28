@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useContext } from "react";
+import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
@@ -9,6 +10,8 @@ import Typography from "@material-ui/core/Typography";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import Avatar from "@material-ui/core/Avatar";
 
 import HomeIcon from "@material-ui/icons/Home";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
@@ -20,7 +23,9 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 import TweetBtn from "./Tweet_btn";
 import { Link } from "react-router-dom";
-import { TOKEN_KEY } from "../actions";
+
+import AppContext from "../contexts/AppContext";
+import { TOKEN_KEY, ROOT_URL, CURRENT_USER } from "../actions";
 
 const drawerWidth = 270;
 
@@ -52,7 +57,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Navbar() {
+  const { state, dispatch } = useContext(AppContext);
   const classes = useStyles();
+
+  useEffect(() => {
+    const f = async () => {
+      const res = await axios.get(`${ROOT_URL}/current`, {
+        headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+      });
+      if (res.data === null) {
+        logout();
+      }
+      dispatch({ type: CURRENT_USER, data: res.data });
+    };
+    f();
+  }, [dispatch]);
 
   const logout = async () => {
     localStorage.removeItem(TOKEN_KEY);
@@ -88,43 +107,68 @@ export default function Navbar() {
         <Toolbar />
         <div className={classes.drawerContainer}>
           <List>
-            <ListItem button key="ホーム">
+            <ListItem button key="ホーム" component={Link} to={"/"}>
               <ListItemIcon>
                 <HomeIcon />
               </ListItemIcon>
               <ListItemText primary="ホーム" />
             </ListItem>
-            <ListItem button key="全投稿">
+
+            <ListItem button key="全投稿" component={Link} to={"/"}>
               <ListItemIcon>
                 <PeopleAltIcon />
               </ListItemIcon>
               <ListItemText primary="全投稿" />
             </ListItem>
-            <ListItem button key="トレンド">
+
+            <ListItem button key="トレンド" component={Link} to={"/"}>
               <ListItemIcon>
                 <TrendingUpIcon />
               </ListItemIcon>
               <ListItemText primary="トレンド" />
             </ListItem>
-            <ListItem button key="ブックマーク">
+
+            <ListItem button key="ブックマーク" component={Link} to={"/"}>
               <ListItemIcon>
                 <TurnedInIcon />
               </ListItemIcon>
               <ListItemText primary="ブックマーク" />
             </ListItem>
-            <ListItem button key="通知">
+
+            <ListItem button key="通知" component={Link} to={"/"}>
               <ListItemIcon>
                 <NotificationsIcon />
               </ListItemIcon>
               <ListItemText primary="通知" />
             </ListItem>
-            <ListItem button key="ダイレクトメッセージ">
+
+            <ListItem
+              button
+              key="ダイレクトメッセージ"
+              component={Link}
+              to={"/"}
+            >
               <ListItemIcon>
                 <TelegramIcon />
               </ListItemIcon>
               <ListItemText primary="ダイレクトメッセージ" />
             </ListItem>
+
             <TweetBtn />
+
+            <ListItem button key="user" component={Link} to={"/"}>
+              <ListItemAvatar>
+                <Avatar aria-label="recipe">R</Avatar>
+              </ListItemAvatar>
+              <ListItemText primary={state.currentUser.name} />
+            </ListItem>
+
+            <ListItem button key="about" component={Link} to={"/about"}>
+              <ListItemIcon>
+                <HomeIcon />
+              </ListItemIcon>
+              <ListItemText primary="about" />
+            </ListItem>
           </List>
         </div>
       </Drawer>
