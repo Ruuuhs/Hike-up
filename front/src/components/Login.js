@@ -159,6 +159,31 @@ export default function Login() {
     }
   };
 
+  const testLogin = async (event) => {
+    event.preventDefault();
+    const res = await axios.post(
+      `${ROOT_URL}/auth/sign_in`,
+      {
+        name: "test",
+        email: "test@example.com",
+        password: "foobar",
+        password_confirmation: "foobar",
+      },
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    const token = {
+      "access-token": res.headers["access-token"],
+      client: res.headers["client"],
+      uid: res.headers["uid"],
+    };
+    localStorage.setItem(TOKEN_KEY, JSON.stringify(token));
+    res.headers["access-token"]
+      ? (window.location.href = "/")
+      : (window.location.href = "/login");
+  };
+
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -275,6 +300,10 @@ export default function Login() {
                 ? "アカウント作成しますか?"
                 : "ログインしますか?"}
             </span>
+
+            <Button variant="contained" color="primary" onClick={testLogin}>
+              TestUserでログイン
+            </Button>
             <Box mt={5}>
               <Copyright />
             </Box>
