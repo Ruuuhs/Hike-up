@@ -14,11 +14,11 @@ class PostController < ApplicationController
 
   def create
     post = current_user.posts.build(post_params)
-    # @post.image.attach(params[:post][:image])
+    # render json: post
     if post.save
       render json: post
     else
-      render
+      render json: post.errors, status: :unprocessable_entity
     end
   end
 

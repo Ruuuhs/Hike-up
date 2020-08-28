@@ -15,6 +15,7 @@ import BookmarkIcon from "@material-ui/icons/Bookmark";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import TextsmsOutlinedIcon from "@material-ui/icons/TextsmsOutlined";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import Background from "../Switzerland.jpg";
 
@@ -68,11 +69,11 @@ const Post = ({ post }) => {
         title={post.user.name}
         subheader={post.created_at}
       />
-      <CardMedia
-        className={classes.media}
-        image={Background}
-        title="Paella dish"
-      />
+      {post.image ? (
+        <CardMedia className={classes.media} image={post.image} />
+      ) : (
+        <CircularProgress />
+      )}
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
           {post.content}
