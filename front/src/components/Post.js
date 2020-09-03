@@ -15,13 +15,15 @@ import BookmarkIcon from "@material-ui/icons/Bookmark";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import TextsmsOutlinedIcon from "@material-ui/icons/TextsmsOutlined";
-import CircularProgress from "@material-ui/core/CircularProgress";
+// import CircularProgress from "@material-ui/core/CircularProgress";
+import { Link } from "react-router-dom";
 
 import Background from "../Switzerland.jpg";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 600,
+    minWidth: 600,
     marginRight: "auto",
     marginLeft: "auto",
     marginBottom: 60,
@@ -57,16 +59,35 @@ const Post = ({ post }) => {
     <Card className={classes.root}>
       <CardHeader
         avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
-            R
-          </Avatar>
+          post.user.image ? (
+            <Avatar
+              aria-label="recipe"
+              src={post.user.image}
+              component={Link}
+              to={`/user/${post.user.id}`}
+            />
+          ) : (
+            <Avatar
+              aria-label="recipe"
+              src="/images/defaultUser.png"
+              component={Link}
+              to={`/user/${post.user.id}`}
+            />
+          )
         }
         action={
           <IconButton aria-label="settings">
             <MoreVertIcon />
           </IconButton>
         }
-        title={post.user.name}
+        title={
+          <Link
+            to={`/user/${post.user.id}`}
+            style={{ textDecoration: "none", color: "#2b2b2b" }}
+          >
+            {post.user.name}
+          </Link>
+        }
         subheader={post.created_at}
       />
       {post.image ? (

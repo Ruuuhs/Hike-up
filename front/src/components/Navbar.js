@@ -1,5 +1,4 @@
-import React, { useEffect, useContext } from "react";
-import axios from "axios";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
@@ -25,7 +24,7 @@ import TweetBtn from "./TweetBtn";
 import { Link } from "react-router-dom";
 
 import AppContext from "../contexts/AppContext";
-import { TOKEN_KEY, ROOT_URL, CURRENT_USER } from "../actions";
+import { TOKEN_KEY } from "../actions";
 
 const drawerWidth = 270;
 
@@ -59,19 +58,6 @@ const useStyles = makeStyles((theme) => ({
 export default function Navbar() {
   const { state, dispatch } = useContext(AppContext);
   const classes = useStyles();
-
-  useEffect(() => {
-    const f = async () => {
-      const res = await axios.get(`${ROOT_URL}/current`, {
-        headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
-      });
-      if (res.data === null) {
-        logout();
-      }
-      dispatch({ type: CURRENT_USER, data: res.data });
-    };
-    f();
-  }, [dispatch]);
 
   const logout = async () => {
     localStorage.removeItem(TOKEN_KEY);
@@ -155,17 +141,30 @@ export default function Navbar() {
             </ListItem>
 
             <TweetBtn />
-
-            <ListItem button key="user" component={Link} to={"/"}>
-              <ListItemAvatar>
-                {state.currentUser.image ? (
-                  <Avatar aria-label="recipe" src={state.currentUser.image} />
-                ) : (
-                  <Avatar aria-label="recipe" src="/images/defaultUser.png" />
-                )}
-              </ListItemAvatar>
-              <ListItemText primary={state.currentUser.name} />
-            </ListItem>
+            {state.currentUser ? (
+              <ListItem
+                button
+                key="user"
+                component={Link}
+                to={`/user/${state.currentUser.id}`}
+              >
+                <ListItemAvatar>
+                  {state.currentUser.image ? (
+                    <Avatar aria-label="recipe" src={state.currentUser.image} />
+                  ) : (
+                    <Avatar aria-label="recipe" src="/images/defaultUser.png" />
+                  )}
+                </ListItemAvatar>
+                <ListItemText primary={state.currentUser.name} />
+              </ListItem>
+            ) : (
+              <ListItem button key="ログイン" component={Link} to={"/login"}>
+                <ListItemIcon>
+                  <TelegramIcon />
+                </ListItemIcon>
+                <ListItemText primary="ログイン" />
+              </ListItem>
+            )}
 
             <ListItem button key="about" component={Link} to={"/about"}>
               <ListItemIcon>

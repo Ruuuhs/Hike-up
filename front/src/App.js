@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useEffect } from "react";
 import "./App.css";
 import reducer from "./reducers";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
@@ -12,6 +12,9 @@ import Login from "./components/Login";
 import About from "./components/About";
 import All from "./components/All";
 import Test from "./components/Test";
+import User from "./components/User";
+import GuestRoute from "./components/GuestRoute";
+import PrivateRoute from "./components/PrivateRoute";
 
 const theme = createMuiTheme({
   palette: {
@@ -55,12 +58,14 @@ const App = () => {
       <AppContext.Provider value={{ state, dispatch }}>
         <BrowserRouter>
           <Switch>
-            <Route exact path="/" component={All} />
-            <Route exact path="/about" component={About} />
-            <Route exact path="/Login" component={Login} />
-            <Route exact path="/Test" component={Test} />
-            {/* <Route exact path="/user/:id" component={User} />
-          <Route exact path="/post/:id" component={Post} />
+            <Route exact path="/login" component={Login} />
+            <GuestRoute exact path="/" children={<All />} />
+            <GuestRoute exact path="/user/:id" children={<User />} />
+            <GuestRoute exact path="/test" children={<Test />} />
+            <GuestRoute exact path="/about" children={<About />} />
+            {/* <PrivateRoute exact path="/" children={< />} /> */}
+            {/* <GuestRoute exact path="/" children={< />} /> */}
+            {/* <Route exact path="/post/:id" component={Post} />
           <Route exact path="/feed" component={feed} />
           <Route exact path="/trend/:period" component={Trend} />
           <Route exact path="/bookmark" component={Bookmark} />

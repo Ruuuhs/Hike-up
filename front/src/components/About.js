@@ -114,8 +114,6 @@ const About = () => {
 
   return (
     <>
-      <Navbar />
-      <Toolbar />
       <div className={classes.content}>
         <div>
           <button onClick={login}>login</button>

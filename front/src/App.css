@@ -1,3 +1,7 @@
+.mainContent {
+  margin: 0 auto;
+}
+
 .logout {
   background-color: transparent;
   color: black;
@@ -8,7 +12,7 @@
   cursor: pointer;
 }
 
-.post_wrapper {
+/* .post_wrapper {
   width: 600px;
   display: block;
   box-sizing: border-box;
@@ -29,4 +33,22 @@
 
 .post_content {
   padding: 0 15px 0 15px;
+} */
+
+/* user_page */
+.userProfile {
+  max-width: 750px;
+  min-width: 600px;
+  display: flex;
+  font-size: 15px;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid lightgray;
+}
+
+.profileContent {
+}
+
+.profileName {
+  font-weight: 300;
 }
