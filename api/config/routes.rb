@@ -5,6 +5,8 @@ Rails.application.routes.draw do
 
   get '/current', to: 'user#current'
 
+  get '/post/:id', to: 'post#parsonal'
+
   resources :user,  only: %i[index show]
   resources :post,  only: %i[index show create destroy]
 end
