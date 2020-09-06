@@ -49,6 +49,10 @@
 .profileContent {
 }
 
+.profileTop {
+  margin-bottom: 15px;
+}
+
 .profileName {
   font-weight: 300;
 }

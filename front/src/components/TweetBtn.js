@@ -11,7 +11,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 
 import AddIcon from "@material-ui/icons/Add";
 
-import TweetImage from "./TweetImage";
+import AddImage from "./AddImage";
 import axios from "axios";
 import { ROOT_URL, TOKEN_KEY } from "../actions";
 
@@ -34,6 +34,9 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  image: {
+    width: 230,
+  },
 }));
 
 export default function TweetBtn() {
@@ -49,6 +52,7 @@ export default function TweetBtn() {
   const handleClose = () => {
     setOpen(false);
     setContext("");
+    setImage("");
   };
 
   const createPost = async (event) => {
@@ -92,7 +96,10 @@ export default function TweetBtn() {
             />
           </DialogContent>
           <DialogActions>
-            <TweetImage setImage={setImage} />
+            <div>
+              <img src={image} className={classes.image} alt="" />
+            </div>
+            <AddImage setImage={setImage} />
             <Button onClick={handleClose} color="primary">
               キャンセル
             </Button>

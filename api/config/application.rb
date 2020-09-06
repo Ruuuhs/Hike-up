@@ -38,7 +38,7 @@ module Api
         origins 'http://localhost:3000'
         resource '*',
                  headers: :any,
-                 methods: %i[get post patch delete options],
+                 methods: %i[get post patch delete options put],
                  expose: %w[access-token uid client]
       end
     end
