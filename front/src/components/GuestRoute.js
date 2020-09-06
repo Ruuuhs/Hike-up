@@ -34,7 +34,7 @@ function GuestRoute(props) {
     f();
   }, [dispatch]);
 
-  console.log(props);
+  // console.log(props);
 
   // 渡された props をそのまま Route に設定する
   return (

@@ -14,12 +14,9 @@ const useStyles = makeStyles((theme) => ({
   input: {
     display: "none",
   },
-  image: {
-    width: 230,
-  },
 }));
 
-export default function TweetImage(props) {
+export default function AddImage(props) {
   const classes = useStyles();
   const [image, setImage] = React.useState(null);
 
@@ -31,9 +28,6 @@ export default function TweetImage(props) {
 
   return (
     <>
-      <div>
-        <img src={image} className={classes.image} alt="" />
-      </div>
       <div className={classes.root}>
         <input
           accept="image/*"
