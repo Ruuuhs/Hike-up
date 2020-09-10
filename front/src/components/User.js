@@ -32,7 +32,7 @@ const User = (props) => {
   //未実装__IDが受け取れない。useEffectでは第二引数にidをセット
   useEffect(() => {
     const f = async () => {
-      const res = await axios.get(`${ROOT_URL}/post/1`);
+      const res = await axios.get(`${ROOT_URL}/parsonal/1`);
       dispatch({ type: READ_POSTS, data: res.data });
     };
     f();

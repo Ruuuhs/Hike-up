@@ -58,10 +58,11 @@ const About = () => {
 
   const getPost = async (event) => {
     event.preventDefault();
-    const res = await axios.get(`${ROOT_URL}/post/67`, {
+    const res = await axios.get(`${ROOT_URL}/post/1`, {
       headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
     });
     console.log(res);
+    console.log(res.data);
   };
 
   const createPost = async (event) => {
@@ -88,6 +89,18 @@ const About = () => {
     console.log(res);
   };
 
+  const likePost = async (event) => {
+    event.preventDefault();
+    const res = await axios.post(
+      `${ROOT_URL}/like`,
+      { post_id: 3 },
+      {
+        headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+      }
+    );
+    console.log(res);
+  };
+
   const currentUser = async (event) => {
     event.preventDefault();
     const res = await axios.get(`${ROOT_URL}/current`, {
@@ -97,6 +110,12 @@ const About = () => {
     if (res.data === null) {
       window.location.href = "/login";
     }
+  };
+
+  const getUser = async (event) => {
+    event.preventDefault();
+    const res = await axios.get(`${ROOT_URL}/user/1`);
+    console.log(res.data);
   };
 
   const showToken = () => {
@@ -126,7 +145,11 @@ const About = () => {
           <button onClick={deletePost}>deletePost</button>
         </div>
         <div>
+          <button onClick={likePost}>likePost</button>
+        </div>
+        <div>
           <button onClick={currentUser}>currentUser</button>
+          <button onClick={getUser}>getUser</button>
           <button onClick={showToken}>showToken</button>
           <button onClick={() => console.log(state)}>console</button>
           <button onClick={test}>test</button>
