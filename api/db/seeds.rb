@@ -22,7 +22,7 @@ users = User.order(:created_at).take(3)
 end
 
 # # 以下のリレーションシップを作成する
-# users = User.all
+users = User.all
 # user  = users.first
 # following = users[2..50]
 # followers = users[3..40]
@@ -30,8 +30,8 @@ end
 # followers.each { |follower| follower.follow(user) }
 
 # # 以下のlikeを作成する
-# (2..30).each do |num|
-#   post = Micropost.find_by(id: num)
-#   like_users = users[1..num]
-#   like_users.each { |like_user| post.like(like_user) }
-# end
+(1..15).each do |num|
+  post = Post.find_by(id: num)
+  like_users = users[0..num]
+  like_users.each { |like_user| post.like(like_user) }
+end

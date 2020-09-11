@@ -1,9 +1,9 @@
 class PostController < ApplicationController
-  before_action :correct_user,   only: :destroy
+  before_action :correct_user, only: :destroy
   before_action :authenticate_user!, only: %i[create destroy]
 
   def index
-    posts = Post.all.order(created_at: :desc).to_json(include: [:user, :likes])
+    posts = Post.all.order(created_at: :desc).to_json(include: %i[user likes])
     render json: posts
   end
 
@@ -32,7 +32,7 @@ class PostController < ApplicationController
   def destroy
     post = Post.find_by(id: params[:id])
     if post.destroy
-    head :no_content, status: :ok
+      head :no_content, status: :ok
     else
       render json: post.errors, status: :unprocessable_entity
     end

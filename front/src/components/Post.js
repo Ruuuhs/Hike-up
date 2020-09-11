@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -17,6 +17,10 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import TextsmsOutlinedIcon from "@material-ui/icons/TextsmsOutlined";
 // import CircularProgress from "@material-ui/core/CircularProgress";
 import { Link } from "react-router-dom";
+
+import AppContext from "../contexts/AppContext";
+import { ROOT_URL, TOKEN_KEY } from "../actions";
+import axios from "axios";
 
 import Background from "../Switzerland.jpg";
 
@@ -43,14 +47,52 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Post = ({ post }) => {
+const Post = ({ post, current }) => {
   const classes = useStyles();
-  const [like, setLike] = React.useState(false);
-  const [bookmark, setBookmark] = React.useState(false);
+  const context = useContext(AppContext);
 
-  const handleLikeClick = () => {
-    setLike(!like);
+  const isLike =
+    post.likes.find((x) => x.user_id === context.state.currentUser.id) !==
+    undefined;
+
+  const isLikeId = isLike
+    ? post.likes.find((x) => x.user_id === context.state.currentUser.id).id
+    : false;
+
+  const isBookmark = false;
+  // post.bookmarks.find((x) => x.user_id === context.state.currentUser.id) !==
+  // undefined;
+
+  const [like, setLike] = React.useState(isLike);
+  const [likeId, setLikeId] = React.useState(isLikeId);
+  const [likeNum, setLikeNum] = React.useState(post.likes.length);
+  const [bookmark, setBookmark] = React.useState(isBookmark);
+
+  const handleLikeClick = async (event) => {
+    event.preventDefault();
+    if (!like) {
+      setLike(!like);
+      const res = await axios.post(
+        `${ROOT_URL}/like`,
+        { post_id: post.id },
+        {
+          headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+        }
+      );
+      setLikeId(res.data.like.id);
+      setLikeNum(likeNum + 1);
+      console.log(res);
+    } else {
+      setLike(!like);
+      const res = await axios.delete(`${ROOT_URL}/like/${likeId}`, {
+        headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+      });
+      setLikeId(false);
+      setLikeNum(likeNum - 1);
+      console.log("destroy", res);
+    }
   };
+
   const handleBookmarkClick = () => {
     setBookmark(!bookmark);
   };
@@ -109,6 +151,9 @@ const Post = ({ post }) => {
             <FavoriteBorderIcon />
           )}
         </IconButton>
+        <Typography variant="body2" color="textSecondary" component="p">
+          {likeNum}
+        </Typography>
         <IconButton aria-label="add to favorites">
           <TextsmsOutlinedIcon />
         </IconButton>

@@ -3,11 +3,12 @@ class LikeController < ApplicationController
 
   def create
     post = Post.find(params[:post_id])
-    render  if post.like?(current_user)
+    render if post.like?(current_user)
 
     post.like(current_user)
     post.reload
-    render json: post
+    like = post.likes.find_by(user_id: current_user.id)
+    render json: {post: post, like: like}
   end
 
   def destroy
