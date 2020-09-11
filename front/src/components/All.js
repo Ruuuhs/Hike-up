@@ -2,8 +2,6 @@ import React, { useEffect, useContext } from "react";
 import axios from "axios";
 
 import Posts from "./Posts";
-import Navbar from "./Navbar";
-import Toolbar from "@material-ui/core/Toolbar";
 
 import AppContext from "../contexts/AppContext";
 import { READ_POSTS, ROOT_URL } from "../actions";

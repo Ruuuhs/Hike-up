@@ -5,7 +5,9 @@ Rails.application.routes.draw do
 
   get '/current', to: 'user#current'
 
-  get '/parsonal/:id', to: 'post#parsonal'
+  get '/personal/:id', to: 'post#parsonal'
+  get '/bookmark', to: 'post#bookmark'
+
 
   resources :user,  only: %i[index show]
   resources :post,  only: %i[index show create destroy]
