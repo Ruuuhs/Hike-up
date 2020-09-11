@@ -12,7 +12,7 @@ class BookmarkController < ApplicationController
   end
 
   def destroy
-    post = Like.find(params[:id]).post
+    post = Bookmark.find(params[:id]).post
     render post unless post.bookmark?(current_user)
 
     post.unbookmark(current_user)

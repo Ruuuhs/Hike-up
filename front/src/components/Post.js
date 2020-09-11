@@ -59,15 +59,21 @@ const Post = ({ post, current }) => {
     ? post.likes.find((x) => x.user_id === context.state.currentUser.id).id
     : false;
 
-  const isBookmark = false;
-  // post.bookmarks.find((x) => x.user_id === context.state.currentUser.id) !==
-  // undefined;
+  const isBookmark =
+    post.bookmarks.find((x) => x.user_id === context.state.currentUser.id) !==
+    undefined;
 
-  console.log(isLike);
+  const isBookmarkId = isBookmark
+    ? post.bookmarks.find((x) => x.user_id === context.state.currentUser.id).id
+    : false;
+
+  console.log("isBook", isBookmark);
+  console.log("isBookId", isBookmarkId);
   const [like, setLike] = React.useState(isLike);
   const [likeId, setLikeId] = React.useState(isLikeId);
   const [likeNum, setLikeNum] = React.useState(post.likes.length);
   const [bookmark, setBookmark] = React.useState(isBookmark);
+  const [bookmarkId, setBookmarkId] = React.useState(isBookmarkId);
 
   const handleLikeClick = async (event) => {
     event.preventDefault();
@@ -94,8 +100,27 @@ const Post = ({ post, current }) => {
     }
   };
 
-  const handleBookmarkClick = () => {
-    setBookmark(!bookmark);
+  const handleBookmarkClick = async (event) => {
+    event.preventDefault();
+    if (!bookmark) {
+      setBookmark(!bookmark);
+      const res = await axios.post(
+        `${ROOT_URL}/bookmark`,
+        { post_id: post.id },
+        {
+          headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+        }
+      );
+      setBookmarkId(res.data.bookmark.id);
+      console.log(res);
+    } else {
+      setBookmark(!bookmark);
+      const res = await axios.delete(`${ROOT_URL}/bookmark/${bookmarkId}`, {
+        headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+      });
+      setBookmarkId(false);
+      console.log("destroy", res);
+    }
   };
 
   return (
