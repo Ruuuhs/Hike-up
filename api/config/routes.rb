@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   get '/current', to: 'user#current'
 
-  get '/personal/:id', to: 'post#parsonal'
+  get '/personal/:id', to: 'post#personal'
   get '/bookmark', to: 'post#bookmark'
   get '/trend/:period', to: 'post#trend', as: 'trend'
 
