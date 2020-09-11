@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   get '/personal/:id', to: 'post#parsonal'
   get '/bookmark', to: 'post#bookmark'
-
+  get '/trend/:period', to: 'post#trend', as: 'trend'
 
   resources :user,  only: %i[index show]
   resources :post,  only: %i[index show create destroy]

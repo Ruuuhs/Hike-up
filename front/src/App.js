@@ -11,6 +11,7 @@ import AppContext from "./contexts/AppContext";
 import Login from "./components/Login";
 import About from "./components/About";
 import All from "./components/All";
+import Trend from "./components/Trend";
 import Bookmark from "./components/Bookmark";
 import Test from "./components/Test";
 import User from "./components/User";
@@ -64,7 +65,8 @@ const App = () => {
             <GuestRoute exact path="/user/:id" children={<User />} />
             <GuestRoute exact path="/test" children={<Test />} />
             <GuestRoute exact path="/about" children={<About />} />
-            <GuestRoute exact path="/bookmark" children={<Bookmark />} />
+            <PrivateRoute exact path="/bookmark" children={<Bookmark />} />
+            <GuestRoute exact path="/trend" children={<Trend />} />
             {/* <PrivateRoute exact path="/" children={< />} /> */}
             {/* <GuestRoute exact path="/" children={< />} /> */}
             {/* <Route exact path="/post/:id" component={Post} />
