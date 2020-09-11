@@ -63,6 +63,7 @@ const Post = ({ post, current }) => {
   // post.bookmarks.find((x) => x.user_id === context.state.currentUser.id) !==
   // undefined;
 
+  console.log(isLike);
   const [like, setLike] = React.useState(isLike);
   const [likeId, setLikeId] = React.useState(isLikeId);
   const [likeNum, setLikeNum] = React.useState(post.likes.length);
