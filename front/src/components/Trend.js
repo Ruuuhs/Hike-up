@@ -1,0 +1,100 @@
+import React, { useEffect, useContext } from "react";
+import axios from "axios";
+
+import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+import Paper from "@material-ui/core/Paper";
+import TrendingUpIcon from "@material-ui/icons/TrendingUp";
+
+import AppContext from "../contexts/AppContext";
+
+import Posts from "./Posts";
+import { READ_POSTS, TOKEN_KEY, ROOT_URL } from "../actions";
+
+const useStyles = makeStyles((theme) => ({
+  large: {
+    width: theme.spacing(8),
+    height: theme.spacing(8),
+    marginRight: 10,
+    color: "#cfd8dc",
+  },
+  tab: {
+    backgroundColor: "transparent",
+  },
+}));
+
+const All = () => {
+  const { state, dispatch } = useContext(AppContext);
+  const classes = useStyles();
+
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  useEffect(() => {
+    const f = async () => {
+      const res = await axios.get(`${ROOT_URL}/trend/daily`, {
+        headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+      });
+      dispatch({ type: READ_POSTS, data: res.data });
+    };
+    f();
+  }, [dispatch]);
+
+  const weekly = async (event) => {
+    event.preventDefault();
+    const res = await axios.get(`${ROOT_URL}/trend/weekly`, {
+      headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+    });
+    dispatch({ type: READ_POSTS, data: res.data });
+  };
+
+  const monthly = async (event) => {
+    event.preventDefault();
+    const res = await axios.get(`${ROOT_URL}/trend/monthly`, {
+      headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+    });
+    dispatch({ type: READ_POSTS, data: res.data });
+  };
+
+  const all = async (event) => {
+    event.preventDefault();
+    const res = await axios.get(`${ROOT_URL}/trend/all`, {
+      headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+    });
+    dispatch({ type: READ_POSTS, data: res.data });
+  };
+
+  return (
+    <>
+      <div className="mainContent trendTop">
+        <div className="trendTopper">
+          <TrendingUpIcon className={classes.large} />
+          <h2 className="pageName">トレンド</h2>
+        </div>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          indicatorColor="primary"
+          textColor="primary"
+        >
+          <Tab label="1日" />
+          <Tab label="週間" onClick={weekly} />
+          <Tab label="月間" onClick={monthly} />
+          <Tab label="全期間" onClick={all} />
+        </Tabs>
+      </div>
+
+      <Posts />
+    </>
+  );
+};
+
+export default All;

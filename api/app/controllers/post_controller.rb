@@ -12,6 +12,12 @@ class PostController < ApplicationController
     render json: posts
   end
 
+  def trend
+    posts = Post.create_rank(params[:period]).to_json(include: %i[user likes bookmarks])
+    render json: posts
+  end
+
+
   def show
     post = Post.find_by(id: params[:id]).to_json(include: %i[user likes bookmarks])
     render json: post

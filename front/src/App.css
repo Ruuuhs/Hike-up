@@ -70,3 +70,16 @@
 .pageName {
   font-weight: 300;
 }
+
+/* トレンド */
+.trendTop {
+  max-width: 750px;
+  min-width: 600px;
+  font-size: 15px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid lightgray;
+}
+
+.trendTopper {
+  display: flex;
+}

@@ -38,12 +38,12 @@ class Post < ApplicationRecord
     when 'monthly'
       time = 1.month
     when 'all'
-      time = Time.now
+      time = 120.month
     end
 
-    post_within_period = Micropost.where(created_at: (Time.now - time)..(Time.now)).pluck(:id)
-    like_rank = Like.where(micropost_id: post_within_period).group(:micropost_id).order('count(micropost_id) desc')
+    post_within_period = Post.where(created_at: (Time.now - time)..(Time.now)).pluck(:id)
+    like_rank = Like.where(post_id: post_within_period).group(:post_id).order('count(post_id) desc')
 
-    @feed_items = Micropost.find(like_rank.limit(20).pluck(:micropost_id))
+    Post.find(like_rank.limit(30).pluck(:post_id))
   end
 end

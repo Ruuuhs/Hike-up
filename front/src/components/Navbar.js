@@ -107,7 +107,7 @@ export default function Navbar() {
               <ListItemText primary="全投稿" />
             </ListItem>
 
-            <ListItem button key="トレンド" component={Link} to={"/"}>
+            <ListItem button key="トレンド" component={Link} to={"/trend"}>
               <ListItemIcon>
                 <TrendingUpIcon />
               </ListItemIcon>
