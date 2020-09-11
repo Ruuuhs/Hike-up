@@ -10,5 +10,5 @@ Rails.application.routes.draw do
   resources :user,  only: %i[index show]
   resources :post,  only: %i[index show create destroy]
   resources :like,  only: %i[create destroy]
-  resources :bookmarks, only: %i[create destroy]
+  resources :bookmark, only: %i[create destroy]
 end
