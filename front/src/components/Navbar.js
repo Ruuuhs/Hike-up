@@ -114,7 +114,12 @@ export default function Navbar() {
               <ListItemText primary="トレンド" />
             </ListItem>
 
-            <ListItem button key="ブックマーク" component={Link} to={"/"}>
+            <ListItem
+              button
+              key="ブックマーク"
+              component={Link}
+              to={"/bookmark"}
+            >
               <ListItemIcon>
                 <TurnedInIcon />
               </ListItemIcon>

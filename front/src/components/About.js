@@ -107,9 +107,9 @@ const About = () => {
       headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
     });
     console.log(res.data);
-    if (res.data === null) {
-      window.location.href = "/login";
-    }
+    // if (res.data === null) {
+    //   window.location.href = "/login";
+    // }
   };
 
   const getUser = async (event) => {

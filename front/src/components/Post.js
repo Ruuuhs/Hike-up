@@ -68,7 +68,6 @@ const Post = ({ post, current }) => {
     : false;
 
   console.log("isBook", isBookmark);
-  console.log("isBookId", isBookmarkId);
   const [like, setLike] = React.useState(isLike);
   const [likeId, setLikeId] = React.useState(isLikeId);
   const [likeNum, setLikeNum] = React.useState(post.likes.length);

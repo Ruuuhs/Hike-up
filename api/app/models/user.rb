@@ -12,4 +12,10 @@ class User < ActiveRecord::Base
   has_many :posts, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :bookmarks, dependent: :destroy
+
+  def bookmark
+    bookmark_ids = "SELECT post_id FROM bookmarks
+                    WHERE user_id = :user_id"
+    Post.where("id IN (#{bookmark_ids})", user_id: id).order(created_at: :desc)
+  end
 end

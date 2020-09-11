@@ -56,3 +56,17 @@
 .profileName {
   font-weight: 300;
 }
+
+/* ブックマークページ */
+.pageTop {
+  max-width: 750px;
+  min-width: 600px;
+  display: flex;
+  font-size: 15px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid lightgray;
+}
+
+.pageName {
+  font-weight: 300;
+}
