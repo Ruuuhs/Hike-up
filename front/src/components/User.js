@@ -10,6 +10,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 
 import EditProfile from "./EditProfile";
+import FollowBtn from "./FollowBtn";
+
+import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -24,29 +27,28 @@ const useStyles = makeStyles((theme) => ({
 
 const User = (props) => {
   const { state, dispatch } = useContext(AppContext);
-
   const classes = useStyles();
+  const [user, setUser] = React.useState("");
 
-  // console.log("tes", props);
+  const id = useLocation().pathname.slice(6);
 
   //未実装__IDが受け取れない。useEffectでは第二引数にidをセット
   useEffect(() => {
     const f = async () => {
-      const res = await axios.get(`${ROOT_URL}/personal/1`);
-      dispatch({ type: READ_POSTS, data: res.data });
+      const res = await axios.get(`${ROOT_URL}/personal/${id}`);
+      dispatch({ type: READ_POSTS, data: JSON.parse(res.data.posts) });
+      setUser(res.data.user);
     };
     f();
-  }, [dispatch]);
-
-  console.log();
+  }, [dispatch, id]);
 
   return (
     <>
       <div className="mainContent userProfile">
-        {state.currentUser.image ? (
+        {user.image ? (
           <Avatar
             aria-label="recipe"
-            src={state.currentUser.image}
+            src={user.image}
             className={classes.large}
           />
         ) : (
@@ -58,8 +60,8 @@ const User = (props) => {
         )}
         <div className="profileContent">
           <div className="profileTop">
-            <h2 className="profileName">{state.currentUser.name}</h2>
-            <EditProfile />
+            <h2 className="profileName">{user.name}</h2>
+            {state.currentUser.id === user.id ? <EditProfile /> : <FollowBtn />}
           </div>
           <div>投稿{state.posts.length}件 フォロワーxx人　フォロー中xx人</div>
         </div>

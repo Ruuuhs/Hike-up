@@ -26,7 +26,7 @@ class PostController < ApplicationController
   def personal
     user = User.find_by(id: params[:id])
     posts = user.posts.all.order(created_at: :desc).to_json(include: %i[user likes bookmarks])
-    render json: posts
+    render json: {posts: posts, user: user}
   end
 
   def create

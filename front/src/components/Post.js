@@ -21,6 +21,7 @@ import { Link } from "react-router-dom";
 import AppContext from "../contexts/AppContext";
 import { ROOT_URL, TOKEN_KEY } from "../actions";
 import axios from "axios";
+import moment from "moment";
 
 import Background from "../Switzerland.jpg";
 
@@ -121,6 +122,14 @@ const Post = ({ post, current }) => {
     }
   };
 
+  const dt = new Date(post.created_at);
+  const y = dt.getFullYear();
+  const m = ("00" + (dt.getMonth() + 1)).slice(-2);
+  const d = ("00" + dt.getDate()).slice(-2);
+  const h = dt.getHours();
+  const min = dt.getMinutes();
+  const time = y + "/" + m + "/" + d + "・" + h + ":" + min;
+
   return (
     <Card className={classes.root}>
       <CardHeader
@@ -154,7 +163,7 @@ const Post = ({ post, current }) => {
             {post.user.name}
           </Link>
         }
-        subheader={post.created_at}
+        subheader={time}
       />
       {post.image ? (
         <CardMedia className={classes.media} image={post.image} />
