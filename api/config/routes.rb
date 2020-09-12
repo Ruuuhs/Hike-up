@@ -5,12 +5,19 @@ Rails.application.routes.draw do
 
   get '/current', to: 'user#current'
 
-  get '/personal/:id', to: 'post#personal'
+  get '/personal/:id', to: 'user#personal'
   get '/bookmark', to: 'post#bookmark'
   get '/trend/:period', to: 'post#trend', as: 'trend'
+
+  resources :users do
+    member do
+      get :following, :followers
+    end
+  end
 
   resources :user,  only: %i[index show]
   resources :post,  only: %i[index show create destroy]
   resources :like,  only: %i[create destroy]
   resources :bookmark, only: %i[create destroy]
+  resources :relationships, only: %i[create destroy]
 end
