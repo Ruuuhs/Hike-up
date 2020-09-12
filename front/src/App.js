@@ -8,6 +8,7 @@ import { MuiThemeProvider } from "@material-ui/core/styles";
 
 import AppContext from "./contexts/AppContext";
 
+import ScrollToTopOnMount from "./components/ScrollToTopOnMount";
 import Login from "./components/Login";
 import About from "./components/About";
 import All from "./components/All";
@@ -25,8 +26,8 @@ const theme = createMuiTheme({
       contrastText: "#000000",
     },
     secondary: {
-      main: "#ff9f44",
-      contrastText: "#000000",
+      main: "#6bbcff",
+      contrastText: "#ffffff",
     },
   },
 });
@@ -59,6 +60,8 @@ const App = () => {
     <MuiThemeProvider theme={theme}>
       <AppContext.Provider value={{ state, dispatch }}>
         <BrowserRouter>
+          <ScrollToTopOnMount />
+
           <Switch>
             <Route exact path="/login" component={Login} />
             <GuestRoute exact path="/" children={<All />} />
