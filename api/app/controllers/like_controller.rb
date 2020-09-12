@@ -8,7 +8,7 @@ class LikeController < ApplicationController
     post.like(current_user)
     post.reload
     like = post.likes.find_by(user_id: current_user.id)
-    render json: {post: post, like: like}
+    render json: { post: post, like: like }
   end
 
   def destroy

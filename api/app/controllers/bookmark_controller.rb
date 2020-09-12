@@ -1,5 +1,5 @@
 class BookmarkController < ApplicationController
-    before_action :authenticate_user!, only: %i[create destroy]
+  before_action :authenticate_user!, only: %i[create destroy]
 
   def create
     post = Post.find(params[:post_id])
@@ -8,7 +8,7 @@ class BookmarkController < ApplicationController
     post.bookmark(current_user)
     post.reload
     bookmark = post.bookmarks.find_by(user_id: current_user.id)
-    render json: {post: post, bookmark: bookmark}
+    render json: { post: post, bookmark: bookmark }
   end
 
   def destroy

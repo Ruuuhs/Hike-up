@@ -29,6 +29,8 @@ const User = (props) => {
   const { state, dispatch } = useContext(AppContext);
   const classes = useStyles();
   const [user, setUser] = React.useState("");
+  const [following, setFollowing] = React.useState("");
+  const [followers, setFollowers] = React.useState("");
 
   const id = useLocation().pathname.slice(6);
 
@@ -38,6 +40,8 @@ const User = (props) => {
       const res = await axios.get(`${ROOT_URL}/personal/${id}`);
       dispatch({ type: READ_POSTS, data: JSON.parse(res.data.posts) });
       setUser(res.data.user);
+      setFollowing(res.data.following);
+      setFollowers(res.data.followers);
     };
     f();
   }, [dispatch, id]);
@@ -63,7 +67,11 @@ const User = (props) => {
             <h2 className="profileName">{user.name}</h2>
             {state.currentUser.id === user.id ? <EditProfile /> : <FollowBtn />}
           </div>
-          <div>投稿{state.posts.length}件 フォロワーxx人　フォロー中xx人</div>
+          <div>
+            投稿{state.posts.length}件 フォロワー
+            {followers.length}
+            人　フォロー中{following.length}人
+          </div>
         </div>
       </div>
 

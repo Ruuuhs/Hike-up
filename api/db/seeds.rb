@@ -21,21 +21,21 @@ users.each { |user| user.posts.create!(content: content) }
 
 # # 以下のリレーションシップを作成する
 users = User.all
-# user  = users.first
-# following = users[2..50]
-# followers = users[3..40]
-# following.each { |followed| user.follow(followed) }
-# followers.each { |follower| follower.follow(user) }
-
-
+user  = users.first
+following = users[2..40]
+followers = users[3..30]
+following.each { |followed| user.follow(followed) }
+followers.each { |follower| follower.follow(user) }
 
 # trend and like  作成確認
 users = User.order(:created_at).take(3)
 3.times do
   content = Faker::Lorem.sentence(word_count: 3)
-  users.each { |user| user.posts.create!(content: content, created_at: 1.day.ago) }
-  users.each { |user| user.posts.create!(content: content, created_at: 7.day.ago) }
-  users.each { |user| user.posts.create!(content: content, created_at: 1.month.ago) }
+  users.each do |past_user|
+    past_user.posts.create!(content: content, created_at: 1.day.ago)
+    past_user.posts.create!(content: content, created_at: 7.day.ago)
+    past_user.posts.create!(content: content, created_at: 1.month.ago)
+  end
 end
 
 # # 以下のlikeを作成する
