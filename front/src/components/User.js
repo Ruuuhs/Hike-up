@@ -4,7 +4,7 @@ import axios from "axios";
 import Posts from "./Posts";
 
 import AppContext from "../contexts/AppContext";
-import { READ_POSTS, ROOT_URL } from "../actions";
+import { READ_POSTS, ROOT_URL, TOKEN_KEY } from "../actions";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
@@ -31,10 +31,11 @@ const User = (props) => {
   const [user, setUser] = React.useState("");
   const [following, setFollowing] = React.useState("");
   const [followers, setFollowers] = React.useState("");
+  const [followersNum, setFollowersNum] = React.useState(followers.length);
+  const [follow, setFollow] = React.useState("");
 
   const id = useLocation().pathname.slice(6);
 
-  //未実装__IDが受け取れない。useEffectでは第二引数にidをセット
   useEffect(() => {
     const f = async () => {
       const res = await axios.get(`${ROOT_URL}/personal/${id}`);
@@ -42,6 +43,15 @@ const User = (props) => {
       setUser(res.data.user);
       setFollowing(res.data.following);
       setFollowers(res.data.followers);
+      setFollowersNum(res.data.followers.length);
+
+      const res_current = await axios.get(`${ROOT_URL}/current`, {
+        headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+      });
+      setFollow(
+        res.data.followers.find((x) => x.id === res_current.data.id) !==
+          undefined
+      );
     };
     f();
   }, [dispatch, id]);
@@ -65,11 +75,21 @@ const User = (props) => {
         <div className="profileContent">
           <div className="profileTop">
             <h2 className="profileName">{user.name}</h2>
-            {state.currentUser.id === user.id ? <EditProfile /> : <FollowBtn />}
+            {state.currentUser.id === user.id ? (
+              <EditProfile />
+            ) : (
+              <FollowBtn
+                id={user.id}
+                followersNum={followersNum}
+                setFollowersNum={setFollowersNum}
+                follow={follow}
+                setFollow={setFollow}
+              />
+            )}
           </div>
           <div>
             投稿{state.posts.length}件 フォロワー
-            {followers.length}
+            {followersNum}
             人　フォロー中{following.length}人
           </div>
         </div>

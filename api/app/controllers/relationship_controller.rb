@@ -8,8 +8,8 @@ class RelationshipController < ApplicationController
   end
 
   def destroy
-    user = Relationship.find(params[:id]).followed
+    user = User.find_by(id: params[:id])
     current_user.unfollow(user)
-    ender json: user
+    render json: user
   end
 end
