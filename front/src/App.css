@@ -83,3 +83,11 @@
 .trendTopper {
   display: flex;
 }
+
+/* フォローリスト */
+.followList {
+  max-width: 750px;
+  min-width: 600px;
+  background-color: white;
+  border: 1px solid lightgray;
+}
