@@ -14,7 +14,7 @@ class UserController < ApplicationController
   end
 
   def current
-    render json: current_user
+    render json: current_user.to_json(include: %i[active_relationships])
   end
 
   def personal
