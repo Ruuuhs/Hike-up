@@ -27,7 +27,7 @@ followers = users[3..30]
 following.each { |followed| user.follow(followed) }
 followers.each { |follower| follower.follow(user) }
 
-# trend and like  作成確認
+# # 以下のtrendを作成する
 users = User.order(:created_at).take(3)
 3.times do
   content = Faker::Lorem.sentence(word_count: 3)
@@ -42,6 +42,10 @@ end
 users = User.all
 (1..29).each do |num|
   post = Post.find_by(id: num)
-  like_users = users[0..num]
-  like_users.each { |like_user| post.like(like_user) }
+  other_users = users[0..num]
+  content = Faker::Lorem.sentence(word_count: 3)
+  other_users.each do |other_user|
+    post.like(other_user)
+    other_user.comments.create!(post_id: post.id, content: content)
+  end
 end
