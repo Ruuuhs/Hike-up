@@ -3,7 +3,7 @@ class PostController < ApplicationController
   before_action :authenticate_user!, only: %i[create destroy]
 
   def index
-    posts = Post.all.order(created_at: :desc).to_json(include: %i[user likes bookmarks])
+    posts = Post.all.order(created_at: :desc).to_json(include: %i[user likes bookmarks comments])
     render json: posts
   end
 
@@ -18,7 +18,7 @@ class PostController < ApplicationController
   end
 
   def show
-    post = Post.find_by(id: params[:id]).to_json(include: %i[user likes bookmarks])
+    post = Post.find_by(id: params[:id]).to_json(include: %i[user likes bookmarks comments])
     render json: post
   end
 

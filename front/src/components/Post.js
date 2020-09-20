@@ -15,15 +15,22 @@ import BookmarkIcon from "@material-ui/icons/Bookmark";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import TextsmsOutlinedIcon from "@material-ui/icons/TextsmsOutlined";
+import InputBase from "@material-ui/core/InputBase";
+import Button from "@material-ui/core/Button";
+
 // import CircularProgress from "@material-ui/core/CircularProgress";
+
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+
 import { Link } from "react-router-dom";
 
 import AppContext from "../contexts/AppContext";
 import { ROOT_URL, TOKEN_KEY } from "../actions";
 import axios from "axios";
-import moment from "moment";
 
 import Background from "../Switzerland.jpg";
+import ShowPost from "./ShowPost";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -73,6 +80,8 @@ const Post = ({ post, current }) => {
   const [likeNum, setLikeNum] = React.useState(post.likes.length);
   const [bookmark, setBookmark] = React.useState(isBookmark);
   const [bookmarkId, setBookmarkId] = React.useState(isBookmarkId);
+  const [comments, setComments] = React.useState([]);
+  const [commentNum, setCommentNum] = React.useState(post.comments.length);
 
   const handleLikeClick = async (event) => {
     event.preventDefault();
@@ -122,6 +131,17 @@ const Post = ({ post, current }) => {
     }
   };
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = async (event) => {
+    event.preventDefault();
+    const res = await axios.get(`${ROOT_URL}/comment/${post.id}`, {
+      headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+    });
+    setComments(res.data);
+    setOpen(true);
+  };
+
   const dt = new Date(post.created_at);
   const y = dt.getFullYear();
   const m = ("00" + (dt.getMonth() + 1)).slice(-2);
@@ -131,74 +151,91 @@ const Post = ({ post, current }) => {
   const time = y + "/" + m + "/" + d + "・" + h + ":" + min;
 
   return (
-    <Card className={classes.root}>
-      <CardHeader
-        avatar={
-          post.user.image ? (
-            <Avatar
-              aria-label="recipe"
-              src={post.user.image}
-              component={Link}
+    <>
+      <Card className={classes.root}>
+        <CardHeader
+          avatar={
+            post.user.image ? (
+              <Avatar
+                aria-label="recipe"
+                src={post.user.image}
+                component={Link}
+                to={`/user/${post.user.id}`}
+              />
+            ) : (
+              <Avatar
+                aria-label="recipe"
+                src="/images/defaultUser.png"
+                component={Link}
+                to={`/user/${post.user.id}`}
+              />
+            )
+          }
+          action={
+            <IconButton aria-label="settings">
+              <MoreVertIcon />
+            </IconButton>
+          }
+          title={
+            <Link
               to={`/user/${post.user.id}`}
-            />
-          ) : (
-            <Avatar
-              aria-label="recipe"
-              src="/images/defaultUser.png"
-              component={Link}
-              to={`/user/${post.user.id}`}
-            />
-          )
-        }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
+              style={{ textDecoration: "none", color: "#2b2b2b" }}
+            >
+              {post.user.name}
+            </Link>
+          }
+          subheader={time}
+        />
+
+        {post.image ? (
+          <CardMedia className={classes.media} image={post.image} />
+        ) : (
+          <CardMedia className={classes.media} image={Background} />
+          // <CircularProgress />
+        )}
+
+        <CardContent onClick={handleOpen}>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {post.content}
+          </Typography>
+        </CardContent>
+
+        <CardActions disableSpacing>
+          <IconButton onClick={handleLikeClick} aria-label="add to favorites">
+            {like ? (
+              <FavoriteIcon className={classes.like_button} />
+            ) : (
+              <FavoriteBorderIcon />
+            )}
           </IconButton>
-        }
-        title={
-          <Link
-            to={`/user/${post.user.id}`}
-            style={{ textDecoration: "none", color: "#2b2b2b" }}
+          <Typography variant="body2" color="textSecondary" component="p">
+            {likeNum}
+          </Typography>
+          <IconButton onClick={handleOpen} aria-label="add to favorites">
+            <TextsmsOutlinedIcon />
+          </IconButton>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {commentNum}
+          </Typography>
+          <IconButton
+            onClick={handleBookmarkClick}
+            className={classes.bookmark_button}
+            aria-label="add to bookmarks"
           >
-            {post.user.name}
-          </Link>
-        }
-        subheader={time}
-      />
-      {post.image ? (
-        <CardMedia className={classes.media} image={post.image} />
-      ) : (
-        <CardMedia className={classes.media} image={Background} />
-        // <CircularProgress />
-      )}
-      <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {post.content}
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        <IconButton onClick={handleLikeClick} aria-label="add to favorites">
-          {like ? (
-            <FavoriteIcon className={classes.like_button} />
-          ) : (
-            <FavoriteBorderIcon />
-          )}
-        </IconButton>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {likeNum}
-        </Typography>
-        <IconButton aria-label="add to favorites">
-          <TextsmsOutlinedIcon />
-        </IconButton>
-        <IconButton
-          onClick={handleBookmarkClick}
-          className={classes.bookmark_button}
-          aria-label="add to bookmarks"
-        >
-          {bookmark ? <BookmarkIcon /> : <BookmarkBorderIcon />}
-        </IconButton>
-      </CardActions>
-    </Card>
+            {bookmark ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+          </IconButton>
+        </CardActions>
+        <ShowPost
+          post={post}
+          setOpen={setOpen}
+          open={open}
+          setComments={setComments}
+          comments={comments}
+          setCommentNum={setCommentNum}
+          commentNum={commentNum}
+        />
+      </Card>
+    </>
   );
 };
 
