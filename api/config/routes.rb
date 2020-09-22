@@ -21,4 +21,6 @@ Rails.application.routes.draw do
   resources :bookmark, only: %i[create destroy]
   resources :comment, only: %i[show create]
   resources :relationship, only: %i[create destroy]
+  resources :room, only: %i[create show index]
+  resources :message, only: %i[create]
 end
