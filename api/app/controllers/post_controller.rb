@@ -8,12 +8,12 @@ class PostController < ApplicationController
   end
 
   def bookmark
-    posts = current_user.bookmark.to_json(include: %i[user likes bookmarks])
+    posts = current_user.bookmark.to_json(include: %i[user likes bookmarks comments])
     render json: posts
   end
 
   def trend
-    posts = Post.create_rank(params[:period]).to_json(include: %i[user likes bookmarks])
+    posts = Post.create_rank(params[:period]).to_json(include: %i[user likes bookmarks comments])
     render json: posts
   end
 
