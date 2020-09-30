@@ -19,7 +19,7 @@ class UserController < ApplicationController
 
   def personal
     user = User.find_by(id: params[:id])
-    posts = user.posts.all.order(created_at: :desc).to_json(include: %i[user likes bookmarks])
+    posts = user.posts.all.order(created_at: :desc).to_json(include: %i[user likes bookmarks comments])
     following = user.following
     followers = user.followers
     render json: { posts: posts, user: user, following: following, followers: followers }

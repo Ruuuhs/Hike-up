@@ -16,6 +16,7 @@ import Trend from "./components/Trend";
 import Bookmark from "./components/Bookmark";
 import Test from "./components/Test";
 import User from "./components/User";
+import DirectMessage from "./components/DirectMessage";
 import GuestRoute from "./components/GuestRoute";
 import PrivateRoute from "./components/PrivateRoute";
 
@@ -70,6 +71,7 @@ const App = () => {
             <GuestRoute exact path="/about" children={<About />} />
             <PrivateRoute exact path="/bookmark" children={<Bookmark />} />
             <GuestRoute exact path="/trend" children={<Trend />} />
+            <PrivateRoute exact path="/dm" children={<DirectMessage />} />
             {/* <PrivateRoute exact path="/" children={< />} /> */}
             {/* <GuestRoute exact path="/" children={< />} /> */}
             {/* <Route exact path="/post/:id" component={Post} />

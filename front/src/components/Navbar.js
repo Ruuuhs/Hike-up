@@ -126,18 +126,18 @@ export default function Navbar() {
               <ListItemText primary="ブックマーク" />
             </ListItem>
 
-            <ListItem button key="通知" component={Link} to={"/"}>
+            {/* <ListItem button key="通知" component={Link} to={"/"}>
               <ListItemIcon>
                 <NotificationsIcon />
               </ListItemIcon>
               <ListItemText primary="通知" />
-            </ListItem>
+            </ListItem> */}
 
             <ListItem
               button
               key="ダイレクトメッセージ"
               component={Link}
-              to={"/"}
+              to={"/dm"}
             >
               <ListItemIcon>
                 <TelegramIcon />
