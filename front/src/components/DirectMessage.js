@@ -16,6 +16,8 @@ import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
 
 import { ROOT_URL, TOKEN_KEY } from "../actions";
 
+import DmNewUser from "./DmNewUser";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -26,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 900,
     minWidth: 600,
     maxHeight: 600,
-    minHeight: 300,
+    minHeight: 400,
     marginRight: "auto",
     marginLeft: "auto",
   },
@@ -41,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
     borderRight: `1px solid lightgray`,
   },
   dmUserList: {
+    height: "90%",
     overflow: "auto",
   },
   dmNew: {
@@ -140,6 +143,7 @@ export default function DirectMessage() {
   }, []);
 
   const handleListItemClick = (event, room) => {
+    event.preventDefault();
     if (room === 0) {
       setSelectedIndex(0);
     } else {
@@ -183,21 +187,21 @@ export default function DirectMessage() {
           </IconButton>
         </div>
         <List className={classes.dmUserList}>
-          {rooms.map((room) => (
+          {rooms.map((list_room) => (
             <ListItem
               button
-              selected={selectedIndex === room.id}
-              key={room.id}
-              onClick={(event) => handleListItemClick(event, room)}
+              selected={selectedIndex === list_room.id}
+              key={list_room.id}
+              onClick={(event) => handleListItemClick(event, list_room)}
             >
               <ListItemIcon>
-                {room.otherUser.image ? (
-                  <Avatar aria-label="recipe" src={room.otherUser.image} />
+                {list_room.otherUser.image ? (
+                  <Avatar aria-label="recipe" src={list_room.otherUser.image} />
                 ) : (
                   <Avatar aria-label="recipe" src="/images/defaultUser.png" />
                 )}
               </ListItemIcon>
-              <ListItemText primary={room.otherUser.name} />
+              <ListItemText primary={list_room.otherUser.name} />
             </ListItem>
           ))}
         </List>
@@ -215,11 +219,9 @@ export default function DirectMessage() {
               variant="body2"
               gutterBottom
             >
-              相互フォローしている友達にメッセージを送信できます。
+              フォローしている友達にメッセージを送信できます
             </Typography>
-            <Button variant="contained" color="second">
-              メッセージを送信
-            </Button>
+            <DmNewUser setRooms={setRooms} rooms={rooms} />
           </div>
         </div>
       ) : (

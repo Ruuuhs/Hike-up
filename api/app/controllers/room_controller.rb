@@ -4,7 +4,8 @@ class RoomController < ApplicationController
   def create
     room = Room.create
     Entry.create(room_id: room.id, user_id: current_user.id)
-    Entry.create(params.require(:entry).permit(:user_id, :room_id).merge(room_id: room.id))
+    Entry.create(room_params.merge(room_id: room.id))
+    room = Room.find_by(id: room.id).to_json(include: %i[messages entries users])
     render json: room
   end
 
@@ -21,5 +22,11 @@ class RoomController < ApplicationController
   def index
     rooms = current_user.rooms.to_json(include: %i[messages entries users])
     render json: [rooms: rooms, current_user: current_user]
+  end
+
+  private
+
+    def room_params
+    params.permit(:user_id)
   end
 end
