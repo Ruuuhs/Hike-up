@@ -7,6 +7,11 @@ class PostController < ApplicationController
     render json: posts
   end
 
+  def feed
+    posts = current_user.feed.to_json(include: %i[user likes bookmarks comments])
+    render json: posts
+  end
+
   def bookmark
     posts = current_user.bookmark.to_json(include: %i[user likes bookmarks comments])
     render json: posts

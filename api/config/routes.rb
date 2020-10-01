@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get '/current', to: 'user#current'
 
   get '/personal/:id', to: 'user#personal'
+  get '/feed', to: 'post#feed'
   get '/bookmark', to: 'post#bookmark'
   get '/trend/:period', to: 'post#trend', as: 'trend'
 
@@ -24,3 +25,4 @@ Rails.application.routes.draw do
   resources :room, only: %i[create show index]
   resources :message, only: %i[create]
 end
+
