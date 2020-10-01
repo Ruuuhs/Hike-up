@@ -66,13 +66,13 @@ const App = () => {
 
           <Switch>
             <Route exact path="/login" component={Login} />
-            <GuestRoute exact path="/" children={<Feed />} />
-            <GuestRoute exact path="/all" children={<All />} />
-            <GuestRoute exact path="/user/:id" children={<User />} />
-            <GuestRoute exact path="/test" children={<Test />} />
-            <GuestRoute exact path="/about" children={<About />} />
+            <PrivateRoute exact path="/" children={<Feed />} />
+            <PrivateRoute exact path="/all" children={<All />} />
+            <PrivateRoute exact path="/user/:id" children={<User />} />
+            <PrivateRoute exact path="/test" children={<Test />} />
+            <PrivateRoute exact path="/about" children={<About />} />
             <PrivateRoute exact path="/bookmark" children={<Bookmark />} />
-            <GuestRoute exact path="/trend" children={<Trend />} />
+            <PrivateRoute exact path="/trend" children={<Trend />} />
             <PrivateRoute exact path="/dm" children={<DirectMessage />} />
             {/* <PrivateRoute exact path="/" children={< />} /> */}
             {/* <GuestRoute exact path="/" children={< />} /> */}
