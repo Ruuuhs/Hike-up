@@ -11,6 +11,7 @@ import AppContext from "./contexts/AppContext";
 import ScrollToTopOnMount from "./components/ScrollToTopOnMount";
 import Login from "./components/Login";
 import About from "./components/About";
+import Feed from "./components/Feed";
 import All from "./components/All";
 import Trend from "./components/Trend";
 import Bookmark from "./components/Bookmark";
@@ -65,7 +66,8 @@ const App = () => {
 
           <Switch>
             <Route exact path="/login" component={Login} />
-            <GuestRoute exact path="/" children={<All />} />
+            <GuestRoute exact path="/" children={<Feed />} />
+            <GuestRoute exact path="/all" children={<All />} />
             <GuestRoute exact path="/user/:id" children={<User />} />
             <GuestRoute exact path="/test" children={<Test />} />
             <GuestRoute exact path="/about" children={<About />} />

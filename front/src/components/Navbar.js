@@ -100,7 +100,7 @@ export default function Navbar() {
               <ListItemText primary="ホーム" />
             </ListItem>
 
-            <ListItem button key="全投稿" component={Link} to={"/"}>
+            <ListItem button key="全投稿" component={Link} to={"/all"}>
               <ListItemIcon>
                 <PeopleAltIcon />
               </ListItemIcon>
