@@ -26,10 +26,16 @@ function PrivateRoute(props) {
 
   useEffect(() => {
     const f = async () => {
-      const res = await axios.get(`${ROOT_URL}/current`, {
-        headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
-      });
-      dispatch({ type: CURRENT_USER, data: res.data });
+      await axios
+        .get(`${ROOT_URL}/current`, {
+          headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+        })
+        .then((res) => {
+          dispatch({ type: CURRENT_USER, data: res.data });
+        })
+        .catch(() => {
+          dispatch({ type: CURRENT_USER, data: false });
+        });
     };
     f();
   }, [dispatch]);
