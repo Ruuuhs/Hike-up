@@ -15,13 +15,6 @@ import BookmarkIcon from "@material-ui/icons/Bookmark";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import TextsmsOutlinedIcon from "@material-ui/icons/TextsmsOutlined";
-import InputBase from "@material-ui/core/InputBase";
-import Button from "@material-ui/core/Button";
-
-// import CircularProgress from "@material-ui/core/CircularProgress";
-
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
 
 import { Link } from "react-router-dom";
 

@@ -8,12 +8,8 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 import ListUser from "./ListUser";
 
-import axios from "axios";
-import { ROOT_URL, TOKEN_KEY } from "../actions";
-
 const FollowList = (props) => {
   const [value, setValue] = React.useState(props.followList);
-  const [follow, setFollow] = React.useState(false);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
