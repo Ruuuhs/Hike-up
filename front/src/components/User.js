@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useRef } from "react";
 import axios from "axios";
 import AppContext from "../contexts/AppContext";
 import { useLocation } from "react-router-dom";
@@ -33,10 +33,15 @@ const User = () => {
   const [followers, setFollowers] = React.useState("");
   const [followersNum, setFollowersNum] = React.useState(followers.length);
   const [follow, setFollow] = React.useState("");
-
   const [followList, setFollowList] = React.useState("");
 
   const id = useLocation().pathname.slice(6);
+
+  const willMount = useRef(true);
+  if (willMount.current) {
+    dispatch({ type: READ_POSTS, data: [] });
+  }
+  willMount.current = false;
 
   useEffect(() => {
     const f = async () => {

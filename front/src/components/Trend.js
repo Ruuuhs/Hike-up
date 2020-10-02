@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useRef } from "react";
 import axios from "axios";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -9,7 +9,7 @@ import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import AppContext from "../contexts/AppContext";
 
 import Posts from "./Posts";
-import { READ_POSTS, TOKEN_KEY, ROOT_URL } from "../actions";
+import { READ_POSTS, ROOT_URL, TOKEN_KEY } from "../actions";
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -29,9 +29,11 @@ const All = () => {
 
   const [value, setValue] = React.useState(0);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  const willMount = useRef(true);
+  if (willMount.current) {
+    dispatch({ type: READ_POSTS, data: [] });
+  }
+  willMount.current = false;
 
   useEffect(() => {
     const f = async () => {
@@ -42,6 +44,10 @@ const All = () => {
     };
     f();
   }, [dispatch]);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   const weekly = async (event) => {
     event.preventDefault();

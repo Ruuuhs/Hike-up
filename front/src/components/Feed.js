@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useRef } from "react";
 import axios from "axios";
 
 import Posts from "./Posts";
@@ -8,6 +8,12 @@ import { READ_POSTS, TOKEN_KEY, ROOT_URL } from "../actions";
 
 const Feed = () => {
   const { state, dispatch } = useContext(AppContext);
+
+  const willMount = useRef(true);
+  if (willMount.current) {
+    dispatch({ type: READ_POSTS, data: [] });
+  }
+  willMount.current = false;
 
   useEffect(() => {
     const f = async () => {

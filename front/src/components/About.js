@@ -5,10 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import AppContext from "../contexts/AppContext";
 
-import Navbar from "./Navbar";
-import Toolbar from "@material-ui/core/Toolbar";
-
-import { ROOT_URL, TOKEN_KEY } from "../actions";
+import { START_LOADING, FINISH_LOADING, ROOT_URL, TOKEN_KEY } from "../actions";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -21,6 +18,14 @@ const useStyles = makeStyles((theme) => ({
 const About = () => {
   const { state, dispatch } = useContext(AppContext);
   const classes = useStyles();
+
+  const startLoading = async () => {
+    dispatch({ type: START_LOADING });
+  };
+
+  const finishLoading = async () => {
+    dispatch({ type: FINISH_LOADING });
+  };
 
   const login = async (event) => {
     event.preventDefault();
@@ -146,6 +151,10 @@ const About = () => {
         </div>
         <div>
           <button onClick={likePost}>likePost</button>
+        </div>
+        <div>
+          <button onClick={startLoading}>startLoading</button>
+          <button onClick={finishLoading}>finishLoading</button>
         </div>
         <div>
           <button onClick={currentUser}>currentUser</button>

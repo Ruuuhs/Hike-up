@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useRef } from "react";
 import axios from "axios";
 
 import Posts from "./Posts";
@@ -24,6 +24,12 @@ const useStyles = makeStyles((theme) => ({
 const All = () => {
   const { state, dispatch } = useContext(AppContext);
   const classes = useStyles();
+
+  const willMount = useRef(true);
+  if (willMount.current) {
+    dispatch({ type: READ_POSTS, data: [] });
+  }
+  willMount.current = false;
 
   useEffect(() => {
     const f = async () => {
