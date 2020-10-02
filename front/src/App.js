@@ -54,6 +54,7 @@ const App = () => {
         password: "",
       },
     },
+    loading: false,
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);

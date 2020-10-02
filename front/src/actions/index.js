@@ -15,5 +15,9 @@ export const ERROR_SIGNUP = "ERROR_SIGNUP";
 export const INPUT_EDIT = "INPUT_EDIT";
 export const TOGGLE_MODE = "TOGGLE_MODE";
 
+//Loading
+export const START_LOADING = "START_LOADING";
+export const FINISH_LOADING = "FINISH_LOADING";
+
 export const ROOT_URL = "http://localhost:3001";
 export const TOKEN_KEY = "ACCESS_TOKEN";

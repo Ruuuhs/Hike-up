@@ -11,6 +11,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 import HomeIcon from "@material-ui/icons/Home";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
@@ -53,6 +54,12 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     height: 48,
   },
+  progress: {
+    width: "100%",
+    "& > * + *": {
+      marginTop: theme.spacing(2),
+    },
+  },
 }));
 
 export default function Navbar() {
@@ -82,7 +89,13 @@ export default function Navbar() {
             <ExitToAppIcon />
           </button>
         </Toolbar>
+        {state.loading && (
+          <div className={classes.progress}>
+            <LinearProgress color="secondary" />
+          </div>
+        )}
       </AppBar>
+
       <Drawer
         className={classes.drawer}
         variant="permanent"
@@ -91,6 +104,7 @@ export default function Navbar() {
         }}
       >
         <Toolbar />
+
         <div className={classes.drawerContainer}>
           <List>
             <ListItem button key="ホーム" component={Link} to={"/"}>
