@@ -25,4 +25,3 @@ Rails.application.routes.draw do
   resources :room, only: %i[create show index]
   resources :message, only: %i[create]
 end
-
