@@ -53,25 +53,25 @@ RSpec.describe Post, type: :model do
       end
     end
 
-    # describe 'status' do
-    #   let(:unfollowed_post) do
-    #     FactoryBot.create(:post, user: FactoryBot.create(:user))
-    #   end
-    #   let(:followed_user) { FactoryBot.create(:user) }
+    describe 'status' do
+      let(:unfollowed_post) do
+        FactoryBot.create(:post, user: FactoryBot.create(:user))
+      end
+      let(:followed_user) { FactoryBot.create(:user) }
 
-    #   before do
-    #     @user.follow(followed_user)
-    #     3.times { followed_user.posts.create!(content: 'Lorem ipsum') }
-    #   end
+      # before do
+      #   @user.follow(followed_user)
+      #   3.times { followed_user.posts.create!(content: 'Lorem ipsum') }
+      # end
 
-    #   it 'feedにマイクロポストがあるか' do
-    #     expect(@user.feed).to include newer_post
-    #     expect(@user.feed).to include older_post
-    #     expect(@user.feed).to_not include unfollowed_post
-    #     followed_user.posts.each do |post|
-    #       expect(@user.feed).to include(post)
-    #     end
-    #   end
-    # end
+      it 'feedにマイクロポストがあるか' do
+        expect(@user.feed).to include newer_post
+        expect(@user.feed).to include older_post
+        expect(@user.feed).to_not include unfollowed_post
+        followed_user.posts.each do |post|
+          expect(@user.feed).to include(post)
+        end
+      end
+    end
   end
 end

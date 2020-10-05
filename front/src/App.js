@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer } from "react";
 import "./App.css";
 import reducer from "./reducers";
 import { BrowserRouter, Route, Switch } from "react-router-dom";

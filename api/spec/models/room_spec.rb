@@ -1,5 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Room, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  before { @room = Room.create }
+
+  subject { @room }
+
+  it { should be_valid }
 end
