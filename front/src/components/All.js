@@ -20,6 +20,7 @@ const All = () => {
       const res = await axios.get(`${ROOT_URL}/post`);
 
       dispatch({ type: READ_POSTS, data: res.data });
+      console.log(res);
     };
     f();
   }, [dispatch]);
