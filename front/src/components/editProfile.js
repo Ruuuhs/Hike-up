@@ -58,7 +58,7 @@ export default function EditProfile() {
     window.location.href = "/login";
   };
 
-  const editProfile = async (event) => {
+  const editSubmit = async (event) => {
     event.preventDefault();
     console.log(image);
     const res = await axios.put(
@@ -93,7 +93,7 @@ export default function EditProfile() {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <form className={classes.form} onSubmit={editProfile}>
+        <form className={classes.form} onSubmit={editSubmit}>
           <DialogContent>
             <Badge
               overlap="circle"
