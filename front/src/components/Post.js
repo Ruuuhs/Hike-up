@@ -7,6 +7,8 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 import Typography from "@material-ui/core/Typography";
 import { red } from "@material-ui/core/colors";
 import FavoriteIcon from "@material-ui/icons/Favorite";
@@ -45,6 +47,13 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     backgroundColor: red[500],
+  },
+  menuFont: {
+    fontSize: 15,
+    fontWeight: 30,
+  },
+  fontRed: {
+    color: "red",
   },
 }));
 
@@ -124,6 +133,21 @@ const Post = ({ post, current }) => {
     }
   };
 
+  //post menu
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const deletePost = () => {
+    setAnchorEl(null);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  //show post
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = async (event) => {
@@ -132,6 +156,7 @@ const Post = ({ post, current }) => {
       headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
     });
     setComments(res.data);
+    setAnchorEl(null);
     setOpen(true);
   };
 
@@ -165,7 +190,7 @@ const Post = ({ post, current }) => {
             )
           }
           action={
-            <IconButton aria-label="settings">
+            <IconButton aria-label="settings" onClick={handleClick}>
               <MoreVertIcon />
             </IconButton>
           }
@@ -179,6 +204,26 @@ const Post = ({ post, current }) => {
           }
           subheader={time}
         />
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          <MenuItem
+            className={classes.menuFont + " " + classes.fontRed}
+            onClick={deletePost}
+          >
+            投稿を削除
+          </MenuItem>
+          <MenuItem className={classes.menuFont} onClick={handleOpen}>
+            投稿へ移動
+          </MenuItem>
+          <MenuItem className={classes.menuFont} onClick={handleClose}>
+            キャンセル
+          </MenuItem>
+        </Menu>
 
         {post.image ? (
           <CardMedia className={classes.media} image={post.image} />

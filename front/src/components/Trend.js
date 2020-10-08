@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useRef } from "react";
+import React, { useEffect, useContext } from "react";
 import axios from "axios";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -24,16 +24,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const All = () => {
-  const { state, dispatch } = useContext(AppContext);
+  const { state, dispatch } = useContext(AppContext); // eslint-disable-line
   const classes = useStyles();
-
   const [value, setValue] = React.useState(0);
-
-  const willMount = useRef(true);
-  if (willMount.current) {
-    dispatch({ type: READ_POSTS, data: [] });
-  }
-  willMount.current = false;
 
   useEffect(() => {
     const f = async () => {
@@ -43,6 +36,8 @@ const All = () => {
       dispatch({ type: READ_POSTS, data: res.data });
     };
     f();
+
+    return () => dispatch({ type: READ_POSTS, data: [] });
   }, [dispatch]);
 
   const handleChange = (event, newValue) => {

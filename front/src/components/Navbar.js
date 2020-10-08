@@ -17,7 +17,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import TurnedInIcon from "@material-ui/icons/TurnedIn";
-import NotificationsIcon from "@material-ui/icons/Notifications";
+// import NotificationsIcon from "@material-ui/icons/Notifications";
 import TelegramIcon from "@material-ui/icons/Telegram";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
@@ -63,13 +63,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Navbar() {
-  const { state, dispatch } = useContext(AppContext);
+  const { state, dispatch } = useContext(AppContext); // eslint-disable-line
   const classes = useStyles();
-
-  const logout = async () => {
-    localStorage.removeItem(TOKEN_KEY);
-    window.location.href = "/login";
-  };
 
   return (
     <div className={classes.root}>
@@ -85,9 +80,6 @@ export default function Navbar() {
               />
             </Typography>
           </Link>
-          <button className="logout" onClick={logout}>
-            <ExitToAppIcon />
-          </button>
         </Toolbar>
         {state.loading && (
           <div className={classes.progress}>
@@ -185,12 +177,12 @@ export default function Navbar() {
               </ListItem>
             )}
 
-            <ListItem button key="about" component={Link} to={"/about"}>
+            {/* <ListItem button key="about" component={Link} to={"/about"}>
               <ListItemIcon>
                 <HomeIcon />
               </ListItemIcon>
               <ListItemText primary="about" />
-            </ListItem>
+            </ListItem> */}
           </List>
         </div>
       </Drawer>

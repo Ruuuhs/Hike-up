@@ -132,7 +132,7 @@ export default function DirectMessage() {
       setCurrentUser(res.data[0].current_user);
       const Rooms = JSON.parse(res.data[0].rooms);
 
-      Rooms.map((t, index) => {
+      Rooms.forEach((t, index) => {
         Rooms[index].otherUser = t.users.find((user) => {
           return user.id !== res.data[0].current_user.id;
         });
@@ -177,7 +177,7 @@ export default function DirectMessage() {
     <div className={classes.root}>
       <div className={classes.tabs}>
         <div className={classes.header}>
-          <a>Direct</a>
+          <span>Direct</span>
           <IconButton
             className={classes.messageBtn}
             color="primary"
