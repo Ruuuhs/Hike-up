@@ -18,8 +18,8 @@ import Bookmark from "./components/Bookmark";
 import Test from "./components/Test";
 import User from "./components/User";
 import DirectMessage from "./components/DirectMessage";
-import GuestRoute from "./components/GuestRoute";
 import PrivateRoute from "./components/PrivateRoute";
+// import GuestRoute from "./components/GuestRoute";
 
 const theme = createMuiTheme({
   palette: {

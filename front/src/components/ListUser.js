@@ -1,16 +1,10 @@
 import React, { useContext } from "react";
 import AppContext from "../contexts/AppContext";
 import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
-import IconButton from "@material-ui/core/IconButton";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import Button from "@material-ui/core/Button";
 
 import axios from "axios";
@@ -24,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ListUser = (props) => {
   const classes = useStyles();
-  const { state, dispatch } = useContext(AppContext);
+  const { state, dispatch } = useContext(AppContext); // eslint-disable-line
 
   const isFollow =
     state.currentUser.active_relationships.find(

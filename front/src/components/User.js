@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useRef } from "react";
+import React, { useEffect, useContext } from "react";
 import axios from "axios";
 import AppContext from "../contexts/AppContext";
 import { useLocation } from "react-router-dom";
@@ -37,12 +37,6 @@ const User = () => {
 
   const id = useLocation().pathname.slice(6);
 
-  const willMount = useRef(true);
-  if (willMount.current) {
-    dispatch({ type: READ_POSTS, data: [] });
-  }
-  willMount.current = false;
-
   useEffect(() => {
     const f = async () => {
       const res = await axios.get(`${ROOT_URL}/personal/${id}`);
@@ -61,6 +55,7 @@ const User = () => {
       );
     };
     f();
+    return () => dispatch({ type: READ_POSTS, data: [] });
   }, [dispatch, id]);
 
   if (followList === "") {

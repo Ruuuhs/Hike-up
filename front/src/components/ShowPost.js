@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import InputBase from "@material-ui/core/InputBase";
 import Button from "@material-ui/core/Button";
-import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
@@ -12,8 +11,6 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
-
-import { Link } from "react-router-dom";
 
 import { ROOT_URL, TOKEN_KEY } from "../actions";
 import axios from "axios";
@@ -96,7 +93,7 @@ const ShowPost = ({
   return (
     <>
       <Dialog
-        open={open != false}
+        open={open !== false}
         onClose={handleClose}
         maxWidth={"md"}
         scroll={"body"}
@@ -106,7 +103,7 @@ const ShowPost = ({
           dividers={false}
           style={{ paddingTop: "0px" }}
         >
-          <img src={Background} className="postImage" />
+          <img src={Background} className="postImage" alt="post" />
           <div className="postContent">
             <div className="postHeader">
               {post.user.image ? (

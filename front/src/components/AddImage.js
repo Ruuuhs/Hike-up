@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AddImage(props) {
   const classes = useStyles();
-  const [image, setImage] = React.useState(null);
+  const [image, setImage] = React.useState(null); // eslint-disable-line
 
   const getImage = async (e) => {
     const imageData = await resizeImage(e);

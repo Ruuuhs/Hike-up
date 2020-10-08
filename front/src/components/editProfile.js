@@ -15,17 +15,6 @@ import axios from "axios";
 import { ROOT_URL, TOKEN_KEY, CURRENT_USER } from "../actions";
 
 const useStyles = makeStyles((theme) => ({
-  modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
   form: {
     width: 500, // Fix IE 11 issue.
     marginTop: theme.spacing(1),
@@ -36,6 +25,11 @@ const useStyles = makeStyles((theme) => ({
   large: {
     width: theme.spacing(16),
     height: theme.spacing(16),
+  },
+  logout: {
+    marginLeft: 15,
+    color: "#ff5e5e",
+    border: "1px solid #ff5e5e",
   },
 }));
 
@@ -59,7 +53,12 @@ export default function EditProfile() {
     setOpen(false);
   };
 
-  const createPost = async (event) => {
+  const logout = async () => {
+    localStorage.removeItem(TOKEN_KEY);
+    window.location.href = "/login";
+  };
+
+  const editProfile = async (event) => {
     event.preventDefault();
     console.log(image);
     const res = await axios.put(
@@ -78,15 +77,23 @@ export default function EditProfile() {
 
   return (
     <>
-      <Button variant="outlined" color="default" onClick={handleClickOpen}>
+      <Button variant="outlined" color="secondary" onClick={handleClickOpen}>
         プロフィールを編集
+      </Button>
+      <Button
+        className={classes.logout}
+        variant="outlined"
+        color="default"
+        onClick={logout}
+      >
+        ログアウト
       </Button>
       <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <form className={classes.form} onSubmit={createPost}>
+        <form className={classes.form} onSubmit={editProfile}>
           <DialogContent>
             <Badge
               overlap="circle"

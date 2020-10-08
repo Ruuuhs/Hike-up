@@ -7,7 +7,7 @@ import { Route, Redirect } from "react-router-dom";
 import Navbar from "./Navbar";
 import Toolbar from "@material-ui/core/Toolbar";
 import AppContext from "../contexts/AppContext";
-import { TOKEN_KEY, ROOT_URL, CURRENT_USER, READ_POSTS } from "../actions";
+import { TOKEN_KEY, ROOT_URL, CURRENT_USER } from "../actions";
 
 const useStyles = makeStyles((theme) => ({
   content: {
