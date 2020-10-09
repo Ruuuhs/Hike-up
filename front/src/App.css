@@ -58,6 +58,13 @@
 }
 
 /* ポスト */
+.nonPosts {
+  max-width: 600;
+  min-width: 600;
+  margin-right: "auto";
+  margin-left: "auto";
+  text-align: center;
+}
 .postImage {
   width: 500px;
   height: 500px;

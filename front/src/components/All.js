@@ -17,7 +17,7 @@ const All = () => {
     };
     f();
 
-    return () => dispatch({ type: READ_POSTS, data: [] });
+    return () => dispatch({ type: READ_POSTS, data: "loding" });
   }, [dispatch]);
 
   return (
