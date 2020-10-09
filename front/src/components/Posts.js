@@ -5,15 +5,22 @@ import Post from "./Post";
 import AppContext from "../contexts/AppContext";
 
 const Posts = () => {
-  const context = useContext(AppContext);
+  const { state } = useContext(AppContext);
 
-  return (
-    <>
-      {context.state.posts.map((post) => (
-        <Post key={post.id} post={post} />
-      ))}
-    </>
-  );
+  console.log(state.posts.length);
+  if (state.posts.length === 0) {
+    return <h3 className="nonPosts">投稿がありません。</h3>;
+  } else if (state.posts === "loding") {
+    return <></>;
+  } else {
+    return (
+      <>
+        {state.posts.map((post) => (
+          <Post key={post.id} post={post} />
+        ))}
+      </>
+    );
+  }
 };
 
 export default Posts;

@@ -44,7 +44,7 @@ const App = () => {
   const initialState = {
     users: [],
     currentUser: [],
-    posts: [],
+    posts: "loding",
     login: {
       isLoading: false,
       isLoginView: true,

@@ -37,15 +37,25 @@ const All = () => {
     };
     f();
 
-    return () => dispatch({ type: READ_POSTS, data: [] });
+    return () => dispatch({ type: READ_POSTS, data: "loding" });
   }, [dispatch]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  const daily = async (event) => {
+    event.preventDefault();
+    dispatch({ type: READ_POSTS, data: "loding" });
+    const res = await axios.get(`${ROOT_URL}/trend/daily`, {
+      headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+    });
+    dispatch({ type: READ_POSTS, data: res.data });
+  };
+
   const weekly = async (event) => {
     event.preventDefault();
+    dispatch({ type: READ_POSTS, data: "loding" });
     const res = await axios.get(`${ROOT_URL}/trend/weekly`, {
       headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
     });
@@ -54,6 +64,7 @@ const All = () => {
 
   const monthly = async (event) => {
     event.preventDefault();
+    dispatch({ type: READ_POSTS, data: "loding" });
     const res = await axios.get(`${ROOT_URL}/trend/monthly`, {
       headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
     });
@@ -62,6 +73,7 @@ const All = () => {
 
   const all = async (event) => {
     event.preventDefault();
+    dispatch({ type: READ_POSTS, data: "loding" });
     const res = await axios.get(`${ROOT_URL}/trend/all`, {
       headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
     });
@@ -81,7 +93,7 @@ const All = () => {
           indicatorColor="primary"
           textColor="primary"
         >
-          <Tab label="1日" />
+          <Tab label="1日" onClick={daily} />
           <Tab label="週間" onClick={weekly} />
           <Tab label="月間" onClick={monthly} />
           <Tab label="全期間" onClick={all} />
