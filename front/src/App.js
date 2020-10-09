@@ -10,6 +10,7 @@ import AppContext from "./contexts/AppContext";
 
 import ScrollToTopOnMount from "./components/ScrollToTopOnMount";
 import Login from "./components/Login";
+import Notification from "./components/Notification";
 import About from "./components/About";
 import Feed from "./components/Feed";
 import All from "./components/All";
@@ -54,6 +55,11 @@ const App = () => {
         password: "",
       },
     },
+    notification: {
+      isAlert: false,
+      message: "",
+      severity: "",
+    },
     loading: false,
   };
 
@@ -64,6 +70,7 @@ const App = () => {
       <AppContext.Provider value={{ state, dispatch }}>
         <BrowserRouter>
           <ScrollToTopOnMount />
+          <Notification />
 
           <Switch>
             <Route exact path="/login" component={Login} />

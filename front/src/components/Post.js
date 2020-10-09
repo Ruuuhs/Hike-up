@@ -21,7 +21,7 @@ import TextsmsOutlinedIcon from "@material-ui/icons/TextsmsOutlined";
 import { Link } from "react-router-dom";
 
 import AppContext from "../contexts/AppContext";
-import { DELETE_POST, ROOT_URL, TOKEN_KEY } from "../actions";
+import { DELETE_POST, START_ALERT, ROOT_URL, TOKEN_KEY } from "../actions";
 import axios from "axios";
 
 import Background from "../Switzerland.jpg";
@@ -143,12 +143,26 @@ const Post = ({ post, current }) => {
 
   const deletePost = async (event) => {
     event.preventDefault();
-    const res = await axios.delete(`${ROOT_URL}/post/${post.id}`, {
-      headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
-    });
-    dispatch({ type: DELETE_POST, data: res });
-    setIsExist(true);
-    setAnchorEl(null);
+    await axios
+      .delete(`${ROOT_URL}/post/${post.id}`, {
+        headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+      })
+      .then((res) => {
+        dispatch({ type: DELETE_POST, data: res });
+        setIsExist(true);
+        setAnchorEl(null);
+        dispatch({
+          type: START_ALERT,
+          data: { message: "投稿を削除しました", severity: "success" },
+        });
+      })
+      .catch((err) => {
+        console.log("err:", err);
+        dispatch({
+          type: START_ALERT,
+          data: { message: "削除にに失敗しました。", severity: "error" },
+        });
+      });
   };
 
   const handleClose = () => {

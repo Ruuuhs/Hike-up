@@ -175,12 +175,12 @@ export default function Navbar() {
               </ListItem>
             )}
 
-            {/* <ListItem button key="about" component={Link} to={"/about"}>
+            <ListItem button key="about" component={Link} to={"/about"}>
               <ListItemIcon>
                 <HomeIcon />
               </ListItemIcon>
               <ListItemText primary="about" />
-            </ListItem> */}
+            </ListItem>
           </List>
         </div>
       </Drawer>

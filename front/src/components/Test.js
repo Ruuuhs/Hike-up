@@ -1,72 +1,52 @@
 import React from "react";
-import PropTypes from "prop-types";
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
-import Avatar from "@material-ui/core/Avatar";
-import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 import { makeStyles } from "@material-ui/core/styles";
-import Skeleton from "@material-ui/lab/Skeleton";
 
-const useStyles = makeStyles(() => ({
-  image: {
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+const useStyles = makeStyles((theme) => ({
+  root: {
     width: "100%",
+    "& > * + *": {
+      marginTop: theme.spacing(2),
+    },
   },
 }));
 
-function SkeletonChildrenDemo(props) {
-  const { loading = false } = props;
+export default function CustomizedSnackbars() {
   const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   return (
-    <div>
-      <Box display="flex" alignItems="center">
-        <Box margin={1}>
-          {loading ? (
-            <Skeleton variant="circle">
-              <Avatar />
-            </Skeleton>
-          ) : (
-            <Avatar src="https://pbs.twimg.com/profile_images/877631054525472768/Xp5FAPD5_reasonably_small.jpg" />
-          )}
-        </Box>
-        <Box width="100%">
-          {loading ? (
-            <Skeleton width="100%">
-              <Typography>.</Typography>
-            </Skeleton>
-          ) : (
-            <Typography>Ted</Typography>
-          )}
-        </Box>
-      </Box>
-      {loading ? (
-        <Skeleton variant="rect" width="100%">
-          <div style={{ paddingTop: "57%" }} />
-        </Skeleton>
-      ) : (
-        <img
-          className={classes.image}
-          src="https://pi.tedcdn.com/r/talkstar-photos.s3.amazonaws.com/uploads/72bda89f-9bbf-4685-910a-2f151c4f3a8a/NicolaSturgeon_2019T-embed.jpg?w=512"
-          alt=""
-        />
-      )}
+    <div className={classes.root}>
+      <Button variant="outlined" onClick={handleClick}>
+        Open success snackbar
+      </Button>
+      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+          This is a success message!
+        </Alert>
+      </Snackbar>
+      <Alert severity="error">This is an error message!</Alert>
+      <Alert severity="warning">This is a warning message!</Alert>
+      <Alert severity="info">This is an information message!</Alert>
+      <Alert severity="success">This is a success message!</Alert>
     </div>
-  );
-}
-
-SkeletonChildrenDemo.propTypes = {
-  loading: PropTypes.bool,
-};
-
-export default function SkeletonChildren() {
-  return (
-    <Grid container spacing={8}>
-      <Grid item xs>
-        <SkeletonChildrenDemo loading />
-      </Grid>
-      <Grid item xs>
-        <SkeletonChildrenDemo />
-      </Grid>
-    </Grid>
   );
 }

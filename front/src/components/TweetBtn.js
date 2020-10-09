@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -13,7 +13,8 @@ import AddIcon from "@material-ui/icons/Add";
 
 import AddImage from "./AddImage";
 import axios from "axios";
-import { ROOT_URL, TOKEN_KEY } from "../actions";
+import AppContext from "../contexts/AppContext";
+import { START_ALERT, ROOT_URL, TOKEN_KEY } from "../actions";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -40,6 +41,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function TweetBtn() {
+  const { dispatch } = useContext(AppContext);
+
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [context, setContext] = useState("");
@@ -57,15 +60,28 @@ export default function TweetBtn() {
 
   const createPost = async (event) => {
     event.preventDefault();
-    const res = await axios.post(
-      `${ROOT_URL}/post`,
-      { content: context, image: image },
-      {
-        headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
-      }
-    );
-    console.log(res);
-    window.location.href = "/";
+    await axios
+      .post(
+        `${ROOT_URL}/post`,
+        { content: context, image: image },
+        {
+          headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+        }
+      )
+      .then(() => {
+        window.location.href = "/";
+        dispatch({
+          type: START_ALERT,
+          data: { message: "投稿しました。", severity: "success" },
+        });
+      })
+      .catch((err) => {
+        console.log("err:", err);
+        dispatch({
+          type: START_ALERT,
+          data: { message: "投稿に失敗しました。", severity: "error" },
+        });
+      });
   };
 
   const unCreatable = context === "" || context.length > 140;

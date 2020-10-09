@@ -12,7 +12,7 @@ import Avatar from "@material-ui/core/Avatar";
 
 import AddImage from "./AddImage";
 import axios from "axios";
-import { ROOT_URL, TOKEN_KEY, CURRENT_USER } from "../actions";
+import { ROOT_URL, TOKEN_KEY, CURRENT_USER, START_ALERT } from "../actions";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -61,15 +61,25 @@ export default function EditProfile() {
   const editSubmit = async (event) => {
     event.preventDefault();
     console.log(image);
-    const res = await axios.put(
-      `${ROOT_URL}/auth`,
-      { name: name, email: email, image: image },
-      {
-        headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
-      }
-    );
-    dispatch({ type: CURRENT_USER, data: res.data.data });
-    window.location.reload();
+    await axios
+      .put(
+        `${ROOT_URL}/auth`,
+        { name: name, email: email, image: image },
+        {
+          headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+        }
+      )
+      .then((res) => {
+        dispatch({ type: CURRENT_USER, data: res.data.data });
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log("err:", err);
+        dispatch({
+          type: START_ALERT,
+          data: { message: "編集に失敗しました", severity: "error" },
+        });
+      });
   };
 
   const unCreatable =
