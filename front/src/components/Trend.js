@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const All = () => {
-  const { state, dispatch } = useContext(AppContext); // eslint-disable-line
+  const { dispatch } = useContext(AppContext);
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 

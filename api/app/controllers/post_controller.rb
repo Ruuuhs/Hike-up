@@ -41,7 +41,7 @@ class PostController < ApplicationController
   def destroy
     post = Post.find_by(id: params[:id])
     if post.destroy
-      head :no_content, status: :ok
+      render json: post
     else
       render json: post.errors, status: :unprocessable_entity
     end

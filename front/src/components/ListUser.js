@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ListUser = (props) => {
   const classes = useStyles();
-  const { state, dispatch } = useContext(AppContext); // eslint-disable-line
+  const { state } = useContext(AppContext);
 
   const isFollow =
     state.currentUser.active_relationships.find(

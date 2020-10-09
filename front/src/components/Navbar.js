@@ -19,13 +19,11 @@ import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import TurnedInIcon from "@material-ui/icons/TurnedIn";
 // import NotificationsIcon from "@material-ui/icons/Notifications";
 import TelegramIcon from "@material-ui/icons/Telegram";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 import TweetBtn from "./TweetBtn";
 import { Link } from "react-router-dom";
 
 import AppContext from "../contexts/AppContext";
-import { TOKEN_KEY } from "../actions";
 
 const drawerWidth = 270;
 
@@ -63,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Navbar() {
-  const { state, dispatch } = useContext(AppContext); // eslint-disable-line
+  const { state } = useContext(AppContext);
   const classes = useStyles();
 
   return (

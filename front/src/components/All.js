@@ -7,7 +7,7 @@ import AppContext from "../contexts/AppContext";
 import { READ_POSTS, ROOT_URL } from "../actions";
 
 const All = () => {
-  const { state, dispatch } = useContext(AppContext); // eslint-disable-line
+  const { dispatch } = useContext(AppContext);
 
   useEffect(() => {
     const f = async () => {
