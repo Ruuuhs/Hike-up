@@ -19,10 +19,9 @@ import AppContext from "../contexts/AppContext";
 import {
   START_FETCH,
   FETCH_SUCCESS,
-  ERROR_LOGIN,
-  ERROR_SIGNUP,
   INPUT_EDIT,
   TOGGLE_MODE,
+  START_ALERT,
   ROOT_URL,
   TOKEN_KEY,
 } from "../actions";
@@ -133,7 +132,10 @@ export default function Login() {
           : (window.location.href = "/login");
         dispatch({ type: FETCH_SUCCESS });
       } catch {
-        dispatch({ type: ERROR_LOGIN });
+        dispatch({
+          type: START_ALERT,
+          data: { message: "ログインに失敗しました", severity: "error" },
+        });
       }
     } else {
       try {
@@ -154,7 +156,13 @@ export default function Login() {
           : (window.location.href = "/login");
         dispatch({ type: FETCH_SUCCESS });
       } catch {
-        dispatch({ type: ERROR_SIGNUP });
+        dispatch({
+          type: START_ALERT,
+          data: {
+            message: "アカウント作成に失敗しました",
+            severity: "error",
+          },
+        });
       }
     }
   };

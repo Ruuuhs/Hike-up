@@ -5,7 +5,13 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import AppContext from "../contexts/AppContext";
 
-import { START_LOADING, FINISH_LOADING, ROOT_URL, TOKEN_KEY } from "../actions";
+import {
+  START_LOADING,
+  FINISH_LOADING,
+  ROOT_URL,
+  TOKEN_KEY,
+  START_ALERT,
+} from "../actions";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -25,6 +31,13 @@ const About = () => {
 
   const finishLoading = async () => {
     dispatch({ type: FINISH_LOADING });
+  };
+
+  const startAlert = async () => {
+    dispatch({
+      type: START_ALERT,
+      data: { message: "test", severity: "error" },
+    });
   };
 
   const login = async (event) => {
@@ -155,6 +168,9 @@ const About = () => {
         <div>
           <button onClick={startLoading}>startLoading</button>
           <button onClick={finishLoading}>finishLoading</button>
+        </div>
+        <div>
+          <button onClick={startAlert}>startAlert</button>
         </div>
         <div>
           <button onClick={currentUser}>currentUser</button>
