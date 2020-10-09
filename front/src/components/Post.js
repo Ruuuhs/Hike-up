@@ -21,7 +21,7 @@ import TextsmsOutlinedIcon from "@material-ui/icons/TextsmsOutlined";
 import { Link } from "react-router-dom";
 
 import AppContext from "../contexts/AppContext";
-import { ROOT_URL, TOKEN_KEY } from "../actions";
+import { DELETE_POST, ROOT_URL, TOKEN_KEY } from "../actions";
 import axios from "axios";
 
 import Background from "../Switzerland.jpg";
@@ -58,24 +58,25 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Post = ({ post, current }) => {
+  const { state, dispatch } = useContext(AppContext);
   const classes = useStyles();
-  const context = useContext(AppContext);
 
   const isLike =
-    post.likes.find((x) => x.user_id === context.state.currentUser.id) !==
-    undefined;
+    post.likes.find((x) => x.user_id === state.currentUser.id) !== undefined;
 
   const isLikeId = isLike
-    ? post.likes.find((x) => x.user_id === context.state.currentUser.id).id
+    ? post.likes.find((x) => x.user_id === state.currentUser.id).id
     : false;
 
   const isBookmark =
-    post.bookmarks.find((x) => x.user_id === context.state.currentUser.id) !==
+    post.bookmarks.find((x) => x.user_id === state.currentUser.id) !==
     undefined;
 
   const isBookmarkId = isBookmark
-    ? post.bookmarks.find((x) => x.user_id === context.state.currentUser.id).id
+    ? post.bookmarks.find((x) => x.user_id === state.currentUser.id).id
     : false;
+
+  const [isExist, setIsExist] = React.useState(false);
 
   const [like, setLike] = React.useState(isLike);
   const [likeId, setLikeId] = React.useState(isLikeId);
@@ -140,9 +141,16 @@ const Post = ({ post, current }) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const deletePost = () => {
+  const deletePost = async (event) => {
+    event.preventDefault();
+    const res = await axios.delete(`${ROOT_URL}/post/${post.id}`, {
+      headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+    });
+    dispatch({ type: DELETE_POST, data: res });
+    setIsExist(true);
     setAnchorEl(null);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -168,113 +176,119 @@ const Post = ({ post, current }) => {
   const min = dt.getMinutes();
   const time = y + "/" + m + "/" + d + "・" + h + ":" + min;
 
-  return (
-    <>
-      <Card className={classes.root}>
-        <CardHeader
-          avatar={
-            post.user.image ? (
-              <Avatar
-                aria-label="recipe"
-                src={post.user.image}
-                component={Link}
+  if (isExist === false) {
+    return (
+      <>
+        <Card className={classes.root}>
+          <CardHeader
+            avatar={
+              post.user.image ? (
+                <Avatar
+                  aria-label="recipe"
+                  src={post.user.image}
+                  component={Link}
+                  to={`/user/${post.user.id}`}
+                />
+              ) : (
+                <Avatar
+                  aria-label="recipe"
+                  src="/images/defaultUser.png"
+                  component={Link}
+                  to={`/user/${post.user.id}`}
+                />
+              )
+            }
+            action={
+              <IconButton aria-label="settings" onClick={handleClick}>
+                <MoreVertIcon />
+              </IconButton>
+            }
+            title={
+              <Link
                 to={`/user/${post.user.id}`}
-              />
-            ) : (
-              <Avatar
-                aria-label="recipe"
-                src="/images/defaultUser.png"
-                component={Link}
-                to={`/user/${post.user.id}`}
-              />
-            )
-          }
-          action={
-            <IconButton aria-label="settings" onClick={handleClick}>
-              <MoreVertIcon />
-            </IconButton>
-          }
-          title={
-            <Link
-              to={`/user/${post.user.id}`}
-              style={{ textDecoration: "none", color: "#2b2b2b" }}
-            >
-              {post.user.name}
-            </Link>
-          }
-          subheader={time}
-        />
-        <Menu
-          id="simple-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
-          <MenuItem
-            className={classes.menuFont + " " + classes.fontRed}
-            onClick={deletePost}
+                style={{ textDecoration: "none", color: "#2b2b2b" }}
+              >
+                {post.user.name}
+              </Link>
+            }
+            subheader={time}
+          />
+          <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
           >
-            投稿を削除
-          </MenuItem>
-          <MenuItem className={classes.menuFont} onClick={handleOpen}>
-            投稿へ移動
-          </MenuItem>
-          <MenuItem className={classes.menuFont} onClick={handleClose}>
-            キャンセル
-          </MenuItem>
-        </Menu>
-
-        {post.image ? (
-          <CardMedia className={classes.media} image={post.image} />
-        ) : (
-          <CardMedia className={classes.media} image={Background} />
-          // <CircularProgress />
-        )}
-
-        <CardContent onClick={handleOpen}>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {post.content}
-          </Typography>
-        </CardContent>
-
-        <CardActions disableSpacing>
-          <IconButton onClick={handleLikeClick} aria-label="add to favorites">
-            {like ? (
-              <FavoriteIcon className={classes.like_button} />
-            ) : (
-              <FavoriteBorderIcon />
+            {state.currentUser.id === post.user.id && (
+              <MenuItem
+                className={classes.menuFont + " " + classes.fontRed}
+                onClick={deletePost}
+              >
+                投稿を削除
+              </MenuItem>
             )}
-          </IconButton>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {likeNum}
-          </Typography>
-          <IconButton onClick={handleOpen} aria-label="add to favorites">
-            <TextsmsOutlinedIcon />
-          </IconButton>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {commentNum}
-          </Typography>
-          <IconButton
-            onClick={handleBookmarkClick}
-            className={classes.bookmark_button}
-            aria-label="add to bookmarks"
-          >
-            {bookmark ? <BookmarkIcon /> : <BookmarkBorderIcon />}
-          </IconButton>
-        </CardActions>
-        <ShowPost
-          post={post}
-          setOpen={setOpen}
-          open={open}
-          setComments={setComments}
-          comments={comments}
-          setCommentNum={setCommentNum}
-          commentNum={commentNum}
-        />
-      </Card>
-    </>
-  );
+            <MenuItem className={classes.menuFont} onClick={handleOpen}>
+              投稿へ移動
+            </MenuItem>
+            <MenuItem className={classes.menuFont} onClick={handleClose}>
+              キャンセル
+            </MenuItem>
+          </Menu>
+
+          {post.image ? (
+            <CardMedia className={classes.media} image={post.image} />
+          ) : (
+            <CardMedia className={classes.media} image={Background} />
+            // <CircularProgress />
+          )}
+
+          <CardContent onClick={handleOpen}>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {post.content}
+            </Typography>
+          </CardContent>
+
+          <CardActions disableSpacing>
+            <IconButton onClick={handleLikeClick} aria-label="add to favorites">
+              {like ? (
+                <FavoriteIcon className={classes.like_button} />
+              ) : (
+                <FavoriteBorderIcon />
+              )}
+            </IconButton>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {likeNum}
+            </Typography>
+            <IconButton onClick={handleOpen} aria-label="add to favorites">
+              <TextsmsOutlinedIcon />
+            </IconButton>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {commentNum}
+            </Typography>
+            <IconButton
+              onClick={handleBookmarkClick}
+              className={classes.bookmark_button}
+              aria-label="add to bookmarks"
+            >
+              {bookmark ? <BookmarkIcon /> : <BookmarkBorderIcon />}
+            </IconButton>
+          </CardActions>
+          <ShowPost
+            post={post}
+            setOpen={setOpen}
+            open={open}
+            setComments={setComments}
+            comments={comments}
+            setCommentNum={setCommentNum}
+            commentNum={commentNum}
+          />
+        </Card>
+      </>
+    );
+  } else {
+    return <></>;
+  }
 };
 
 export default Post;

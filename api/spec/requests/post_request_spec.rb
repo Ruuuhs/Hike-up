@@ -61,7 +61,7 @@ RSpec.describe 'Posts', type: :request do
 
     it '200が返ってきたか確認する' do
       delete "/post/#{@json['id']}", headers: @auth_tokens
-      expect(response.status).to eq(204)
+      expect(response.status).to eq(200)
     end
 
     it 'postレコードが1減る' do
