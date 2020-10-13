@@ -4,8 +4,9 @@ Rails.application.routes.draw do
   }
 
   get '/current', to: 'user#current'
-
+  get '/user_data/:id', to: 'user#user_data'
   get '/personal/:id', to: 'user#personal'
+
   get '/feed', to: 'post#feed'
   get '/bookmark', to: 'post#bookmark'
   get '/trend/:period', to: 'post#trend', as: 'trend'

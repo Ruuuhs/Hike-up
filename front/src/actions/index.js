@@ -5,6 +5,7 @@ export const CURRENT_USER = "CURRENT_USE";
 
 //POST
 export const READ_POSTS = "READ_POSTS";
+export const ADD_POSTS = "ADD_POSTS";
 export const DELETE_POST = "DELETE_POST";
 
 //Login or signup

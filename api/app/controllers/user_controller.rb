@@ -17,12 +17,17 @@ class UserController < ApplicationController
     render json: current_user.to_json(include: %i[active_relationships])
   end
 
-  def personal
+  def user_data
     user = User.find_by(id: params[:id])
-    posts = user.posts.all.order(created_at: :desc).to_json(include: %i[user likes bookmarks comments])
     following = user.following
     followers = user.followers
-    render json: { posts: posts, user: user, following: following, followers: followers }
+    render json: { user: user, following: following, followers: followers }
+  end
+
+  def personal
+    user = User.find_by(id: params[:id])
+    posts = user.posts.all.order(created_at: :desc).page(params[:page]).per(5).to_json(include: %i[user likes bookmarks comments])
+    render json: posts
   end
 
   def following

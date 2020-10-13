@@ -5,13 +5,14 @@ import Posts from "./Posts";
 
 import AppContext from "../contexts/AppContext";
 import { READ_POSTS, ROOT_URL } from "../actions";
+const url = `${ROOT_URL}/post`;
 
 const All = () => {
   const { dispatch } = useContext(AppContext);
 
   useEffect(() => {
     const f = async () => {
-      const res = await axios.get(`${ROOT_URL}/post`);
+      const res = await axios.get(url);
 
       dispatch({ type: READ_POSTS, data: res.data });
     };
@@ -22,7 +23,7 @@ const All = () => {
 
   return (
     <>
-      <Posts />
+      <Posts url={url} />
     </>
   );
 };

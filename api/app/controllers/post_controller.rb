@@ -3,17 +3,17 @@ class PostController < ApplicationController
   before_action :authenticate_user!, only: %i[create destroy]
 
   def index
-    posts = Post.all.order(created_at: :desc).to_json(include: %i[user likes bookmarks comments])
-    render json: posts
+    posts = Post.all.order(created_at: :desc).page(params[:page]).per(5)
+    render json: posts.to_json(include: %i[user likes bookmarks comments])
   end
 
   def feed
-    posts = current_user.feed.to_json(include: %i[user likes bookmarks comments])
+    posts = current_user.feed.page(params[:page]).per(5).to_json(include: %i[user likes bookmarks comments])
     render json: posts
   end
 
   def bookmark
-    posts = current_user.bookmark.to_json(include: %i[user likes bookmarks comments])
+    posts = current_user.bookmark.page(params[:page]).per(5).to_json(include: %i[user likes bookmarks comments])
     render json: posts
   end
 
@@ -23,7 +23,7 @@ class PostController < ApplicationController
   end
 
   def show
-    post = Post.find_by(id: params[:id]).to_json(include: %i[user likes bookmarks comments])
+    post = Post.find_by(id: params[:id]).page(params[:page]).per(5).to_json(include: %i[user likes bookmarks comments])
     render json: post
   end
 
