@@ -77,6 +77,8 @@ const All = () => {
     const res = await axios.get(`${ROOT_URL}/trend/all`, {
       headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
     });
+    console.log(res);
+
     dispatch({ type: READ_POSTS, data: res.data });
   };
 

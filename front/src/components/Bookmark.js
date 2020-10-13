@@ -8,6 +8,7 @@ import AppContext from "../contexts/AppContext";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { READ_POSTS, TOKEN_KEY, ROOT_URL } from "../actions";
+const url = `${ROOT_URL}/bookmark`;
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -21,13 +22,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const All = () => {
+const Bookmark = () => {
   const { dispatch } = useContext(AppContext);
   const classes = useStyles();
 
   useEffect(() => {
     const f = async () => {
-      const res = await axios.get(`${ROOT_URL}/bookmark`, {
+      const res = await axios.get(url, {
         headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
       });
       dispatch({ type: READ_POSTS, data: res.data });
@@ -44,9 +45,9 @@ const All = () => {
         <h2 className="pageName">ブックマーク</h2>
       </div>
 
-      <Posts />
+      <Posts url={url} />
     </>
   );
 };
 
-export default All;
+export default Bookmark;
