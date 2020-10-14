@@ -24,6 +24,8 @@ const Feed = () => {
 
   return (
     <>
+      <div className="pageTitle">ホーム</div>
+
       <Posts url={url} />
     </>
   );
