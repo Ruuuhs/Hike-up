@@ -12,10 +12,10 @@ const url = `${ROOT_URL}/bookmark`;
 
 const useStyles = makeStyles((theme) => ({
   large: {
-    width: theme.spacing(8),
-    height: theme.spacing(8),
-    marginRight: 10,
-    color: "#fa6d6d",
+    width: theme.spacing(4),
+    height: theme.spacing(4),
+    marginRight: 5,
+    color: "#a1a1a1",
   },
   editButton: {
     display: "inline-block",
@@ -40,10 +40,7 @@ const Bookmark = () => {
 
   return (
     <>
-      <div className="mainContent pageTop">
-        <TurnedInIcon className={classes.large} />
-        <h2 className="pageName">ブックマーク</h2>
-      </div>
+      <div className="pageTitle">ブックマーク</div>
 
       <Posts url={url} />
     </>

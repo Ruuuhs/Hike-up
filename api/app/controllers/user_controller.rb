@@ -19,9 +19,10 @@ class UserController < ApplicationController
 
   def user_data
     user = User.find_by(id: params[:id])
+    posts_num = user.posts.all.count
     following = user.following
     followers = user.followers
-    render json: { user: user, following: following, followers: followers }
+    render json: { user: user, posts_num: posts_num,  following: following, followers: followers }
   end
 
   def personal

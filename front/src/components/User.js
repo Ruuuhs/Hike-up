@@ -5,6 +5,8 @@ import { useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 
 import Avatar from "@material-ui/core/Avatar";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 import { Link } from "react-router-dom";
 
 import Posts from "./Posts";
@@ -29,11 +31,14 @@ const User = () => {
   const { state, dispatch } = useContext(AppContext);
   const classes = useStyles();
   const [user, setUser] = React.useState("");
+  const [posts_num, setPosts_num] = React.useState("");
   const [following, setFollowing] = React.useState("");
   const [followers, setFollowers] = React.useState("");
   const [followersNum, setFollowersNum] = React.useState(followers.length);
   const [follow, setFollow] = React.useState("");
   const [followList, setFollowList] = React.useState("");
+
+  const [isLloding, setIsLoding] = React.useState(true);
 
   const id = useLocation().pathname.slice(6);
 
@@ -45,6 +50,7 @@ const User = () => {
 
       const res_user_data = await axios.get(`${ROOT_URL}/user_data/${id}`);
       setUser(res_user_data.data.user);
+      setPosts_num(res_user_data.data.posts_num);
       setFollowing(res_user_data.data.following);
       setFollowers(res_user_data.data.followers);
       setFollowersNum(res_user_data.data.followers.length);
@@ -52,71 +58,82 @@ const User = () => {
       const res_current = await axios.get(`${ROOT_URL}/current`, {
         headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
       });
+
       setFollow(
         res_user_data.data.followers.find(
           (x) => x.id === res_current.data.id
         ) !== undefined
       );
+      setIsLoding(false);
     };
     f();
+
     return () => dispatch({ type: READ_POSTS, data: "loding" });
   }, [dispatch, id]);
 
   if (followList === "") {
-    return (
-      <>
-        <div className="mainContent userProfile">
-          {user.image ? (
-            <Avatar
-              aria-label="recipe"
-              src={user.image}
-              className={classes.large}
-            />
-          ) : (
-            <Avatar
-              aria-label="recipe"
-              src="/images/defaultUser.png"
-              className={classes.large}
-            />
-          )}
-          <div className="profileContent">
-            <div className="profileTop">
-              <h2 className="profileName">{user.name}</h2>
-              {state.currentUser.id === user.id ? (
-                <EditProfile />
-              ) : (
-                <FollowBtn
-                  id={user.id}
-                  followersNum={followersNum}
-                  setFollowersNum={setFollowersNum}
-                  follow={follow}
-                  setFollow={setFollow}
-                />
-              )}
-            </div>
-            <div>
-              投稿{state.posts.length}件　
-              <Link
-                to="#"
-                onClick={() => setFollowList("followers")}
-                style={{ textDecoration: "none", color: "#2b2b2b" }}
-              >
-                フォロワー{followersNum}人　
-              </Link>
-              <Link
-                to="#"
-                onClick={() => setFollowList("following")}
-                style={{ textDecoration: "none", color: "#2b2b2b" }}
-              >
-                フォロー中{following.length}人
-              </Link>
+    if (isLloding === true) {
+      return (
+        <div style={{ width: 50, marginLeft: "auto", marginRight: "auto" }}>
+          <CircularProgress color="primary" />
+        </div>
+      );
+    } else {
+      return (
+        <>
+          <div className="mainContent userProfile">
+            {user.image ? (
+              <Avatar
+                aria-label="recipe"
+                src={user.image}
+                className={classes.large}
+              />
+            ) : (
+              <Avatar
+                aria-label="recipe"
+                src="/images/defaultUser.png"
+                className={classes.large}
+              />
+            )}
+            <div className="profileContent">
+              <div className="profileTop">
+                <h2 className="profileName">{user.name}</h2>
+                {state.currentUser.id === user.id ? (
+                  <EditProfile />
+                ) : (
+                  <FollowBtn
+                    id={user.id}
+                    followersNum={followersNum}
+                    setFollowersNum={setFollowersNum}
+                    follow={follow}
+                    setFollow={setFollow}
+                  />
+                )}
+              </div>
+              <div>
+                投稿{posts_num}件　
+                <Link
+                  to="#"
+                  onClick={() => setFollowList("followers")}
+                  style={{ textDecoration: "none", color: "#2b2b2b" }}
+                >
+                  フォロワー{followersNum}人　
+                </Link>
+                <Link
+                  to="#"
+                  onClick={() => setFollowList("following")}
+                  style={{ textDecoration: "none", color: "#2b2b2b" }}
+                >
+                  フォロー中{following.length}人
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
 
-        <Posts url={`${ROOT_URL}/personal/${id}`} />
-      </>
-    );
+          <Posts url={`${ROOT_URL}/personal/${id}`} />
+        </>
+      );
+    }
   } else {
     return (
       <FollowList

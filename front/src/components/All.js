@@ -23,6 +23,8 @@ const All = () => {
 
   return (
     <>
+      <div className="pageTitle">全投稿</div>
+
       <Posts url={url} />
     </>
   );
