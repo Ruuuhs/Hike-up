@@ -14,7 +14,7 @@ import AddIcon from "@material-ui/icons/Add";
 import AddImage from "./AddImage";
 import axios from "axios";
 import AppContext from "../contexts/AppContext";
-import { START_ALERT, ROOT_URL, TOKEN_KEY } from "../actions";
+import { START_ALERT, TOKEN_KEY } from "../actions";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -62,7 +62,7 @@ export default function TweetBtn() {
     event.preventDefault();
     await axios
       .post(
-        `${ROOT_URL}/post`,
+        `${process.env.REACT_APP_API_URL}/post`,
         { content: context, image: image },
         {
           headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),

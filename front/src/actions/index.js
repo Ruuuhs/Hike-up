@@ -26,5 +26,4 @@ export const START_ALERT = "START_ALERT";
 export const FINISH_ALERT = "FINISH_ALERT";
 
 //etc
-export const ROOT_URL = "http://localhost:3001";
 export const TOKEN_KEY = "ACCESS_TOKEN";

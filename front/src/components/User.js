@@ -14,7 +14,7 @@ import EditProfile from "./EditProfile";
 import FollowList from "./FollowList";
 import FollowBtn from "./FollowBtn";
 
-import { READ_POSTS, ROOT_URL, TOKEN_KEY } from "../actions";
+import { READ_POSTS, TOKEN_KEY } from "../actions";
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -44,20 +44,26 @@ const User = () => {
 
   useEffect(() => {
     const f = async () => {
-      const res = await axios.get(`${ROOT_URL}/personal/${id}`);
-      console.log(res);
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/personal/${id}`
+      );
       dispatch({ type: READ_POSTS, data: res.data });
 
-      const res_user_data = await axios.get(`${ROOT_URL}/user_data/${id}`);
+      const res_user_data = await axios.get(
+        `${process.env.REACT_APP_API_URL}/user_data/${id}`
+      );
       setUser(res_user_data.data.user);
       setPosts_num(res_user_data.data.posts_num);
       setFollowing(res_user_data.data.following);
       setFollowers(res_user_data.data.followers);
       setFollowersNum(res_user_data.data.followers.length);
 
-      const res_current = await axios.get(`${ROOT_URL}/current`, {
-        headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
-      });
+      const res_current = await axios.get(
+        `${process.env.REACT_APP_API_URL}/current`,
+        {
+          headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+        }
+      );
 
       setFollow(
         res_user_data.data.followers.find(
@@ -130,7 +136,7 @@ const User = () => {
             </div>
           </div>
 
-          <Posts url={`${ROOT_URL}/personal/${id}`} />
+          <Posts url={`${process.env.REACT_APP_API_URL}/personal/${id}`} />
         </>
       );
     }

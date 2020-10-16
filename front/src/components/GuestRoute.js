@@ -7,7 +7,7 @@ import { Route, Redirect } from "react-router-dom";
 import Navbar from "./Navbar";
 import Toolbar from "@material-ui/core/Toolbar";
 import AppContext from "../contexts/AppContext";
-import { TOKEN_KEY, ROOT_URL, CURRENT_USER } from "../actions";
+import { TOKEN_KEY, CURRENT_USER } from "../actions";
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -26,7 +26,7 @@ function GuestRoute(props) {
 
   useEffect(() => {
     const f = async () => {
-      const res = await axios.get(`${ROOT_URL}/current`, {
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/current`, {
         headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
       });
       dispatch({ type: CURRENT_USER, data: res.data });

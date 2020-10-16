@@ -2,29 +2,14 @@ import React, { useEffect, useContext } from "react";
 import axios from "axios";
 
 import Posts from "./Posts";
-import TurnedInIcon from "@material-ui/icons/TurnedIn";
 
 import AppContext from "../contexts/AppContext";
-import { makeStyles } from "@material-ui/core/styles";
 
-import { READ_POSTS, TOKEN_KEY, ROOT_URL } from "../actions";
-const url = `${ROOT_URL}/bookmark`;
-
-const useStyles = makeStyles((theme) => ({
-  large: {
-    width: theme.spacing(4),
-    height: theme.spacing(4),
-    marginRight: 5,
-    color: "#a1a1a1",
-  },
-  editButton: {
-    display: "inline-block",
-  },
-}));
+import { READ_POSTS, TOKEN_KEY } from "../actions";
+const url = `${process.env.REACT_APP_API_URL}/bookmark`;
 
 const Bookmark = () => {
   const { dispatch } = useContext(AppContext);
-  const classes = useStyles();
 
   useEffect(() => {
     const f = async () => {

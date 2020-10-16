@@ -1,19 +1,18 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Avatar from "@material-ui/core/Avatar";
 import InputBase from "@material-ui/core/InputBase";
 import Button from "@material-ui/core/Button";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-
-// import CircularProgress from "@material-ui/core/CircularProgress";
-
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 
-import { ROOT_URL, TOKEN_KEY } from "../actions";
 import axios from "axios";
+import ReactPlayer from "react-player";
+import UserImage from "./UserImage";
+
+import { TOKEN_KEY } from "../actions";
 
 import Background from "../Switzerland.jpg";
 
@@ -35,6 +34,13 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 0,
     borderRadius: 0,
     width: "100%",
+  },
+  postImage: {
+    width: "500px",
+    height: "500px",
+    maxWidth: "600px",
+    display: "inline-block",
+    objectFit: "cover",
   },
   margin: {
     margin: theme.spacing(1),
@@ -74,7 +80,7 @@ const ShowPost = ({
   const createComment = async (event) => {
     event.preventDefault();
     const res = await axios.post(
-      `${ROOT_URL}/comment`,
+      `${process.env.REACT_APP_API_URL}/comment`,
       { content: context, post_id: post.id },
       {
         headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
@@ -103,32 +109,21 @@ const ShowPost = ({
           dividers={false}
           style={{ paddingTop: "0px" }}
         >
+          {/* <ReactPlayer
+            url="https://hike-up-bucket.s3-ap-northeast-1.amazonaws.com/post-video/test_movie.mov"
+            controls
+            className="postImage"
+          /> */}
           <img src={Background} className="postImage" alt="post" />
           <div className="postContent">
             <div className="postHeader">
-              {post.user.image ? (
-                <Avatar aria-label="recipe" src={post.user.image} />
-              ) : (
-                <Avatar aria-label="recipe" src="/images/defaultUser.png" />
-              )}
+              <UserImage user={post.user} />
               <span className="postHeaderName">{post.user.name}</span>
             </div>
             <div className={classes.root}>
               <ListItem alignItems="flex-start" key={post.id}>
                 <ListItemAvatar>
-                  {post.user.image ? (
-                    <Avatar
-                      aria-label="recipe"
-                      src={post.user.image}
-                      className={classes.small}
-                    />
-                  ) : (
-                    <Avatar
-                      aria-label="recipe"
-                      src="/images/defaultUser.png"
-                      className={classes.small}
-                    />
-                  )}
+                  <UserImage user={post.user} />
                 </ListItemAvatar>
                 <ListItemText
                   primary={post.user.name}
@@ -138,19 +133,7 @@ const ShowPost = ({
               {comments.map((comment) => (
                 <ListItem alignItems="flex-start" key={comment.id}>
                   <ListItemAvatar>
-                    {comment.user.image ? (
-                      <Avatar
-                        aria-label="recipe"
-                        src={comment.user.image}
-                        className={classes.small}
-                      />
-                    ) : (
-                      <Avatar
-                        aria-label="recipe"
-                        src="/images/defaultUser.png"
-                        className={classes.small}
-                      />
-                    )}
+                    <UserImage user={comment.user} />
                   </ListItemAvatar>
                   <ListItemText
                     primary={comment.user.name}

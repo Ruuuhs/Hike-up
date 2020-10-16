@@ -3,7 +3,7 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 
 import axios from "axios";
-import { ROOT_URL, TOKEN_KEY } from "../actions";
+import { TOKEN_KEY } from "../actions";
 
 export default function EditProfile(props) {
   const handleLikeClick = async (event) => {
@@ -12,7 +12,7 @@ export default function EditProfile(props) {
     if (!props.follow) {
       props.setFollow(!props.follow);
       const res = await axios.post(
-        `${ROOT_URL}/relationship`,
+        `${process.env.REACT_APP_API_URL}/relationship`,
         { followed_id: props.id },
         {
           headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
@@ -22,9 +22,12 @@ export default function EditProfile(props) {
       console.log(res);
     } else {
       props.setFollow(!props.follow);
-      const res = await axios.delete(`${ROOT_URL}/relationship/${props.id}`, {
-        headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
-      });
+      const res = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/relationship/${props.id}`,
+        {
+          headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+        }
+      );
       props.setFollowersNum(props.followersNum - 1);
       console.log("destroy", res);
     }
