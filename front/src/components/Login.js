@@ -22,7 +22,6 @@ import {
   INPUT_EDIT,
   TOGGLE_MODE,
   START_ALERT,
-  ROOT_URL,
   TOKEN_KEY,
 } from "../actions";
 
@@ -117,7 +116,7 @@ export default function Login() {
       try {
         dispatch({ type: START_FETCH });
         const res = await axios.post(
-          `${ROOT_URL}/auth/sign_in`,
+          `${process.env.REACT_APP_API_URL}/auth/sign_in`,
           state.login.credentialsSign,
           { headers: { "Content-Type": "application/json" } }
         );
@@ -141,7 +140,7 @@ export default function Login() {
       try {
         dispatch({ type: START_FETCH });
         const res = await axios.post(
-          `${ROOT_URL}/auth`,
+          `${process.env.REACT_APP_API_URL}/auth`,
           state.login.credentialsSign,
           { headers: { "Content-Type": "application/json" } }
         );
@@ -170,7 +169,7 @@ export default function Login() {
   const testLogin = async (event) => {
     event.preventDefault();
     const res = await axios.post(
-      `${ROOT_URL}/auth/sign_in`,
+      `${process.env.REACT_APP_API_URL}/auth/sign_in`,
       {
         name: "test",
         email: "test@example.com",

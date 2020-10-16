@@ -8,7 +8,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 
 import axios from "axios";
-import { ROOT_URL, TOKEN_KEY } from "../actions";
+import { TOKEN_KEY } from "../actions";
 
 const useStyles = makeStyles((theme) => ({
   user: {
@@ -31,7 +31,7 @@ const ListUser = (props) => {
     if (!follow) {
       setFollow(!props.follow);
       const res = await axios.post(
-        `${ROOT_URL}/relationship`,
+        `${process.env.REACT_APP_API_URL}/relationship`,
         { followed_id: props.user.id },
         {
           headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
@@ -41,7 +41,7 @@ const ListUser = (props) => {
     } else {
       setFollow(!follow);
       const res = await axios.delete(
-        `${ROOT_URL}/relationship/${props.user.id}`,
+        `${process.env.REACT_APP_API_URL}/relationship/${props.user.id}`,
         {
           headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
         }

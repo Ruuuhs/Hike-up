@@ -3,7 +3,6 @@ import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 
 import Button from "@material-ui/core/Button";
-import Avatar from "@material-ui/core/Avatar";
 import ClearIcon from "@material-ui/icons/Clear";
 import IconButton from "@material-ui/core/IconButton";
 import List from "@material-ui/core/List";
@@ -14,7 +13,9 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Dialog from "@material-ui/core/Dialog";
 
 import AppContext from "../contexts/AppContext";
-import { ROOT_URL, TOKEN_KEY } from "../actions";
+import { TOKEN_KEY } from "../actions";
+
+import UserImage from "./UserImage";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -41,7 +42,7 @@ export default function DmNewUser({ setRooms, rooms }) {
   const handleClickOpen = async (event) => {
     event.preventDefault();
     const res = await axios.get(
-      `${ROOT_URL}/personal/${context.state.currentUser.id}`
+      `${process.env.REACT_APP_API_URL}/personal/${context.state.currentUser.id}`
     );
     setFollowing(res.data.following);
     setOpen(true);
@@ -50,7 +51,7 @@ export default function DmNewUser({ setRooms, rooms }) {
   const createRoom = async (event) => {
     event.preventDefault();
     const res = await axios.post(
-      `${ROOT_URL}/room`,
+      `${process.env.REACT_APP_API_URL}/room`,
       { user_id: selectedUser },
       {
         headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
@@ -108,19 +109,7 @@ export default function DmNewUser({ setRooms, rooms }) {
               selected={selectedUser === user.id}
             >
               <ListItemAvatar>
-                {user.image ? (
-                  <Avatar
-                    aria-label="recipe"
-                    src={user.image}
-                    className={classes.large}
-                  />
-                ) : (
-                  <Avatar
-                    aria-label="recipe"
-                    src="/images/defaultUser.png"
-                    className={classes.large}
-                  />
-                )}
+                <UserImage user={user} />
               </ListItemAvatar>
               <ListItemText primary={user.name} />
             </ListItem>

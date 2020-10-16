@@ -1,5 +1,7 @@
 import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { Link } from "react-router-dom";
+
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -12,7 +14,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import LinearProgress from "@material-ui/core/LinearProgress";
-
 import HomeIcon from "@material-ui/icons/Home";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
@@ -21,7 +22,7 @@ import TurnedInIcon from "@material-ui/icons/TurnedIn";
 import TelegramIcon from "@material-ui/icons/Telegram";
 
 import TweetBtn from "./TweetBtn";
-import { Link } from "react-router-dom";
+import UserImage from "./UserImage";
 
 import AppContext from "../contexts/AppContext";
 
@@ -158,11 +159,7 @@ export default function Navbar() {
                 to={`/user/${state.currentUser.id}`}
               >
                 <ListItemAvatar>
-                  {state.currentUser.image ? (
-                    <Avatar aria-label="recipe" src={state.currentUser.image} />
-                  ) : (
-                    <Avatar aria-label="recipe" src="/images/defaultUser.png" />
-                  )}
+                  <UserImage user={state.currentUser} />
                 </ListItemAvatar>
                 <ListItemText primary={state.currentUser.name} />
               </ListItem>

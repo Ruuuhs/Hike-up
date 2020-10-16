@@ -1,52 +1,103 @@
-import React from "react";
-import Button from "@material-ui/core/Button";
-import Snackbar from "@material-ui/core/Snackbar";
-import MuiAlert from "@material-ui/lab/Alert";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { Component } from "react";
+import ReactPlayer from "react-player";
+import AWS from "aws-sdk";
+import axios from "axios";
 
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
+AWS.config.update({
+  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY,
+  secretAccessKey: process.env.REACT_APP_AWS_SECRET_KEY,
+  region: "ap-northeast-1",
+});
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    "& > * + *": {
-      marginTop: theme.spacing(2),
-    },
-  },
-}));
+const Test = () => {
+  const [data, setData] = React.useState([]);
 
-export default function CustomizedSnackbars() {
-  const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const uploadS3_t = async (event) => {
+    event.preventDefault();
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const encodedData = e.target.result;
+      const fileData = encodedData.replace(/^data:\w+\/\w+;base64,/, "");
+      const decodedFile = new Buffer(fileData, "base64");
 
-  const handleClick = () => {
-    setOpen(true);
+      const s3 = new AWS.S3();
+      const params = {
+        Bucket: process.env.REACT_APP_BUCKET,
+        Key: file.name,
+        Expires: 60,
+        ContentType: file.type,
+        Body: decodedFile,
+        ACL: "public-read",
+      };
+
+      s3.putObject(params, function (err, data) {
+        if (err) {
+          console.log(err, err.message);
+        } else {
+          setData(
+            "https://hike-up-bucket.s3-ap-northeast-1.amazonaws.com/post-video/" +
+              file.name
+          );
+          console.log("アップロード成功！");
+        }
+      });
+    };
+    reader.readAsDataURL(file);
   };
 
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpen(false);
+  const uploadS3 = async (event) => {
+    event.preventDefault();
+    const file = event.target.files[0];
+    const url = await signatureURL(file);
+    await axios
+      .put(url, file, {
+        headers: {
+          "Content-Type": file.type,
+        },
+      })
+      .then(() => {
+        setData(
+          "https://hike-up-bucket.s3-ap-northeast-1.amazonaws.com/user-image/" +
+            "1.JPG"
+        );
+      })
+      .catch((e) => console.log(e));
   };
+
+  function signatureURL(file) {
+    const s3 = new AWS.S3();
+    const params = {
+      Bucket: process.env.REACT_APP_BUCKET,
+      Key: "user-image/" + "1.JPG",
+      Expires: 60,
+      ContentType: file.type,
+      ACL: "public-read",
+    };
+
+    return new Promise((resolve, reject) => {
+      s3.getSignedUrl("putObject", params, (err, url) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(url);
+      });
+    });
+  }
 
   return (
-    <div className={classes.root}>
-      <Button variant="outlined" onClick={handleClick}>
-        Open success snackbar
-      </Button>
-      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success">
-          This is a success message!
-        </Alert>
-      </Snackbar>
-      <Alert severity="error">This is an error message!</Alert>
-      <Alert severity="warning">This is a warning message!</Alert>
-      <Alert severity="info">This is an information message!</Alert>
-      <Alert severity="success">This is a success message!</Alert>
+    <div style={{ width: 760, margin: "30px auto" }}>
+      <h1>React S3 Image Uploader Sample</h1>
+      <input
+        // accept="video/*"
+        id="icon-button-file"
+        type="file"
+        onChange={uploadS3}
+      />
+
+      {data.length !== 0 && <ReactPlayer url={data} controls width="600px" />}
     </div>
   );
-}
+};
+
+export default Test;

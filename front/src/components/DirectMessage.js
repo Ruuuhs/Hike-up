@@ -4,7 +4,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import TelegramIcon from "@material-ui/icons/Telegram";
-import Avatar from "@material-ui/core/Avatar";
 
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -14,9 +13,10 @@ import InputBase from "@material-ui/core/InputBase";
 import Button from "@material-ui/core/Button";
 import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
 
-import { ROOT_URL, TOKEN_KEY } from "../actions";
+import { TOKEN_KEY } from "../actions";
 
 import DmNewUser from "./DmNewUser";
+import UserImage from "./UserImage";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -126,7 +126,7 @@ export default function DirectMessage() {
 
   useEffect(() => {
     const f = async () => {
-      const res = await axios.get(`${ROOT_URL}/room`, {
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/room`, {
         headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
       });
       setCurrentUser(res.data[0].current_user);
@@ -155,7 +155,7 @@ export default function DirectMessage() {
   const createMessage = async (event) => {
     event.preventDefault();
     const res = await axios.post(
-      `${ROOT_URL}/message`,
+      `${process.env.REACT_APP_API_URL}/message`,
       { content: context, room_id: room.id },
       {
         headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
@@ -195,11 +195,7 @@ export default function DirectMessage() {
               onClick={(event) => handleListItemClick(event, list_room)}
             >
               <ListItemIcon>
-                {list_room.otherUser.image ? (
-                  <Avatar aria-label="recipe" src={list_room.otherUser.image} />
-                ) : (
-                  <Avatar aria-label="recipe" src="/images/defaultUser.png" />
-                )}
+                <UserImage user={list_room.otherUser} />
               </ListItemIcon>
               <ListItemText primary={list_room.otherUser.name} />
             </ListItem>
@@ -227,11 +223,7 @@ export default function DirectMessage() {
       ) : (
         <div className={classes.dmWrapper}>
           <div className={classes.dmHeader}>
-            {room.otherUser.image ? (
-              <Avatar aria-label="recipe" src={room.otherUser.image} />
-            ) : (
-              <Avatar aria-label="recipe" src="/images/defaultUser.png" />
-            )}
+            <UserImage user={room.otherUser} />
             <Typography variant="body1" className={classes.dmHeaderUser}>
               {room.otherUser.name}
             </Typography>

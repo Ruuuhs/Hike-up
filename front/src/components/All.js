@@ -4,8 +4,8 @@ import axios from "axios";
 import Posts from "./Posts";
 
 import AppContext from "../contexts/AppContext";
-import { READ_POSTS, ROOT_URL } from "../actions";
-const url = `${ROOT_URL}/post`;
+import { READ_POSTS } from "../actions";
+const url = `${process.env.REACT_APP_API_URL}/post`;
 
 const All = () => {
   const { dispatch } = useContext(AppContext);

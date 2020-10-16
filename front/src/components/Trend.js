@@ -9,7 +9,7 @@ import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import AppContext from "../contexts/AppContext";
 
 import Posts from "./Posts";
-import { READ_POSTS, ROOT_URL, TOKEN_KEY } from "../actions";
+import { READ_POSTS, TOKEN_KEY } from "../actions";
 
 const useStyles = makeStyles((theme) => ({
   large: {
@@ -30,9 +30,12 @@ const All = () => {
 
   useEffect(() => {
     const f = async () => {
-      const res = await axios.get(`${ROOT_URL}/trend/daily`, {
-        headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
-      });
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/trend/daily`,
+        {
+          headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+        }
+      );
       dispatch({ type: READ_POSTS, data: res.data });
     };
     f();
@@ -47,34 +50,43 @@ const All = () => {
   const daily = async (event) => {
     event.preventDefault();
     dispatch({ type: READ_POSTS, data: "loding" });
-    const res = await axios.get(`${ROOT_URL}/trend/daily`, {
-      headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
-    });
+    const res = await axios.get(
+      `${process.env.REACT_APP_API_URL}/trend/daily`,
+      {
+        headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+      }
+    );
     dispatch({ type: READ_POSTS, data: res.data });
   };
 
   const weekly = async (event) => {
     event.preventDefault();
     dispatch({ type: READ_POSTS, data: "loding" });
-    const res = await axios.get(`${ROOT_URL}/trend/weekly`, {
-      headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
-    });
+    const res = await axios.get(
+      `${process.env.REACT_APP_API_URL}/trend/weekly`,
+      {
+        headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+      }
+    );
     dispatch({ type: READ_POSTS, data: res.data });
   };
 
   const monthly = async (event) => {
     event.preventDefault();
     dispatch({ type: READ_POSTS, data: "loding" });
-    const res = await axios.get(`${ROOT_URL}/trend/monthly`, {
-      headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
-    });
+    const res = await axios.get(
+      `${process.env.REACT_APP_API_URL}/trend/monthly`,
+      {
+        headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+      }
+    );
     dispatch({ type: READ_POSTS, data: res.data });
   };
 
   const all = async (event) => {
     event.preventDefault();
     dispatch({ type: READ_POSTS, data: "loding" });
-    const res = await axios.get(`${ROOT_URL}/trend/all`, {
+    const res = await axios.get(`${process.env.REACT_APP_API_URL}/trend/all`, {
       headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
     });
     console.log(res);

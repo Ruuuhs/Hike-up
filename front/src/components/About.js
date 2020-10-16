@@ -8,7 +8,6 @@ import AppContext from "../contexts/AppContext";
 import {
   START_LOADING,
   FINISH_LOADING,
-  ROOT_URL,
   TOKEN_KEY,
   START_ALERT,
 } from "../actions";
@@ -43,7 +42,7 @@ const About = () => {
   const login = async (event) => {
     event.preventDefault();
     const res = await axios.post(
-      `${ROOT_URL}/auth/sign_in`,
+      `${process.env.REACT_APP_API_URL}/auth/sign_in`,
       {
         name: "test",
         email: "test@example.com",
@@ -68,7 +67,7 @@ const About = () => {
 
   const getPosts = async (event) => {
     event.preventDefault();
-    const res = await axios.get(`${ROOT_URL}/post`, {
+    const res = await axios.get(`${process.env.REACT_APP_API_URL}/post`, {
       headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
     });
     console.log(res);
@@ -76,7 +75,7 @@ const About = () => {
 
   const getPost = async (event) => {
     event.preventDefault();
-    const res = await axios.get(`${ROOT_URL}/post/1`, {
+    const res = await axios.get(`${process.env.REACT_APP_API_URL}/post/1`, {
       headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
     });
     console.log(res);
@@ -86,7 +85,7 @@ const About = () => {
   const createPost = async (event) => {
     event.preventDefault();
     const res = await axios.post(
-      `${ROOT_URL}/post`,
+      `${process.env.REACT_APP_API_URL}/post`,
       {
         content: "Image test",
         image:
@@ -101,16 +100,19 @@ const About = () => {
 
   const deletePost = async (event) => {
     event.preventDefault();
-    const res = await axios.delete(`${ROOT_URL}/post/187`, {
-      headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
-    });
+    const res = await axios.delete(
+      `${process.env.REACT_APP_API_URL}/post/187`,
+      {
+        headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+      }
+    );
     console.log(res);
   };
 
   const likePost = async (event) => {
     event.preventDefault();
     const res = await axios.post(
-      `${ROOT_URL}/like`,
+      `${process.env.REACT_APP_API_URL}/like`,
       { post_id: 3 },
       {
         headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
@@ -121,7 +123,7 @@ const About = () => {
 
   const currentUser = async (event) => {
     event.preventDefault();
-    const res = await axios.get(`${ROOT_URL}/current`, {
+    const res = await axios.get(`${process.env.REACT_APP_API_URL}/current`, {
       headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
     });
     console.log(res.data);
@@ -132,7 +134,7 @@ const About = () => {
 
   const getUser = async (event) => {
     event.preventDefault();
-    const res = await axios.get(`${ROOT_URL}/user/1`);
+    const res = await axios.get(`${process.env.REACT_APP_API_URL}/user/1`);
     console.log(res.data);
   };
 
@@ -148,6 +150,8 @@ const About = () => {
     );
     console.log(res.data);
   };
+
+  console.log(process.env.REACT_APP_API_URL);
 
   return (
     <>

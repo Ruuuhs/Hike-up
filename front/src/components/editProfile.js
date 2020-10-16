@@ -12,7 +12,7 @@ import Avatar from "@material-ui/core/Avatar";
 
 import AddImage from "./AddImage";
 import axios from "axios";
-import { ROOT_URL, TOKEN_KEY, CURRENT_USER, START_ALERT } from "../actions";
+import { TOKEN_KEY, CURRENT_USER, START_ALERT } from "../actions";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -63,7 +63,7 @@ export default function EditProfile() {
     console.log(image);
     await axios
       .put(
-        `${ROOT_URL}/auth`,
+        `${process.env.REACT_APP_API_URL}/auth`,
         { name: name, email: email, image: image },
         {
           headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),

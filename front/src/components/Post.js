@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
+import ReactPlayer from "react-player";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
-import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -21,11 +22,13 @@ import TextsmsOutlinedIcon from "@material-ui/icons/TextsmsOutlined";
 import { Link } from "react-router-dom";
 
 import AppContext from "../contexts/AppContext";
-import { DELETE_POST, START_ALERT, ROOT_URL, TOKEN_KEY } from "../actions";
+import { DELETE_POST, START_ALERT, TOKEN_KEY } from "../actions";
 import axios from "axios";
 
-import Background from "../Switzerland.jpg";
 import ShowPost from "./ShowPost";
+import UserImage from "./UserImage";
+
+import Background from "../Switzerland.jpg";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -91,7 +94,7 @@ const Post = ({ post, current }) => {
     if (!like) {
       setLike(!like);
       const res = await axios.post(
-        `${ROOT_URL}/like`,
+        `${process.env.REACT_APP_API_URL}/like`,
         { post_id: post.id },
         {
           headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
@@ -102,9 +105,12 @@ const Post = ({ post, current }) => {
       console.log(res);
     } else {
       setLike(!like);
-      const res = await axios.delete(`${ROOT_URL}/like/${likeId}`, {
-        headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
-      });
+      const res = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/like/${likeId}`,
+        {
+          headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+        }
+      );
       setLikeId(false);
       setLikeNum(likeNum - 1);
       console.log("destroy", res);
@@ -116,7 +122,7 @@ const Post = ({ post, current }) => {
     if (!bookmark) {
       setBookmark(!bookmark);
       const res = await axios.post(
-        `${ROOT_URL}/bookmark`,
+        `${process.env.REACT_APP_API_URL}/bookmark`,
         { post_id: post.id },
         {
           headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
@@ -126,9 +132,12 @@ const Post = ({ post, current }) => {
       console.log(res);
     } else {
       setBookmark(!bookmark);
-      const res = await axios.delete(`${ROOT_URL}/bookmark/${bookmarkId}`, {
-        headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
-      });
+      const res = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/bookmark/${bookmarkId}`,
+        {
+          headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+        }
+      );
       setBookmarkId(false);
       console.log("destroy", res);
     }
@@ -144,7 +153,7 @@ const Post = ({ post, current }) => {
   const deletePost = async (event) => {
     event.preventDefault();
     await axios
-      .delete(`${ROOT_URL}/post/${post.id}`, {
+      .delete(`${process.env.REACT_APP_API_URL}/post/${post.id}`, {
         headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
       })
       .then((res) => {
@@ -174,9 +183,12 @@ const Post = ({ post, current }) => {
 
   const handleOpen = async (event) => {
     event.preventDefault();
-    const res = await axios.get(`${ROOT_URL}/comment/${post.id}`, {
-      headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
-    });
+    const res = await axios.get(
+      `${process.env.REACT_APP_API_URL}/comment/${post.id}`,
+      {
+        headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+      }
+    );
     setComments(res.data);
     setAnchorEl(null);
     setOpen(true);
@@ -195,23 +207,7 @@ const Post = ({ post, current }) => {
       <>
         <Card className={classes.root}>
           <CardHeader
-            avatar={
-              post.user.image ? (
-                <Avatar
-                  aria-label="recipe"
-                  src={post.user.image}
-                  component={Link}
-                  to={`/user/${post.user.id}`}
-                />
-              ) : (
-                <Avatar
-                  aria-label="recipe"
-                  src="/images/defaultUser.png"
-                  component={Link}
-                  to={`/user/${post.user.id}`}
-                />
-              )
-            }
+            avatar={<UserImage user={post.user} />}
             action={
               <IconButton aria-label="settings" onClick={handleClick}>
                 <MoreVertIcon />
@@ -250,11 +246,15 @@ const Post = ({ post, current }) => {
             </MenuItem>
           </Menu>
 
+          {/* <ReactPlayer
+            url="https://hike-up-bucket.s3-ap-northeast-1.amazonaws.com/post-video/test_movie.mov"
+            controls
+            width="600px"
+          /> */}
           {post.image ? (
             <CardMedia className={classes.media} image={post.image} />
           ) : (
             <CardMedia className={classes.media} image={Background} />
-            // <CircularProgress />
           )}
 
           <CardContent onClick={handleOpen}>

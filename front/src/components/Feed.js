@@ -4,8 +4,8 @@ import axios from "axios";
 import Posts from "./Posts";
 
 import AppContext from "../contexts/AppContext";
-import { READ_POSTS, TOKEN_KEY, ROOT_URL } from "../actions";
-const url = `${ROOT_URL}/feed`;
+import { READ_POSTS, TOKEN_KEY } from "../actions";
+const url = `${process.env.REACT_APP_API_URL}/feed`;
 
 const Feed = () => {
   const { dispatch } = useContext(AppContext);
