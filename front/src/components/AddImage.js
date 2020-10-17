@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
+import AppContext from "../contexts/AppContext";
 import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
 
-import { resizeImage } from "./resizeImage";
+import { START_ALERT } from "../actions";
+const sizeLimit = 1024 * 1024 * 100; // 制限サイズ
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,10 +19,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function AddImage({ setImage, setImageData, acceptType }) {
+  const { dispatch } = useContext(AppContext);
+
   const classes = useStyles();
 
   const getImage = async (e) => {
-    // const imageData = await resizeImage(e);
+    if (e.target.files[0].size > sizeLimit) {
+      dispatch({
+        type: START_ALERT,
+        data: {
+          message: "ファイルサイズは100MB以下にしてください",
+          severity: "error",
+        },
+      });
+      return; // この時点で処理を終了する
+    }
     setImageData(e.target.files[0]);
     const reader = new FileReader();
     reader.onload = (e) => {

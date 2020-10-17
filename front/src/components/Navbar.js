@@ -12,7 +12,6 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Avatar from "@material-ui/core/Avatar";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import HomeIcon from "@material-ui/icons/Home";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
