@@ -1,5 +1,8 @@
 import React, { useState, useContext } from "react";
+import axios from "axios";
+import AppContext from "../contexts/AppContext";
 import { makeStyles } from "@material-ui/core/styles";
+
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -12,8 +15,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import AddIcon from "@material-ui/icons/Add";
 
 import AddImage from "./AddImage";
-import axios from "axios";
-import AppContext from "../contexts/AppContext";
+import UploadS3 from "./UploadS3";
+
 import { START_ALERT, TOKEN_KEY } from "../actions";
 
 const useStyles = makeStyles((theme) => ({
@@ -41,12 +44,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function TweetBtn() {
-  const { dispatch } = useContext(AppContext);
+  const { state, dispatch } = useContext(AppContext);
 
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [context, setContext] = useState("");
   const [image, setImage] = useState("");
+  const [imageData, setImageData] = useState("");
 
   const handleOpen = () => {
     setOpen(true);
@@ -60,10 +64,15 @@ export default function TweetBtn() {
 
   const createPost = async (event) => {
     event.preventDefault();
+    const params = {
+      dir: "post-video/",
+      id: state.currentUser.id,
+    };
+    const url = await UploadS3(imageData, params);
     await axios
       .post(
         `${process.env.REACT_APP_API_URL}/post`,
-        { content: context, image: image },
+        { content: context, image: url },
         {
           headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
         }
@@ -115,7 +124,11 @@ export default function TweetBtn() {
             <div>
               <img src={image} className={classes.image} alt="" />
             </div>
-            <AddImage setImage={setImage} />
+            <AddImage
+              setImage={setImage}
+              setImageData={setImageData}
+              acceptType="*"
+            />
             <Button onClick={handleClose} color="primary">
               キャンセル
             </Button>

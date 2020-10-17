@@ -11,6 +11,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import Avatar from "@material-ui/core/Avatar";
 
 import AddImage from "./AddImage";
+import UploadS3 from "./UploadS3";
 import axios from "axios";
 import { TOKEN_KEY, CURRENT_USER, START_ALERT } from "../actions";
 
@@ -41,6 +42,7 @@ export default function EditProfile() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [image, setImage] = useState("");
+  const [imageData, setImageData] = useState("");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -60,11 +62,15 @@ export default function EditProfile() {
 
   const editSubmit = async (event) => {
     event.preventDefault();
-    console.log(image);
+    const params = {
+      dir: "user-image/",
+      id: state.currentUser.id,
+    };
+    const url = await UploadS3(imageData, params);
     await axios
       .put(
         `${process.env.REACT_APP_API_URL}/auth`,
-        { name: name, email: email, image: image },
+        { name: name, email: email, image: url },
         {
           headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
         }
@@ -111,7 +117,13 @@ export default function EditProfile() {
                 vertical: "bottom",
                 horizontal: "right",
               }}
-              badgeContent={<AddImage setImage={setImage} />}
+              badgeContent={
+                <AddImage
+                  setImage={setImage}
+                  setImageData={setImageData}
+                  acceptType="image/*"
+                />
+              }
             >
               {image ? (
                 <Avatar
