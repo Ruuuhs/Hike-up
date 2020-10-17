@@ -16,21 +16,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AddImage(props) {
+export default function AddImage({ setImage, setImageData, acceptType }) {
   const classes = useStyles();
-  const [setImage] = React.useState(null);
 
   const getImage = async (e) => {
-    const imageData = await resizeImage(e);
-    setImage(imageData.imageUri);
-    props.setImage(imageData.imageUri);
+    // const imageData = await resizeImage(e);
+    setImageData(e.target.files[0]);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setImage(e.target.result);
+    };
+    reader.readAsDataURL(e.target.files[0]);
   };
 
   return (
     <>
       <div className={classes.root}>
         <input
-          accept="image/*"
+          accept={acceptType}
           className={classes.input}
           id="icon-button-file"
           type="file"

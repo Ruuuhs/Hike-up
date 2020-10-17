@@ -37,7 +37,6 @@ const User = () => {
   const [followersNum, setFollowersNum] = React.useState(followers.length);
   const [follow, setFollow] = React.useState("");
   const [followList, setFollowList] = React.useState("");
-
   const [isLloding, setIsLoding] = React.useState(true);
 
   const id = useLocation().pathname.slice(6);
