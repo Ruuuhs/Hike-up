@@ -31,7 +31,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function DmNewUser({ setRooms, rooms }) {
+export default function DmNewUser({
+  setRooms,
+  rooms,
+  setSelectedIndex,
+  setRoom,
+}) {
   const context = useContext(AppContext);
   const classes = useStyles();
 
@@ -42,9 +47,16 @@ export default function DmNewUser({ setRooms, rooms }) {
   const handleClickOpen = async (event) => {
     event.preventDefault();
     const res = await axios.get(
-      `${process.env.REACT_APP_API_URL}/personal/${context.state.currentUser.id}`
+      `${process.env.REACT_APP_API_URL}/user_data/${context.state.currentUser.id}`
     );
-    setFollowing(res.data.following);
+    const list = res.data.following;
+    rooms.forEach((t) => {
+      const index = list.findIndex((user) => {
+        return t.otherUser.id === user.id;
+      });
+      list.splice(index, 1);
+    });
+    setFollowing(list);
     setOpen(true);
   };
 
@@ -60,7 +72,10 @@ export default function DmNewUser({ setRooms, rooms }) {
     res.data.otherUser = res.data.users.find((user) => {
       return user.id !== context.state.currentUser.id;
     });
+
     setRooms(rooms.concat(res.data));
+    setRoom(res.data);
+    setSelectedIndex(res.data.id);
     setOpen(false);
     setSelectedUser("");
   };
