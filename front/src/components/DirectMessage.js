@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -124,23 +124,29 @@ export default function DirectMessage() {
   const [room, setRoom] = React.useState([]);
   const [context, setContext] = useState("");
 
-  useEffect(() => {
-    const f = async () => {
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/room`, {
-        headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
-      });
-      setCurrentUser(res.data[0].current_user);
-      const Rooms = JSON.parse(res.data[0].rooms);
+  const mounted = useRef(false);
 
-      Rooms.forEach((t, index) => {
-        Rooms[index].otherUser = t.users.find((user) => {
-          return user.id !== res.data[0].current_user.id;
+  useEffect(() => {
+    if (mounted.current) {
+      scroll();
+    } else {
+      const f = async () => {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/room`, {
+          headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
         });
-      });
-      setRooms(Rooms);
-    };
-    f();
-  }, []);
+        setCurrentUser(res.data[0].current_user);
+        const Rooms = JSON.parse(res.data[0].rooms);
+        Rooms.forEach((t, index) => {
+          Rooms[index].otherUser = t.users.find((user) => {
+            return user.id !== res.data[0].current_user.id;
+          });
+        });
+        setRooms(Rooms);
+      };
+      f();
+      mounted.current = true;
+    }
+  }, [room]);
 
   const handleListItemClick = (event, room) => {
     event.preventDefault();
@@ -172,6 +178,11 @@ export default function DirectMessage() {
   };
 
   const unCreatable = context === "" || context.length > 140;
+
+  const scroll = () => {
+    const element = document.getElementById("targetElement");
+    if (element !== null) element.scrollIntoView(false);
+  };
 
   return (
     <div className={classes.root}>
@@ -217,7 +228,12 @@ export default function DirectMessage() {
             >
               フォローしている友達にメッセージを送信できます
             </Typography>
-            <DmNewUser setRooms={setRooms} rooms={rooms} />
+            <DmNewUser
+              setRooms={setRooms}
+              rooms={rooms}
+              setSelectedIndex={setSelectedIndex}
+              setRoom={setRoom}
+            />
           </div>
         </div>
       ) : (
@@ -247,6 +263,7 @@ export default function DirectMessage() {
                   )}
                 </ListItem>
               ))}
+              <div id="targetElement"></div>
             </List>
           )}
 
