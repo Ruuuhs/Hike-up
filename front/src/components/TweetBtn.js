@@ -39,7 +39,8 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
   image: {
-    width: 230,
+    marginLeft: 50,
+    width: 400,
   },
 }));
 
@@ -93,7 +94,7 @@ export default function TweetBtn() {
       });
   };
 
-  const unCreatable = context === "" || context.length > 140;
+  const unCreatable = context === "" || context.length > 140 || image === "";
 
   return (
     <>
@@ -109,6 +110,9 @@ export default function TweetBtn() {
         aria-labelledby="form-dialog-title"
       >
         <form className={classes.form} onSubmit={createPost}>
+          <div>
+            <img src={image} className={classes.image} alt="" />
+          </div>
           <DialogContent>
             <TextField
               autoFocus
@@ -121,9 +125,6 @@ export default function TweetBtn() {
             />
           </DialogContent>
           <DialogActions>
-            <div>
-              <img src={image} className={classes.image} alt="" />
-            </div>
             <AddImage
               setImage={setImage}
               setImageData={setImageData}

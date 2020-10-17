@@ -62,19 +62,21 @@ export default function EditProfile() {
 
   const editSubmit = async (event) => {
     event.preventDefault();
-    const params = {
-      dir: "user-image/",
-      id: state.currentUser.id,
-    };
-    const url = await UploadS3(imageData, params);
+    const params = { name: name, email: email };
+
+    if (imageData !== "") {
+      const file = {
+        dir: "user-image/",
+        id: state.currentUser.id,
+      };
+      const url = await UploadS3(imageData, file);
+      params["image"] = url;
+    }
+    console.log(params);
     await axios
-      .put(
-        `${process.env.REACT_APP_API_URL}/auth`,
-        { name: name, email: email, image: url },
-        {
-          headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
-        }
-      )
+      .put(`${process.env.REACT_APP_API_URL}/auth`, params, {
+        headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
+      })
       .then((res) => {
         dispatch({ type: CURRENT_USER, data: res.data.data });
         window.location.reload();
