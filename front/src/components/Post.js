@@ -1,5 +1,8 @@
 import React, { useContext } from "react";
+import axios from "axios";
+import AppContext from "../contexts/AppContext";
 import ReactPlayer from "react-player";
+import { Link } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -19,11 +22,7 @@ import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import TextsmsOutlinedIcon from "@material-ui/icons/TextsmsOutlined";
 
-import { Link } from "react-router-dom";
-
-import AppContext from "../contexts/AppContext";
 import { DELETE_POST, START_ALERT, TOKEN_KEY } from "../actions";
-import axios from "axios";
 
 import ShowPost from "./ShowPost";
 import UserImage from "./UserImage";
@@ -40,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: "56.25%", // 16:9
+    paddingTop: 400, // 16:9
   },
   like_button: {
     color: "#f73d6c",
@@ -252,7 +251,10 @@ const Post = ({ post, current }) => {
             width="600px"
           /> */}
           {post.image ? (
-            <CardMedia className={classes.media} image={post.image} />
+            <CardMedia
+              className={classes.media}
+              image={`https://hike-up-bucket.s3-ap-northeast-1.amazonaws.com/post-video/${post.id}${post.image}`}
+            />
           ) : (
             <CardMedia className={classes.media} image={Background} />
           )}

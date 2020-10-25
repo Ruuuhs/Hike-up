@@ -11,11 +11,12 @@ import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-
+import IconButton from "@material-ui/core/IconButton";
+import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import AddIcon from "@material-ui/icons/Add";
 
-import AddImage from "./AddImage";
 import UploadS3 from "./UploadS3";
+import CropImage from "./CropImage";
 
 import { START_ALERT, TOKEN_KEY } from "../actions";
 
@@ -45,13 +46,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function TweetBtn() {
-  const { state, dispatch } = useContext(AppContext);
+  const { dispatch } = useContext(AppContext);
 
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [context, setContext] = useState("");
-  const [image, setImage] = useState("");
-  const [imageData, setImageData] = useState("");
+
+  const [encodedData, setEncodedData] = useState("");
+  const [ext, setExt] = useState("");
 
   const handleOpen = () => {
     setOpen(true);
@@ -60,30 +62,32 @@ export default function TweetBtn() {
   const handleClose = () => {
     setOpen(false);
     setContext("");
-    setImage("");
+    setEncodedData("");
   };
 
   const createPost = async (event) => {
     event.preventDefault();
-    const params = {
-      dir: "post-video/",
-      id: state.currentUser.id,
-    };
-    const url = await UploadS3(imageData, params);
+
     await axios
       .post(
         `${process.env.REACT_APP_API_URL}/post`,
-        { content: context, image: url },
+        { content: context, image: ext },
         {
           headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
         }
       )
-      .then(() => {
-        window.location.href = "/";
+      .then((res) => {
+        const params = {
+          dir: "post-video/",
+          id: res.data.id, //post.id
+        };
+        UploadS3(encodedData, ext, params);
         dispatch({
           type: START_ALERT,
           data: { message: "投稿しました。", severity: "success" },
         });
+        // window.location.href = "/";
+        handleClose();
       })
       .catch((err) => {
         console.log("err:", err);
@@ -94,7 +98,8 @@ export default function TweetBtn() {
       });
   };
 
-  const unCreatable = context === "" || context.length > 140 || image === "";
+  const unCreatable =
+    context === "" || context.length > 140 || encodedData === "";
 
   return (
     <>
@@ -110,9 +115,7 @@ export default function TweetBtn() {
         aria-labelledby="form-dialog-title"
       >
         <form className={classes.form} onSubmit={createPost}>
-          <div>
-            <img src={image} className={classes.image} alt="" />
-          </div>
+          <CropImage setEncodedData={setEncodedData} setExt={setExt} />
           <DialogContent>
             <TextField
               autoFocus
@@ -125,11 +128,15 @@ export default function TweetBtn() {
             />
           </DialogContent>
           <DialogActions>
-            <AddImage
-              setImage={setImage}
-              setImageData={setImageData}
-              acceptType="*"
-            />
+            <label htmlFor="icon-button-file">
+              <IconButton
+                color="secondary"
+                aria-label="upload picture"
+                component="span"
+              >
+                <PhotoCamera />
+              </IconButton>
+            </label>
             <Button onClick={handleClose} color="primary">
               キャンセル
             </Button>

@@ -23,7 +23,6 @@ const Posts = ({ url }) => {
         headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
       })
       .then((res) => {
-        console.log(res);
         dispatch({ type: ADD_POSTS, data: res.data });
         setPage(page + 1);
         setIsLoading(false);
