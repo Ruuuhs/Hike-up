@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import AppContext from "../contexts/AppContext";
 import Badge from "@material-ui/core/Badge";
@@ -9,10 +10,12 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import Avatar from "@material-ui/core/Avatar";
+import IconButton from "@material-ui/core/IconButton";
+import PhotoCamera from "@material-ui/icons/PhotoCamera";
 
 import AddImage from "./AddImage";
 import UploadS3 from "./UploadS3";
-import axios from "axios";
+import CropImage from "./CropImage";
 import { TOKEN_KEY, CURRENT_USER, START_ALERT } from "../actions";
 
 const useStyles = makeStyles((theme) => ({
@@ -42,7 +45,8 @@ export default function EditProfile() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [image, setImage] = useState("");
-  const [imageData, setImageData] = useState("");
+  const [encodedData, setEncodedData] = useState("");
+  const [ext, setExt] = useState("");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -64,15 +68,15 @@ export default function EditProfile() {
     event.preventDefault();
     const params = { name: name, email: email };
 
-    if (imageData !== "") {
+    if (encodedData !== "") {
       const file = {
         dir: "user-image/",
         id: state.currentUser.id,
       };
-      const url = await UploadS3(imageData, file);
+      const url = await UploadS3(encodedData, ext, file);
       params["image"] = url;
+      console.log(url);
     }
-    console.log(params);
     await axios
       .put(`${process.env.REACT_APP_API_URL}/auth`, params, {
         headers: JSON.parse(localStorage.getItem(TOKEN_KEY)),
@@ -113,6 +117,11 @@ export default function EditProfile() {
       >
         <form className={classes.form} onSubmit={editSubmit}>
           <DialogContent>
+            <CropImage
+              setEncodedData={setEncodedData}
+              setExt={setExt}
+              circular={true}
+            />
             <Badge
               overlap="circle"
               anchorOrigin={{
@@ -120,11 +129,15 @@ export default function EditProfile() {
                 horizontal: "right",
               }}
               badgeContent={
-                <AddImage
-                  setImage={setImage}
-                  setImageData={setImageData}
-                  acceptType="image/*"
-                />
+                <label htmlFor="icon-button-file">
+                  <IconButton
+                    color="secondary"
+                    aria-label="upload picture"
+                    component="span"
+                  >
+                    <PhotoCamera />
+                  </IconButton>
+                </label>
               }
             >
               {image ? (
