@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button";
 import axios from "axios";
 import { TOKEN_KEY } from "../actions";
 
-export default function EditProfile(props) {
+export default function FollowBtn(props) {
   const handleLikeClick = async (event) => {
     event.preventDefault();
     props.setFollow(!props.follow);
