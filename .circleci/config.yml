@@ -10,8 +10,6 @@ jobs:
         environment:
           - MYSQL_ALLOW_EMPTY_PASSWORD: "true"
 
-    working_directory: ./api
-
     steps:
       # コードのチェックアウト
       - checkout
