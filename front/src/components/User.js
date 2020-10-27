@@ -10,7 +10,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { Link } from "react-router-dom";
 
 import Posts from "./Posts";
-import EditProfile from "./EditProfile";
+import ProfileEdit from "./ProfileEdit";
 import FollowList from "./FollowList";
 import FollowBtn from "./FollowBtn";
 
@@ -104,7 +104,7 @@ const User = () => {
               <div className="profileTop">
                 <h2 className="profileName">{user.name}</h2>
                 {state.currentUser.id === user.id ? (
-                  <EditProfile />
+                  <ProfileEdit />
                 ) : (
                   <FollowBtn
                     id={user.id}
