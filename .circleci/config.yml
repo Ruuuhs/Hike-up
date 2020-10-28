@@ -17,7 +17,7 @@ jobs:
           name: docker-compose build and up
           command: |
             docker-compose build
-            docker-compose up
+            docker-compose up -d
 
       - run:
           name: Run RuboCop
@@ -25,8 +25,7 @@ jobs:
 
       - run:
           name: run tests
-          command: |
-            docker-compose exec api bundle exec rspec
+          command: docker-compose exec api bundle exec rspec
 
       - run:
           name: docker-compose down
