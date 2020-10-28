@@ -13,7 +13,7 @@ Style/ClassAndModuleChildren:
   Enabled: false
 
 # メソッド名のprefixに「set_」「get_」を許可
-Style/AccessorMethodName:
+Naming/AccessorMethodName:
   Enabled: false
 
 # クラスにコメントを残さない
