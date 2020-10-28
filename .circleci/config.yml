@@ -21,7 +21,7 @@ jobs:
 
       - run:
           name: Run RuboCop
-          command: docker-compose exec api bundle exec rubocop
+          command: docker-compose exec api rubocop
 
       - run:
           name: run tests
