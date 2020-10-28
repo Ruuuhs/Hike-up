@@ -23,7 +23,7 @@ class PostController < ApplicationController
   end
 
   def show
-    post = Post.find_by(id: params[:id]).page(params[:page]).per(5).to_json(include: %i[user likes bookmarks comments])
+    post = Post.find_by(id: params[:id]).to_json(include: %i[user likes bookmarks comments])
     render json: post
   end
 
