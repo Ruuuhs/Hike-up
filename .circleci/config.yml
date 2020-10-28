@@ -10,18 +10,38 @@ jobs:
       - run:
           name: Docker Compose のインストール
           command: |
-            curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
+            curl -L https://github.com/docker/compose/releases/download/1.27.4/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
             chmod +x ~/docker-compose
             sudo mv ~/docker-compose /usr/local/bin/docker-compose
       - run:
-          name: check docker-compose version
-          command: docker-compose --version
+          name: docker の立ち上げ
+          command: |
+            docker-compose build
+            docker-compose up -d
+
       - run:
-          name: docker-compose build
-          command: docker-compose build
+          name: 初期設定
+          command: |
+            docker-compose exec api bundle exec rails db:create
+            docker-compose exec api bundle exec rails db:migrate
+
       - run:
-          name: docker-compose up
-          command: docker-compose up -d
+          name: Run RuboCop
+          command: docker-compose exec api bundle exec rubocop
+
+      - run:
+          name: run tests
+          command: |
+            docker-compose exec api mkdir /tmp/test-results
+            TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | \
+              circleci tests split --split-by=timings)"
+
+            docker-compose exec api bundle exec rspec \
+              --format progress \
+              --format RspecJunitFormatter \
+              --out /tmp/test-results/rspec.xml \
+              --format progress \
+              $TEST_FILES
 
   # build:
   #   docker:
