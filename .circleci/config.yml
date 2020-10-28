@@ -13,11 +13,11 @@ jobs:
           name: check docker-compose version
           command: docker-compose --version
       - run:
-        name: docker-compose build
-        command: docker-compose build
+          name: docker-compose build
+          command: docker-compose build
       - run:
-        name: docker-compose up
-        command: docker-compose up -d
+          name: docker-compose up
+          command: docker-compose up -d
 
   # build:
   #   docker:
