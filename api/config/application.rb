@@ -43,5 +43,6 @@ module Api
                  expose: %w[access-token uid client]
       end
     end
+    config.hosts << '.example.com'
   end
 end

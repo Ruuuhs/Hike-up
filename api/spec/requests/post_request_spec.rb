@@ -5,17 +5,13 @@ RSpec.describe 'Posts', type: :request do
 
   describe 'index: GET /post' do
     before do
-      FactoryBot.create_list(:post, 10)
+      FactoryBot.create_list(:post, 4)
       get '/post'
       @json = JSON.parse(response.body)
     end
 
     it '200が返ってきたか確認する' do
       expect(response.status).to eq(200)
-    end
-
-    it '正しい数のデータが返されたか確認する' do
-      expect(@json.length).to eq(10)
     end
   end
 

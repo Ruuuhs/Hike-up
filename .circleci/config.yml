@@ -1,0 +1,130 @@
+version: 2
+jobs:
+  build:
+    machine:
+      image: circleci/classic:edge
+
+    steps:
+      - checkout
+
+      - run:
+          name: install Docker Compose
+          command: |
+            curl -L https://github.com/docker/compose/releases/download/1.27.4/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
+            chmod +x ~/docker-compose
+            sudo mv ~/docker-compose /usr/local/bin/docker-compose
+
+      # - run:
+      #     name: Setup dockerize
+      #     command: bash .circleci/setup-dockerize.sh
+
+      - run:
+          name: docker-compose build and up
+          command: |
+            docker-compose build
+            docker-compose up -d
+
+      - run:
+          name: Wait for db
+          command: sleep 20
+
+      # - run:
+      #     name: Wait for db
+      #     command: dockerize -wait tcp://127.0.0.1:3306 -timeout 1m
+
+      - run:
+          name: docker-compose ps
+          command: |
+            docker-compose ps
+            docker-compose logs
+
+      - run:
+          name: setup database
+          command: |
+            docker-compose exec api  mv config/database.yml.ci config/database.yml
+            docker-compose exec api rails db:create
+            docker-compose exec api rails db:migrate
+
+      - run:
+          name: Run RuboCop
+          command: docker-compose exec api rubocop
+
+      - run:
+          name: run tests
+          command: |
+            docker-compose exec api bundle exec rspec
+
+      - run:
+          name: docker-compose down
+          command: docker-compose down
+
+  # build:
+  #   docker:
+  #     - image: circleci/ruby:2.6.6
+  #       environment:
+  #         RAILS_ENV: test
+
+  #     - image: circleci/mysql:5.7
+  #       environment:
+  #         - MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+
+  #   steps:
+  #     # コードのチェックアウト
+  #     - checkout
+
+  #     # bundle installのキャシュがあればそれを取ってくる
+  #     - restore_cache:
+  #         keys:
+  #           - gem-cache-{{ arch }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+  #           - gem-cache-{{ arch }}-{{ .Branch }}
+  #           - gem-cache
+
+  #     # bundle installの実行
+  #     - run:
+  #         name: Bundle Install
+  #         command: bundle check --path=vendor/bundle || bundle install --path vendor/bundle --clean --jobs 4 --retry 3
+
+  #     # bundle installのデータをキャッシュ
+  #     - save_cache:
+  #         key: gem-cache-{{ arch }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+  #         paths:
+  #           - ./vendor/bundle
+
+  #     #DBの起動待ち
+  #     - run:
+  #         name: Wait for db
+  #         command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
+
+  #     # 初期設定
+  #     - run:
+  #         name: Database setup
+  #         command: |
+  #           mv -f ./config/database.yml.ci ./config/database.yml
+  #           bundle exec rails db:create
+  #           bundle exec rails db:migrate
+
+  #     - run:
+  #         name: Run RuboCop
+  #         command: bundle exec rubocop
+
+  #     # テストの実行
+  #     - run:
+  #         name: run tests
+  #         command: |
+  #           mkdir /tmp/test-results
+  #           TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | \
+  #             circleci tests split --split-by=timings)"
+
+  #           bundle exec rspec \
+  #             --format progress \
+  #             --format RspecJunitFormatter \
+  #             --out /tmp/test-results/rspec.xml \
+  #             --format progress \
+  #             $TEST_FILES
+
+  #     # collect reports
+  #     - store_test_results:
+  #         path: /tmp/test-results
+  #     - store_artifacts:
+  #         path: /tmp/test-results
+  #         destination: test-results

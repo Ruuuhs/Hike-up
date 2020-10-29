@@ -21,7 +21,6 @@ RSpec.describe 'Relationships', type: :request do
     before do
       @other_user = FactoryBot.create(:user)
       @relationship = Relationship.create(followed_id: @other_user.id, follower_id: @user_id)
-      pp @relationship
     end
 
     it '200が返ってきたか確認する' do

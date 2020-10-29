@@ -14,7 +14,6 @@ def sign_in_id
   post '/auth/sign_in/',
        params: { email: user[:email], password: 'foobar' },
        as: :json
-
   json = JSON.parse(response.body)
   headers = response.headers.slice('client', 'access-token', 'uid')
 
