@@ -20,6 +20,10 @@ jobs:
             docker-compose up -d
 
       - run:
+          name: Wait for db
+          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
+
+      - run:
           name: setup database
           command: docker-compose exec api rails db:migrate RAILS_ENV=test
 
