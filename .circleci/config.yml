@@ -14,6 +14,9 @@ jobs:
             chmod +x ~/docker-compose
             sudo mv ~/docker-compose /usr/local/bin/docker-compose
       - run:
+          name: Setup dockerize
+          command: bash .circleci/setup-dockerize.sh
+      - run:
           name: docker-compose build and up
           command: |
             docker-compose build
@@ -21,7 +24,7 @@ jobs:
 
       - run:
           name: Wait for db
-          command: sleep 20
+          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
 
       - run:
           name: setup database
