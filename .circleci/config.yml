@@ -25,7 +25,17 @@ jobs:
 
       - run:
           name: run tests
-          command: docker-compose exec api bundle exec rspec
+          command: |
+            docker-compose exec api mkdir /tmp/test-results
+            TEST_FILES="$(docker-compose exec api circleci tests glob "spec/**/*_spec.rb" | \
+              docker-compose exec api circleci tests split --split-by=timings)"
+
+            docker-compose exec api bundle exec rspec \
+              --format progress \
+              --format RspecJunitFormatter \
+              --out /tmp/test-results/rspec.xml \
+              --format progress \
+              $TEST_FILES
 
       - run:
           name: docker-compose down
