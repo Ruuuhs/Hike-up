@@ -30,7 +30,7 @@ jobs:
 
       # - run:
       #     name: Wait for db
-      #     command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
+      #     command: dockerize -wait tcp://127.0.0.1:3306 -timeout 1m
 
       - run:
           name: docker-compose ps
@@ -41,8 +41,9 @@ jobs:
       - run:
           name: setup database
           command: |
-            docker-compose exec api rails db:create RAILS_ENV=test
-            docker-compose exec api rails db:migrate RAILS_ENV=test
+            docker-compose exec api  mv config/database.yml.ci config/database.yml
+            docker-compose exec api rails db:create
+            docker-compose exec api rails db:migrate
 
       - run:
           name: Run RuboCop
