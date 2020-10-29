@@ -41,8 +41,8 @@ jobs:
       - run:
           name: setup database
           command: |
-            docker-compose exec api rails db:create RAILS_ENV=test
-            docker-compose exec api rails db:migrate RAILS_ENV=test
+            docker-compose exec api rails db:create
+            docker-compose exec api rails db:migrate
 
       - run:
           name: Run RuboCop
@@ -51,7 +51,7 @@ jobs:
       - run:
           name: run tests
           command: |
-            docker-compose exec api bundle exec rspec RAILS_ENV=test
+            docker-compose exec api bundle exec rspec
 
       - run:
           name: docker-compose down
