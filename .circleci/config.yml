@@ -14,6 +14,10 @@ jobs:
             chmod +x ~/docker-compose
             sudo mv ~/docker-compose /usr/local/bin/docker-compose
 
+      # - run:
+      #     name: Setup dockerize
+      #     command: bash .circleci/setup-dockerize.sh
+
       - run:
           name: docker-compose build and up
           command: |
@@ -24,6 +28,10 @@ jobs:
           name: Wait for db
           command: sleep 20
 
+      # - run:
+      #     name: Wait for db
+      #     command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
+
       - run:
           name: docker-compose ps
           command: |
@@ -32,7 +40,9 @@ jobs:
 
       - run:
           name: setup database
-          command: docker-compose exec api rails db:migrate RAILS_ENV=test
+          command: |
+          docker-compose exec api rails create
+          docker-compose exec api rails db:migrate RAILS_ENV=test
 
       - run:
           name: Run RuboCop
