@@ -25,6 +25,12 @@ jobs:
           command: sleep 20
 
       - run:
+          name: docker-compose ps
+          command: |
+            docker-compose ps
+            docker-compose logs
+
+      - run:
           name: setup database
           command: docker-compose exec api rails db:migrate RAILS_ENV=test
 
