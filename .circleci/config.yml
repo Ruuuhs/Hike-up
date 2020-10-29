@@ -51,16 +51,7 @@ jobs:
       - run:
           name: run tests
           command: |
-            mkdir /tmp/test-results
-            TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | \
-              circleci tests split --split-by=timings)"
-
-            docker-compose exec api bundle exec rspec RAILS_ENV=test \
-              --format progress \
-              --format RspecJunitFormatter \
-              --out /tmp/test-results/rspec.xml \
-              --format progress \
-              $TEST_FILES
+            docker-compose exec api bundle exec rspec RAILS_ENV=test
 
       - run:
           name: docker-compose down
