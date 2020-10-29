@@ -21,7 +21,7 @@ jobs:
 
       - run:
           name: Wait for db
-          command: sleep 10
+          command: sleep 20
 
       - run:
           name: setup database
