@@ -115,7 +115,6 @@ export default function Login() {
     if (state.login.isLoginView) {
       try {
         dispatch({ type: START_FETCH });
-
         const res = await axios.post(
           `${process.env.REACT_APP_API_URL}/auth/sign_in`,
           state.login.credentialsSign,

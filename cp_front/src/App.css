@@ -1,0 +1,153 @@
+.mainContent {
+  margin: 0 auto;
+}
+
+.pageTitle {
+  margin: 0 auto;
+  width: 600px;
+  display: flex;
+  font-size: 15px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid lightgray;
+  font-size: 25px;
+  font-weight: 500;
+}
+
+.logout {
+  background-color: transparent;
+  color: black;
+  margin-top: 7px;
+  font-size: 25px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+/* .post_wrapper {
+  width: 600px;
+  display: block;
+  box-sizing: border-box;
+  margin: 0 auto 60px auto;
+  background-color: white;
+  border: 1px solid #888888;
+}
+
+.post_user {
+  height: 60px;
+  border-bottom: 1px solid lightgray;
+  padding: 16px;
+}
+
+.post_bar {
+  padding: 8px;
+}
+
+.post_content {
+  padding: 0 15px 0 15px;
+} */
+
+/* user_page */
+.userProfile {
+  max-width: 750px;
+  min-width: 600px;
+  display: flex;
+  font-size: 15px;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid lightgray;
+}
+
+.profileContent {
+}
+
+.profileTop {
+  margin-bottom: 15px;
+}
+
+.profileName {
+  font-weight: 300;
+}
+
+/* ポスト */
+.nonPosts {
+  max-width: 600;
+  min-width: 600;
+  margin-right: "auto";
+  margin-left: "auto";
+  text-align: center;
+}
+.postImage {
+  width: 500px;
+  height: 500px;
+  max-width: 600px;
+  display: inline-block;
+  object-fit: cover;
+}
+.postContent {
+  width: 350px;
+  height: 500px;
+  vertical-align: top;
+  display: inline-block;
+  border-left: 1px solid lightgray;
+}
+
+.postHeader {
+  display: flex;
+  padding: 10px 25px;
+  line-height: 40px;
+  border-bottom: 1px solid lightgray;
+}
+
+.postHeaderName {
+  margin-left: 15px;
+  text-align: center;
+  font-size: 17px;
+}
+
+.commentList {
+  height: 3400px;
+  overflow: auto;
+  border-bottom: 1px solid lightgray;
+}
+.commentRapper {
+  display: flex;
+}
+.commentUserName {
+  font-weight: 600;
+  margin-right: 10px;
+}
+
+/* ブックマークページ */
+.pageTop {
+  max-width: 750px;
+  min-width: 600px;
+  display: flex;
+  font-size: 15px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid lightgray;
+}
+
+.pageName {
+  font-weight: 300;
+}
+
+/* トレンド */
+.trendTop {
+  max-width: 750px;
+  min-width: 600px;
+  font-size: 15px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid lightgray;
+}
+
+.trendTopper {
+  display: flex;
+}
+
+/* フォローリスト */
+.followList {
+  max-width: 750px;
+  min-width: 600px;
+  background-color: white;
+  border: 1px solid lightgray;
+}

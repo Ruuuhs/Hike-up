@@ -44,5 +44,6 @@ module Api
       end
     end
     config.hosts << '.example.com'
+    config.hosts << '.amazonaws.com'
   end
 end
