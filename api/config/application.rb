@@ -36,7 +36,7 @@ module Api
     config.api_only = true
     config.middleware.insert_before 0, Rack::Cors do
       allow do
-        origins 'http://localhost:8000'
+        origins 'http://localhost:8000', 'https://hike-up.work'
         resource '*',
                  headers: :any,
                  methods: %i[get post patch delete options put],
@@ -45,5 +45,7 @@ module Api
     end
     config.hosts << '.example.com'
     config.hosts << '.amazonaws.com'
+    config.hosts << '.hike-up.work'
+    config.hosts.clear
   end
 end

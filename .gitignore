@@ -8,3 +8,7 @@
 *.tfstate*
 *.tfvars
 */*.tfvars
+
+.env
+.env.production
+.drawio
