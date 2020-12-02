@@ -25,4 +25,6 @@ Rails.application.routes.draw do
   resources :relationship, only: %i[create destroy]
   resources :room, only: %i[create show index]
   resources :message, only: %i[create]
+
+  get :health_check, to: 'health_check#index'
 end
