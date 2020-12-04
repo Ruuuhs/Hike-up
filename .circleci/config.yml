@@ -99,26 +99,28 @@ workflows:
             branches:
               only: master
 
-      # - aws-ecs/deploy-service-update:
-      #     name: react-deploy-service-update
-      #     requires:
-      #       - react-build-and-push-image
-      #     family: "dishare-nuxt-task" # ECSのタスク定義名
-      #     cluster-name: "${ECS_ARN}" #ECSのクラスターのARN
-      #     service-name: "dishare-nuxt-ecs-service" #サービス名
-      #     container-image-name-updates: "container=nuxt-container,tag=${CIRCLE_SHA1}"
-      #     filters:
-      #       branches:
-      #         only: master
+      - aws-ecs/deploy-service-update:
+          name: rails-deploy-service-update
+          requires:
+            - rails-build-and-push-image
+            - react-build-and-push-image
+          family: "hike-up-task-back" # ECSのタスク定義名
+          cluster-name: "hike-up-cluster" #ECSのクラスター名
+          service-name: "hike-up-service-back" #サービス名
+          container-image-name-updates: "container=hike-up-container-back,tag=${CIRCLE_SHA1}"
+          filters:
+            branches:
+              only: master
 
-      # - aws-ecs/deploy-service-update:
-      #     name: rails-deploy-service-update
-      #     requires:
-      #       - aws-ecs/run-task
-      #     family: "dishare-rails-task" # ECSのタスク定義名
-      #     cluster-name: "${ECS_ARN}" #ECSのクラスターのARN
-      #     service-name: "dishare-rails-ecs-service" #サービス名
-      #     container-image-name-updates: "container=rails-container,tag=${CIRCLE_SHA1}"
-      #     filters:
-      #       branches:
-      #         only: master
+      - aws-ecs/deploy-service-update:
+          name: react-deploy-service-update
+          requires:
+            - rails-build-and-push-image
+            - react-build-and-push-image
+          family: "hike-up-task-front" # ECSのタスク定義名
+          cluster-name: "hike-up-cluster" #ECSのクラスター名
+          service-name: "hike-up-service-front" #サービス名
+          container-image-name-updates: "container=hike-up-container-front,tag=${CIRCLE_SHA1}"
+          filters:
+            branches:
+              only: master
