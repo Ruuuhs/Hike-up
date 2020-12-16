@@ -27,7 +27,7 @@ import { DELETE_POST, START_ALERT, TOKEN_KEY } from "../actions";
 import ShowPost from "./ShowPost";
 import UserImage from "./UserImage";
 
-import Background from "../Switzerland.jpg";
+import Background from "../images/Switzerland.jpg";
 
 const useStyles = makeStyles((theme) => ({
   root: {
