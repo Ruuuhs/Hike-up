@@ -1,16 +1,15 @@
 import React, { useContext } from "react";
-import Avatar from "@material-ui/core/Avatar";
+import { Link } from "react-router-dom";
+
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 // import FormControlLabel from "@material-ui/core/FormControlLabel";
 // import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
-import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
+
 import { makeStyles } from "@material-ui/core/styles";
 
 import axios from "axios";
@@ -25,44 +24,43 @@ import {
   TOKEN_KEY,
 } from "../actions";
 
-import Background from "../Switzerland.jpg";
+import Background from "../images/hike_up_login.jpg";
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Hike up
-      </Link>{" "}
-      {new Date().getFullYear()}
+      Hike up {new Date().getFullYear()}
       {"."}
     </Typography>
   );
 }
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  main: {
     height: "100vh",
-  },
-  image: {
+    minHeight: "780px",
     backgroundImage: `url(${Background})`,
     backgroundRepeat: "no-repeat",
-    backgroundColor:
-      theme.palette.type === "light"
-        ? theme.palette.grey[50]
-        : theme.palette.grey[900],
     backgroundSize: "cover",
     backgroundPosition: "center",
+    overflow: "hidden",
   },
   paper: {
+    width: 350,
+    maxHeight: 630,
     margin: theme.spacing(8, 4),
+    marginLeft: "50%",
+    padding: 25,
+    verticalAlign: "middle",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    backgroundColor: "#fffffff1",
+    borderRadius: "20px",
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+  headerLogo: {
+    height: 90,
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -193,94 +191,67 @@ export default function Login() {
   };
 
   return (
-    <Grid container component="main" className={classes.root}>
+    <Grid container maxwidth="xl" className={classes.main}>
       <CssBaseline />
-      <Grid item xs={false} sm={4} md={7} className={classes.image} />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            {state.login.isLoginView ? "ログイン" : "アカウント登録"}
-          </Typography>
-          <form className={classes.form} onSubmit={login}>
-            {state.login.isLoginView ? (
-              <></>
-            ) : (
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="name"
-                label="名前"
-                name="name"
-                autoComplete="name"
-                autoFocus
-                onChange={inputChangedSign()}
-              />
-            )}
-
+      <Grid item xs={12} sm={8} md={4} className={classes.paper}>
+        <img
+          src="/images/Hike_up_logo_text.png"
+          alt="logo_hike_up"
+          className={classes.headerLogo}
+        />
+        <form className={classes.form} onSubmit={login}>
+          {state.login.isLoginView ? (
+            <></>
+          ) : (
             <TextField
               variant="outlined"
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="メールアドレス"
-              name="email"
-              autoComplete="email"
+              id="name"
+              label="名前"
+              name="name"
+              autoComplete="name"
+              autoFocus
               onChange={inputChangedSign()}
             />
+          )}
 
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="パスワード"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              onChange={inputChangedSign()}
-            />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="メールアドレス"
+            name="email"
+            autoComplete="email"
+            onChange={inputChangedSign()}
+          />
 
-            <span className={classes.spanError}>{state.login.error}</span>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="パスワード"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            onChange={inputChangedSign()}
+          />
 
-            {/* <FormControlLabel
+          <span className={classes.spanError}>{state.login.error}</span>
+
+          {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             /> */}
 
-            {state.login.isLoginView ? (
-              !state.login.credentialsSign.password ||
-              !state.login.credentialsSign.email ? (
-                <Button
-                  className={classes.submit}
-                  type="submit"
-                  fullWidth
-                  disabled
-                  variant="contained"
-                  color="primary"
-                >
-                  ログイン
-                </Button>
-              ) : (
-                <Button
-                  className={classes.submit}
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                >
-                  ログイン
-                </Button>
-              )
-            ) : !state.login.credentialsSign.name ||
-              !state.login.credentialsSign.password ||
-              !state.login.credentialsSign.email ? (
+          {state.login.isLoginView ? (
+            !state.login.credentialsSign.password ||
+            !state.login.credentialsSign.email ? (
               <Button
                 className={classes.submit}
                 type="submit"
@@ -289,7 +260,7 @@ export default function Login() {
                 variant="contained"
                 color="primary"
               >
-                アカウント作成
+                ログイン
               </Button>
             ) : (
               <Button
@@ -299,24 +270,56 @@ export default function Login() {
                 variant="contained"
                 color="primary"
               >
-                アカウント作成
+                ログイン
               </Button>
-            )}
-
-            <span onClick={() => toggleView()} className={classes.span}>
-              {state.login.isLoginView
-                ? "アカウント作成しますか?"
-                : "ログインしますか?"}
-            </span>
-
-            <Button variant="contained" color="primary" onClick={testLogin}>
-              TestUserでログイン
+            )
+          ) : !state.login.credentialsSign.name ||
+            !state.login.credentialsSign.password ||
+            !state.login.credentialsSign.email ? (
+            <Button
+              className={classes.submit}
+              type="submit"
+              fullWidth
+              disabled
+              variant="contained"
+              color="primary"
+            >
+              アカウント作成
             </Button>
-            <Box mt={5}>
-              <Copyright />
-            </Box>
-          </form>
-        </div>
+          ) : (
+            <Button
+              className={classes.submit}
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+            >
+              アカウント作成
+            </Button>
+          )}
+
+          <span onClick={() => toggleView()} className={classes.span}>
+            {state.login.isLoginView
+              ? "アカウント作成しますか?"
+              : "ログインしますか?"}
+          </span>
+        </form>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={testLogin}
+          className={classes.submit}
+        >
+          テストユーザーでログイン
+        </Button>
+        <Link to="/about" style={{ textDecoration: "none" }}>
+          <Typography variant="body1" color="textSecondary">
+            Hike upについて
+          </Typography>
+        </Link>
+        <Box mt={3}>
+          <Copyright />
+        </Box>
       </Grid>
     </Grid>
   );

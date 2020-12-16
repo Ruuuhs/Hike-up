@@ -14,7 +14,7 @@ import UserImage from "./UserImage";
 
 import { TOKEN_KEY } from "../actions";
 
-import Background from "../Switzerland.jpg";
+import Background from "../images/Switzerland.jpg";
 
 const useStyles = makeStyles((theme) => ({
   root: {
