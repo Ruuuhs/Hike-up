@@ -167,6 +167,7 @@ export default function Login() {
 
   const testLogin = async (event) => {
     event.preventDefault();
+    console.log(process.env.REACT_APP_API_URL);
     const res = await axios.post(
       `${process.env.REACT_APP_API_URL}/auth/sign_in`,
       {
@@ -179,6 +180,7 @@ export default function Login() {
         headers: { "Content-Type": "application/json" },
       }
     );
+    console.log(res);
     const token = {
       "access-token": res.headers["access-token"],
       client: res.headers["client"],
