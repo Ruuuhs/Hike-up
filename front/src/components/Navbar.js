@@ -170,13 +170,13 @@ export default function Navbar() {
                 <ListItemText primary="ログイン" />
               </ListItem>
             )}
-
+            {/*
             <ListItem button key="about" component={Link} to={"/about"}>
               <ListItemIcon>
                 <HomeIcon />
               </ListItemIcon>
               <ListItemText primary="about" />
-            </ListItem>
+            </ListItem> */}
           </List>
         </div>
       </Drawer>
