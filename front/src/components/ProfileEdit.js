@@ -83,7 +83,7 @@ export default function ProfileEdit() {
       })
       .then((res) => {
         dispatch({ type: CURRENT_USER, data: res.data.data });
-        window.location.reload();
+        // window.location.reload();
       })
       .catch((err) => {
         console.log("err:", err);
