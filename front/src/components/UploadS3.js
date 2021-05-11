@@ -24,19 +24,19 @@ const UploadS3 = async (encodedData, ext, p) => {
     ACL: "public-read",
   };
 
-  s3.putObject(params, function (err) {
-    if (err) {
-      console.log(err, err.message);
-    } else {
-      console.log("アップロード成功！");
-    }
-  });
-  return (
-    "https://hike-up-bucket.s3-ap-northeast-1.amazonaws.com/" +
-    p.dir +
-    p.id +
-    ext
-  );
+  try {
+    await s3.putObject(params).promise();
+    console.log("Succes S3 upload!");
+    return (
+      "https://hike-up-bucket.s3-ap-northeast-1.amazonaws.com/" +
+      p.dir +
+      p.id +
+      ext
+    );
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
 };
 
 export default UploadS3;
